@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "execution.h"
 
 int	execution(t_msh *msh)
 {
@@ -28,7 +28,7 @@ void	check_builtin_cmd(t_msh *msh, char *cmd, int i)
 	else if (ft_strlen(cmd) == 6 && !ft_strncmp("export", cmd, 6))
 		cmd_export(msh);
 	else if (ft_strlen(cmd) == 5 && !ft_strncmp("unset", cmd, 5))
-		cmd_unset(msh);
+		cmd_unset(msh, i);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
 		cmd_env(msh);
 }
