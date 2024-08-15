@@ -21,17 +21,18 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <linux/limits.h>
 # include "./LIBFT/libft.h"
 
 
-typedef struct s_child
+typedef struct s_child //fork and pipe
 {
 	int		fd_in;
 	int		fd_out;
 	char	**commands;
 }	t_child;
 
-typedef struct s_parent
+typedef struct s_parent //fork and pipe
 {
 	int		fd_in;
 	int		fd_out;
@@ -50,7 +51,8 @@ typedef struct s_token
 	struct s_token	prev;
 	struct s_token	next;
 }	t_token;
-typedef struct s_parse
+
+typedef struct s_parse //parsing structure
 {
 	char	**poi;
 	int		squt_count;
@@ -60,10 +62,10 @@ typedef struct s_parse
 	int		num_of_pipe;
 }	t_parse;
 
-typedef struct s_msh
+typedef struct s_msh //master structure 'minishell'
 {
 	char		*input;
-	char		**parsed_args;
+	char		**parsed_args; // needed for execution
 	t_parse		*parse;
 	t_parent	*parent_str;
 }	t_msh;
@@ -90,6 +92,8 @@ void	clean_initialize(t_msh *sdata);
 /*------- PARSE USER INPUT -------*/
 void	parse_input(t_msh *msh);
 
+/*------- EXECUTION -------*/
+void	check_if_exit(t_msh msh);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);
