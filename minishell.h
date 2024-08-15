@@ -24,6 +24,7 @@
 # include <linux/limits.h>
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
+# include "./EXECUTION/execution.h"
 
 
 typedef struct s_child //fork and pipe
