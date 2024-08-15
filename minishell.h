@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/14 17:53:47 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:37:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include "./LIBFT/libft.h"
+# include "./PARSE/parse.h"
 
 
 typedef struct s_child
@@ -42,23 +43,7 @@ typedef struct s_parent
 	t_child	*children;
 }	t_parent;
 
-typedef struct s_token
-{
-	int				start_pos;
-	int				end_pos;
-	int				type;
-	struct s_token	prev;
-	struct s_token	next;
-}	t_token;
-typedef struct s_parse
-{
-	char	**poi;
-	int		squt_count;
-	int		dqut_count;
-	int		pthz_count;
-	
-	int		num_of_pipe;
-}	t_parse;
+
 
 typedef struct s_msh
 {
@@ -68,28 +53,25 @@ typedef struct s_msh
 	t_parent	*parent_str;
 }	t_msh;
 
-typedef enum e_par
-{
-	PARANTH_L,
-	PARANTH_R,
-	PIPE,
-	DQT_L,
-	DQT_R,
-	SQT_L,
-	SQT_R,
-	REDIR
-};
+
 
 
 /*------- INPUT_VALIDATE -------*/
 void	input_validate(int ac, char **envp);
 
 /*------- INITIALIZE -------*/
-void	clean_initialize(t_msh *sdata);
+void	clean_initialize(t_msh *msh);
+void	clean_init_parse(t_parse *pars);
+void	clean_init_token_node(t_token *tkn);
+
 
 /*------- PARSE USER INPUT -------*/
-void	parse_input(t_msh *msh);
-
+void	parse_main(t_msh *msh);
+void	parse_structure_malloc(t_msh *msh);
+t_token	*token_structure_malloc(t_msh *msh);
+void	add_token_node(t_parse *pars, t_token *tkn);
+void	make_token(t_msh *msh, t_token *tkn);
+void	update_parsed_args(t_msh *msh, t_parse *pars);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);

@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/13 19:02:09 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/14 17:50:55 by mcoskune         ###   ########.fr       */
+/*   Created: 2024/08/15 10:37:03 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/08/15 12:16:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-void	check_special_char(t_msh *msh)
+typedef struct s_token
 {
-	
-}
+	int				start_pos;
+	int				end_pos;
+	int				type;
+	char			*token;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
 
-void	parse_input(t_msh *msh)
+typedef struct s_parse
 {
-	int	i;
+	char	**parsed_args;
+	// int		squt_count;
+	// int		dqut_count;
+	// int		pthz_count;
+	// int		num_of_pipe;
+	t_token	*head;
+}	t_parse;
 
-	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
-		return ;
-	i = 0;
-	while (msh->input[i] != '\0')
-	{
-		
-		
-
-
-		i++;
-	}
-
-}
+typedef enum e_par
+{
+	EMPTY = 0,
+	TEXT = 1,
+	NUM = 2,
+};
