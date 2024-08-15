@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "execution.h"
 
 int	execution(t_msh *msh)
 {

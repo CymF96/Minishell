@@ -50,6 +50,7 @@ typedef struct s_msh //master structure 'minishell'
 {
 	char		*input;
 	char		**parsed_args; // needed for execution
+	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	t_parse		*parse;
 	t_parent	*parent_str;
 }	t_msh;
