@@ -25,8 +25,9 @@ int main(int ac, char **av, char **envp)
 		if (msh.input == NULL)
 			exit_cleanup("Problem in user input", &msh, errno);
 		add_history(msh.input);
-		if (ft_strlen(msh.input) == 4 && !ft_strncmp("exit", msh.input, 4)) // need to check for exit code so parse this too?
-			exit_cleanup("User says 'Be Gone Thot!'", &msh, 0);
+		check_if_exit(msh);
+		// if (ft_strlen(msh.input) == 4 && !ft_strncmp("exit", msh.input, 4)) // need to check for exit code so parse this too?
+		// 	exit_cleanup("User says 'Be Gone Thot!'", &msh, 0);
 		parse_input(&msh);
 		free(msh.input);
 		msh.input = NULL;

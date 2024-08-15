@@ -21,18 +21,19 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <linux/limits.h>
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
 
 
-typedef struct s_child
+typedef struct s_child //fork and pipe
 {
 	int		fd_in;
 	int		fd_out;
 	char	**commands;
 }	t_child;
 
-typedef struct s_parent
+typedef struct s_parent //fork and pipe
 {
 	int		fd_in;
 	int		fd_out;
@@ -45,10 +46,10 @@ typedef struct s_parent
 
 
 
-typedef struct s_msh
+typedef struct s_msh //master structure 'minishell'
 {
 	char		*input;
-	char		**parsed_args;
+	char		**parsed_args; // needed for execution
 	t_parse		*parse;
 	t_parent	*parent_str;
 }	t_msh;
@@ -65,6 +66,9 @@ void	clean_init_parse(t_parse *pars);
 void	clean_init_token_node(t_token *tkn);
 
 
+/*------- EXECUTION -------*/
+void	check_if_exit(t_msh msh);
+
 /*------- PARSE USER INPUT -------*/
 void	parse_main(t_msh *msh);
 void	parse_structure_malloc(t_msh *msh);
@@ -72,6 +76,7 @@ t_token	*token_structure_malloc(t_msh *msh);
 void	add_token_node(t_parse *pars, t_token *tkn);
 void	make_token(t_msh *msh, t_token *tkn);
 void	update_parsed_args(t_msh *msh, t_parse *pars);
+
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);
