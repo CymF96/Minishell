@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../minishell.h"
 
 void	check_if_exit(t_msh msh)
 {
