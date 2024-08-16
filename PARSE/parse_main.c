@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
 static int	check_type(t_msh *msh, int i)
 {
@@ -20,6 +20,7 @@ static int	check_type(t_msh *msh, int i)
 		return (TEXT);
 	if (ft_isdigit(msh->input[i]))
 		return (NUM);
+	return (0);
 }
 
 void	update_parsed_args(t_msh *msh, t_parse *pars)
@@ -47,8 +48,7 @@ void	update_parsed_args(t_msh *msh, t_parse *pars)
 void	parse_main(t_msh *msh)
 {
 	int		i;
-	int		j;
-	t_parse	*pars;
+	//t_parse	*pars;
 	t_token	*tkn;
 
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
@@ -58,7 +58,7 @@ void	parse_main(t_msh *msh)
 	while (msh->input[i] != '\0')
 	{
 		tkn = token_structure_malloc(msh);
-		add_token_node(pars, tkn);
+		add_token_node(msh->parse, tkn);
 		tkn->start_pos = i;
 		tkn->type = check_type(msh, i);
 		while (msh->input[i] != '\0')
@@ -69,7 +69,7 @@ void	parse_main(t_msh *msh)
 			i++;
 		}
 		make_token(msh, tkn);
-		add_token_node(pars, tkn);
+		add_token_node(msh->parse, tkn);
 	}
-	update_parsed_args(msh, pars);
+	update_parsed_args(msh, msh->parse);
 }

@@ -26,7 +26,7 @@ int main(int ac, char **av, char **envp)
 			exit_cleanup("Problem in user input", &msh, errno);
 		add_history(msh.input);
 		check_if_exit(msh);
-		parse_input(&msh);
+		parse_main(&msh);
 		execution(&msh);
 		free(msh.input);
 		msh.input = NULL;
