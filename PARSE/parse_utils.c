@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "parse.h"
 
 void	make_token(t_msh *msh, t_token *tkn)
 {
 	tkn->token = malloc (sizeof(char) * (tkn->end_pos - tkn->start_pos + 2));
 	if (tkn->token == NULL)
 		exit_cleanup("Malloc Failed", msh, errno);
-	ft_strlcpy(tkn->token, msh->input[tkn->start_pos], \
+	ft_strlcpy(tkn->token, msh->input + tkn->start_pos, \
 		tkn->end_pos - tkn->start_pos + 1);
 	tkn->token[tkn->end_pos - tkn->start_pos + 2] = '\0';
 }

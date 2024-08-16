@@ -26,6 +26,32 @@
 # include "./PARSE/parse.h"
 # include "./EXECUTION/execution.h"
 
+typedef struct s_token
+{
+	int				start_pos;
+	int				end_pos;
+	int				type;
+	char			*token;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_parse
+{
+	char	**parsed_args;
+	// int		squt_count;
+	// int		dqut_count;
+	// int		pthz_count;
+	// int		num_of_pipe;
+	t_token	*head;
+}	t_parse;
+
+typedef enum e_par
+{
+	EMPTY = 0,
+	TEXT = 1,
+	NUM = 2,
+} e_par;
 
 typedef struct s_child //fork and pipe
 {
@@ -59,6 +85,7 @@ typedef struct s_msh //master structure 'minishell'
 
 
 
+
 /*------- INPUT_VALIDATE -------*/
 void	input_validate(int ac, char **envp);
 
@@ -70,6 +97,15 @@ void	clean_init_token_node(t_token *tkn);
 
 /*------- EXECUTION -------*/
 void	check_if_exit(t_msh msh);
+int		execution(t_msh *msh);
+void	check_builtin_cmd(t_msh *msh, char *cmd, int i);
+void	check_exit_status_cmd(t_msh *msh, char *cmd);
+void	cmd_exit(t_msh *msh);
+void	cmd_echo(t_msh *msh, int i);
+void	cmd_pwd(void);
+void	cmd_cd(t_msh *msh, int i);
+void	cmd_env(t_msh *msh);
+void	check_exit_status_cmd(t_msh *msh, char *cmd);
 
 /*------- PARSE USER INPUT -------*/
 void	parse_main(t_msh *msh);
