@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "../minishell.h"
 
 void    cmd_exit(t_msh *msh)
 {
