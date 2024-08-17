@@ -6,11 +6,11 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 19:02:09 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/15 13:36:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:37:41 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../minishell.h"
 
 static int	check_type(t_msh *msh, int i)
 {

@@ -6,11 +6,11 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 12:24:04 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/15 13:25:48 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:38:21 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include "../minishell.h"
 
 void	make_token(t_msh *msh, t_token *tkn)
 {

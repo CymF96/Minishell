@@ -6,11 +6,12 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/14 16:29:54 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/16 11:36:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// #include "./PARSE/parse.h"
 
 int main(int ac, char **av, char **envp)
 {
