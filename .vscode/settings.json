@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "minishell.h": "c"
-    }
+		"parse.h": "c"
+	},
+	"makefile.configureOnOpen": true
 }
