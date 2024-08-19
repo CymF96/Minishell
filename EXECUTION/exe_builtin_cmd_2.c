@@ -30,33 +30,42 @@ void	adding_var(t_msh *msh, char *new_var)
 	if (msh->envp != NULL) //free old array pointer
 		free(msh->envp);
 	msh->envp = temp_envp; //copying temp array ptr to envp on
-	msh->envp[i] = ft_strdup(temp_envp); //adding the line at the end with dup malloc
+	msh->envp[i] = ft_strdup(new_var); //adding the line at the end with dup malloc
 	if (msh->envp[i] == NULL) 
 		ft_printf ("Error adding variable\n");
 }
 
-void	cmd_export(t_msh *msh, int i) //adding variable to environmnet variable array
+void	updating_var(t_msh *msh, char *var_to_update, int i)
 {
-	char	*new_var;
+	if (!ft_strncmp(msh->envp[i], msh->pexe->cmd[i], ft_strlen(msh->pexe->cmd[i])))
+		ft_memmove(var_to_update[i],msh->pexe->cmd[i], ft_strlen(msh->pexe->cmd[i]));
+}
+
+void	cmd_export(t_msh *msh) //adding variable to environmnet variable array
+{
 	char	*var_name;
 	int		j;
 
-	if (msh->parsed_args[i + 1] == NULL) // ensuring there is a text
-		return ;
-	else
+	j = 0;
+	if (msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		while (msh->parsed_args[i + 1][j] != '=') // save the variable name to var_name str by cpy char until finding '='
+		if (msh->pexe->next != NULL && msh->pexe->next->type == 2\
+			&& msh->pexe->next->cmd != NULL)
 		{
-			var_name[j] = msh->parsed_args[i + 1][j];
-			j++;
+			msh->pexe = msh->pexe->next;
+			while (msh->pexe->cmd[j] != '=') // save the variable name to var_name str by cpy char until finding '='
+			{
+				var_name[j] = msh->pexe->cmd[j];
+				j++;
+			}
+			j = 0;
+			while (msh->envp[j] != NULL) //looping through evp to find the var_name 
+			{
+				if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name))) //if already existing --> return 
+					updating_var(msh, msh->envp[j], j);
+			}
+			adding_var(msh, var_name);
 		}
-		j = 0;
-		while (msh->envp[j] != NULL) //looping through evp to find the var_name 
-		{
-			if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name))) //if already existing --> return 
-				return ;
-		}
-		adding_var(msh, new_var);
 	}
 }
 
@@ -87,15 +96,18 @@ void	cmd_unset(t_msh *msh, int i)
 	int		j;
 
 	j = 0;
-	if (msh->parsed_args[i + 1] == NULL)
-		return ;
-	else
+	if (msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		while (msh->parsed_args[i + 1][j] != '=') // save the variable name to var_name str by cpy char until finding '='
+		if (msh->pexe->next != NULL && msh->pexe->next->type == 2\
+			&& msh->pexe->next->cmd != NULL)
 		{
-			var_name[j] = msh->parsed_args[i + 1][j];
-			j++;
+			msh->pexe = msh->pexe->next;
+			while (msh->pexe->cmd[j] != '=') // save the variable name to var_name str by cpy char until finding '='
+			{
+				var_name[j] = msh->pexe->cmd[j];
+				j++;
+			}
+			remove_var(msh, var_name);
 		}
-		remove_var(msh, var_name);
 	}
 }
