@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/17 10:47:19 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/19 20:11:01 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,13 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <stddef.h>
 # include <linux/limits.h>
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
+
+#define FIELD_OFFSET(type, field) offsetof(type, field)
+
 
 /***********TYPE_SUMMARY*********/
 /* 1. builtin command			*/
@@ -83,8 +87,10 @@ typedef enum e_type
 {
 	COMMAND,
 	STRING,
-	DQT,
-	SQT,
+	INFILE,
+	HEREDOC,
+	OUTFILE,
+	APPEND,
 	
 };
 
@@ -97,6 +103,7 @@ void	input_validate(int ac, char **envp);
 void	clean_initialize(t_msh *msh);
 void	clean_init_parse(t_parse *pars);
 void	clean_init_token_node(t_token *tkn);
+void	clean_init_pexe_node(t_pexe *pexe);
 
 /*------- EXECUTION -------*/
 void	check_if_exit(t_msh msh);
@@ -111,12 +118,11 @@ void	cmd_env(t_msh *msh);
 void	find_exe(t_msh *msh, char *cmd);
 
 /*------- PARSE USER INPUT -------*/
-void	parse_main(t_msh *msh);
-void	parse_structure_malloc(t_msh *msh);
-t_token	*token_structure_malloc(t_msh *msh);
-void	add_token_node(t_parse *pars, t_token *tkn);
-void	make_token(t_msh *msh, t_token *tkn);
-void	update_parsed_args(t_msh *msh, t_parse *pars);
+int		parse_main(t_msh *msh);
+void	parse_malloc(t_msh *msh, t_parse *prs);
+t_token	*token_malloc(t_msh *msh, t_parse *prs);
+void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
+void	parse_tokenize(t_msh *msh, t_parse *prs);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);
