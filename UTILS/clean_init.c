@@ -6,21 +6,37 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/19 17:03:17 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:22:12 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	clean_init_pexe_node(t_pexe *pexe)
+{
+	pexe->type = -1;
+	pexe->cmd = NULL;
+	pexe->option = NULL;
+	pexe->group_id = -1;
+	pexe->p_index = -1;
+	pexe->fd = NULL;
+	pexe->prev = NULL;
+	pexe->next = NULL;
+}
 
 void	clean_init_token_node(t_token *tkn)
 {
-
+	tkn->token = NULL;
+	tkn->start_pos = -1;
+	tkn->end_pos = -1;
+	tkn->prev = NULL;
+	tkn->next = NULL;
 }
 
 void	clean_init_parse(t_parse *pars)
 {
-
+	
+	pars->head = NULL;
 }
 
 /*
