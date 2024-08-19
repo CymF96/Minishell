@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/16 11:36:22 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/19 13:53:52 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ int main(int ac, char **av, char **envp)
 			exit_cleanup("Problem in user input", &msh, errno);
 		add_history(msh.input);
 		check_if_exit(msh);
-		parse_main(&msh);
-		execution(&msh);
+		if (parse_main(&msh) == 0)
+			execution(&msh);
 		free(msh.input);
 		msh.input = NULL;
 	}
-	exit_cleanup(NULL, NULL, 0);
 }

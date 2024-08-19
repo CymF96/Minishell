@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/17 10:47:19 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:19:24 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ void	input_validate(int ac, char **envp);
 
 /*------- INITIALIZE -------*/
 void	clean_initialize(t_msh *msh);
-void	clean_init_parse(t_parse *pars);
-void	clean_init_token_node(t_token *tkn);
+
 
 /*------- EXECUTION -------*/
 void	check_if_exit(t_msh msh);
@@ -84,12 +83,7 @@ void	cmd_env(t_msh *msh);
 void	check_exit_status_cmd(t_msh *msh, char *cmd);
 
 /*------- PARSE USER INPUT -------*/
-void	parse_main(t_msh *msh);
-void	parse_structure_malloc(t_msh *msh);
-t_token	*token_structure_malloc(t_msh *msh);
-void	add_token_node(t_parse *pars, t_token *tkn);
-void	make_token(t_msh *msh, t_token *tkn);
-void	update_parsed_args(t_msh *msh, t_parse *pars);
+int	parse_main(t_msh *msh);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);
