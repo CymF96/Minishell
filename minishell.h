@@ -28,21 +28,6 @@
 
 #define FIELD_OFFSET(type, field) offsetof(type, field)
 
-
-/***********TYPE_SUMMARY*********/
-/* 1. builtin command			*/
-/* 2. string					*/
-/* 3. path						*/
-/* 4. execution					*/
-/* 5. $?						*/
-/* 6. redirection				*/
-/* 7. 				*/
-/* 8. */
-/* 9. signal					*/
-/* 10. */
-/********************************/
-
-
 typedef struct s_child //fork and pipe
 {
 	int		fd_in;
@@ -78,6 +63,7 @@ typedef struct s_msh //master structure 'minishell'
 	char		*input;
 	//char		**parsed_args; // needed for execution
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
+	int			*fd;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
 	t_parent	*parent_str;
@@ -94,7 +80,18 @@ typedef enum e_type
 	
 };
 
-
+/***********TYPE_SUMMARY*********/
+/* 1. builtin command			*/
+/* 2. string					*/
+/* 3. path						*/
+/* 4. execution					*/
+/* 5. $?						*/
+/* 6. redirection				*/
+/* 7. filename				*/
+/* 8. */
+/* 9. signal					*/
+/* 10. */
+/********************************/
 
 /*------- INPUT_VALIDATE -------*/
 void	input_validate(int ac, char **envp);
