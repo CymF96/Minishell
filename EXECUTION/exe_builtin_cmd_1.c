@@ -13,11 +13,14 @@ void    cmd_echo(t_msh *msh)
 			&& msh->pexe->next->cmd != NULL)
 		{
 			msh->pexe = msh->pexe->next;
-			if (ft_strlen(msh->pexe->option[1]) == 2 
+			if (ft_strlen(msh->pexe->option[1]) == 2\
 				&& !ft_strncmp("-n", msh->pexe->option[1], 2))
-				ft_printf("%s", msh->pexe->cmd);
+				ft_putstr_fd(msh->pexe->cmd, msh->fd[1]);
 			else
-				ft_printf("%s\n", msh->pexe->cmd);
+			{
+				ft_putstr_fd(msh->pexe->cmd, msh->fd[1]);
+				ft_putchar_fd('\n', msh->fd[1]);
+			}
 		}
 	}
 }
@@ -28,7 +31,7 @@ void	cmd_pwd(t_msh *msh)
 
 	if (getcwd(path, sizeof(path)) != NULL)
 	{
-		ft_printf("%s\n", path);
+		ft_putstr_fd(path, msh->fd[1]);
 	}
 	else
 		perror("Error printing current directoy");
