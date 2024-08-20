@@ -37,7 +37,7 @@ void	check_type(t_msh *msh)
 	else if (msh->pexe->type == 5)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == 6)
-		ft;
+		check_redirection(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == 7)
 		ft;
 }
@@ -49,7 +49,7 @@ int	execution(t_msh *msh)
 	int	g;
 
 	i = 0;
-	p = 1;
+	p = 0;
 	if (msh->pexe == NULL)
 		return (0);
 	while (msh->pexe != NULL)

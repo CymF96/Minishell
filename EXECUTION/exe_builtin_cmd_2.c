@@ -6,7 +6,7 @@ void	cmd_env(t_msh *msh) // to test
 
 	i = 0; //calling the array that keep env var in main
 	while (msh->envp[i] != NULL)
-		ft_printf("%s\n", msh->envp[i++]);
+		ft_putstr_fd(msh->envp[i++], msh->fd[1]);
 }
 
 void	adding_var(t_msh *msh, char *new_var)
