@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_main.c                                       :+:      :+:    :+:   */
+/*   parse_make_pexe.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/20 15:57:42 by mcoskune         ###   ########.fr       */
+/*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/08/20 11:48:06 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-
-
-int	parse_main(t_msh *msh)
+void	make_pexe(t_msh *msh, t_parse *pars)
 {
-	t_parse	*pars;
 	
-	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
-		return (1);
-	parse_malloc(msh, pars);
-	parse_tokenize(msh, pars);
-	expand_dollars(msh, pars, 1);
-	
-	pexe_malloc(msh, pars);
-	
-	//parse again
-	//expand double quotes
-	//build pexe structure
-	//remove quotes
-	return (0);
 }
