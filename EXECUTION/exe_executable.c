@@ -13,6 +13,7 @@ void	find_exe(t_msh *msh, char *cmd)
 			path = cmd;
 		else
 			path = ft_strjoin("/usr/bin/", cmd);
-		execve(path, msh->pexe->option, NULL);
+		if (execve(path, msh->pexe->option, NULL) == -1)
+			//exit error cleanup to add
 	}
 }

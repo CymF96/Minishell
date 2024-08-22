@@ -28,18 +28,19 @@ void	check_builtin_cmd(t_msh *msh, char *cmd)
 
 void	check_type(t_msh *msh)
 {
-	if (msh->pexe->type == 1)
+	if (msh->pipe_nb > 0)
+		ft_pipex(msh);
+	else if (msh->pexe->type == COMMAND)
 		check_builtin_cmd(msh, msh->pexe->cmd);
 	// else if (msh->pexe->type == 3) not sure this type is usefull
 	// 	ft;
-	else if (msh->pexe->type == 4)
+	else if (msh->pexe->type == EXE)
 		find_exe(msh, msh->pexe->cmd);
-	else if (msh->pexe->type == 5)
+	else if (msh->pexe->type == EXIT_ERROR)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
-	else if (msh->pexe->type == 6)
+	else if (msh->pexe->type == RED)
 		check_redirection(msh, msh->pexe->cmd);
-	else if (msh->pexe->type == 7)
-		ft;
+
 }
 
 int	execution(t_msh *msh)
@@ -57,7 +58,8 @@ int	execution(t_msh *msh)
 		while (msh->pexe->p_index == p) // while is moving as the string will be later
 		{
 			g = msh->pexe->group_id;
-			while (msh->pexe->next != NULL && msh->pexe->group_id == g)
+			
+			while (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
 			{
 				check_type(msh);
 				msh->pexe = msh->pexe->next;

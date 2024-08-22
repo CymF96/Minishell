@@ -23,28 +23,17 @@
 # include <errno.h>
 # include <stddef.h>
 # include <linux/limits.h>
+# include <stdbool.h>
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
 
 #define FIELD_OFFSET(type, field) offsetof(type, field)
 
-typedef struct s_child //fork and pipe
+typedef struct s_pipex
 {
-	int		fd_in;
-	int		fd_out;
-	char	**commands;
-}	t_child;
-
-typedef struct s_parent //fork and pipe
-{
-	int		fd_in;
-	int		fd_out;
-	int		num_of_child;
-	char	*heredoc; // start 
-	char	*heredoc_delim; //end when same delimiter word
-	pid_t	*pids;
-	t_child	*children;
-}	t_parent;
+	int		fd[2];
+	pid_t	pid;
+}	t_pipex;
 
 typedef struct s_pexe
 {
@@ -64,20 +53,26 @@ typedef struct s_msh //master structure 'minishell'
 	//char		**parsed_args; // needed for execution
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			*fd;
+	int			pipe_nb;
+	int			exit_error;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
-	t_parent	*parent_str;
 }	t_msh;
 
 typedef enum e_type
 {
 	COMMAND,
 	STRING,
-	INFILE,
+	PATH,
+	EXE,
+	EXIT_ERROR,
+	RED,
+	PIPE,
+	FNAME,
+	SIGNAL,
 	HEREDOC,
 	OUTFILE,
 	APPEND,
-	
 };
 
 /***********TYPE_SUMMARY*********/
@@ -87,8 +82,8 @@ typedef enum e_type
 /* 4. execution					*/
 /* 5. $?						*/
 /* 6. redirection				*/
-/* 7. filename				*/
-/* 8. */
+/* 7. filename					*/
+/* 8. pipe						*/
 /* 9. signal					*/
 /* 10. */
 /********************************/
