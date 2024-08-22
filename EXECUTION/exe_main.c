@@ -51,22 +51,17 @@ int	execution(t_msh *msh)
 
 	i = 0;
 	p = 0;
+	msh->fd[0] = STDIN_FILENO;
+	msh->fd[1] = STDOUT_FILENO;
 	if (msh->pexe == NULL)
 		return (0);
+	g = msh->pexe->group_id;
 	while (msh->pexe != NULL)
 	{
-		while (msh->pexe->p_index == p) // while is moving as the string will be later
-		{
-			g = msh->pexe->group_id;
-			
-			while (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
-			{
-				check_type(msh);
-				msh->pexe = msh->pexe->next;
-			}
+		check_type(msh);
+		if (msh->pexe->next != NULL)
 			msh->pexe = msh->pexe->next;
-		}
-		p++;
+		free_pexe(msh);
 	}
 	return (0);
 }

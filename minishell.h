@@ -62,7 +62,7 @@ typedef struct s_msh //master structure 'minishell'
 typedef enum e_type
 {
 	COMMAND,
-	STRING,
+	STR,
 	PATH,
 	EXE,
 	EXIT_ERROR,
