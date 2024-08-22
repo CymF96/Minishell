@@ -7,10 +7,12 @@ void    cmd_exit(t_msh *msh)
 
 void    cmd_echo(t_msh *msh)
 {
-	if (msh->pexe->next->group_id == msh->pexe->group_id)
+	if (msh->pexe->next == NULL)
+		write(msh->fd[1], '\n', 1);
+	else if (msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		if (msh->pexe->next != NULL && msh->pexe->next->type == 1\
-			&& msh->pexe->next->cmd != NULL)
+		if (msh->pexe->next->type == STR && msh->pexe->next->cmd != NULL\
+			&& msh->pexe->next->p_index == (msh->pexe->p_index) + 1)
 		{
 			msh->pexe = msh->pexe->next;
 			if (ft_strlen(msh->pexe->option[1]) == 2\
