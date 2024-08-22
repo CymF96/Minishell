@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/20 14:43:00 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:16:26 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_quotes(char *input, int *i)
 	int		j;
 
 	fl = 0;
-	if (input[*i] != '\'')
+	if (input[*i] == '\'')
 		fl = 1;
 	j = *i + 1;
 	while (input[j] != '\0')
@@ -61,7 +61,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 
 	i = 0;
 	temp = msh->input;
-	while (msh->input[i] != '\0')
+	while (temp[i] != '\0')
 	{
 		tkn = token_malloc(msh, prs);
 		while (msh->input[i] == ' ' || msh->input[i] == '\t')

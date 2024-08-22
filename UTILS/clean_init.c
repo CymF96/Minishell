@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/19 18:22:12 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:23:24 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	clean_init_token_node(t_token *tkn)
 
 void	clean_init_parse(t_parse *pars)
 {
-	
+	pars->modified = NULL;
+	pars->here_fd = -1;
 	pars->head = NULL;
 }
 

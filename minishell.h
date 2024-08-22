@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/20 14:43:20 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/22 18:08:01 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	find_exe(t_msh *msh, char *cmd);
 int		parse_main(t_msh *msh);
 void	parse_malloc(t_msh *msh, t_parse *prs);
 t_token	*token_malloc(t_msh *msh, t_parse *prs);
-void	pexe_malloc(t_msh *msh, t_parse *prs);
+t_pexe	*pexe_malloc(t_msh *msh, t_parse *prs);
 void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
 void	expand_dollars(t_msh *msh, t_parse *pars, int flag);
