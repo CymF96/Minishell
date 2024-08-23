@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/22 20:38:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:40:26 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,7 @@ void	get_here_doc(t_msh *msh, char *delim)
 // 		i++;
 // 	}
 // }
-void	check_character(t_msh *msh, t_parse *pars, int *i)
-{
-	
-}
 
-void	create_modified(t_msh *msh, t_parse *pars)
-{
-	int	i;
-
-	i = 0;
-	while (msh->input[i] != '\0')
-	{
-		if (ft_isalnum(msh->input[i]) || msh->input[i] == ' ' || msh->input == '\t')
-			pars->modified[i]
-	}
-}
 
 int	parse_main(t_msh *msh)
 {
@@ -96,6 +81,9 @@ int	parse_main(t_msh *msh)
 		return (1);
 	parse_malloc(msh, pars);
 	create_modified(msh, pars);
+
+
+	
 	expand_dollars(msh, pars, 1);
 	parse_tokenize(msh, pars);
 	

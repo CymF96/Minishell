@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/22 20:37:36 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:06:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,21 @@ t_token	*token_malloc(t_msh *msh, t_parse *prs)
 
 void	parse_malloc(t_msh *msh, t_parse *prs)
 {
+	int	i;
+
+	i = 0;
 	prs = malloc(sizeof(t_parse));
 	if (prs == NULL)
 		exit_cleanup("Malloc Failed", msh, errno);
 	clean_init_parse(prs);
 	msh->parse = prs;
-	prs->modified = malloc(sizeof(char) * 100);
+	prs->modified = malloc(sizeof(char) * 1000);
 	if (prs->modified == NULL)
 		exit_cleanup("Malloc failed", msh, errno);
+	prs->size_modified = 1000;
+	prs->poi = malloc(sizeof(char *) * 500);
+	if (prs->poi == NULL)
+		exit_cleanup("Malloc failed", msh, errno);
+	while (i < 200)
+		prs->poi[i++] = NULL;
 }

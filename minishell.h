@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/22 18:08:01 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:16:13 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_pexe
 typedef struct s_msh //master structure 'minishell'
 {
 	char		*input;
+	int			exit_code;
 	//char		**parsed_args; // needed for execution
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			*fd;
