@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _GNU_SOURCE
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -27,7 +28,12 @@
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
 
-#define FIELD_OFFSET(type, field) offsetof(type, field)
+# define FIELD_OFFSET(type, field) offsetof(type, field)
+# define SIGINT_FLAG 0x01	// 0001
+# define SIGQUIT_FLAG 0x02	// 0010
+# define SIGEOF_FLAG 0x04	// 0100
+
+volatile sig_atomic_t signal_flags = 0;
 
 typedef struct s_pipex
 {

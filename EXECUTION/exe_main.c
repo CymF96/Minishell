@@ -32,15 +32,12 @@ void	check_type(t_msh *msh)
 		ft_pipex(msh);
 	else if (msh->pexe->type == COMMAND)
 		check_builtin_cmd(msh, msh->pexe->cmd);
-	// else if (msh->pexe->type == 3) not sure this type is usefull
-	// 	ft;
 	else if (msh->pexe->type == EXE)
 		find_exe(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == EXIT_ERROR)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == RED)
 		check_redirection(msh, msh->pexe->cmd);
-
 }
 
 int	execution(t_msh *msh)
@@ -65,12 +62,3 @@ int	execution(t_msh *msh)
 	}
 	return (0);
 }
-//Receiving the parsing structure and decrypt it to send execution in the correct function
-
-//1. Reading parsing structure
-
-//2. Priority of execution 
-
-//3. forking by actions 
-
-
