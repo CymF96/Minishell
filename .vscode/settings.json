@@ -5,7 +5,8 @@
 		"errno.h": "c",
 		"stddef.h": "c",
 		"compare": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"libft.h": "c"
 	},
 	"makefile.configureOnOpen": true
 }

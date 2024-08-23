@@ -77,6 +77,6 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag)
 		free(msh->input);
 	free_parse(msh);
 	free_pexe(msh);
-	rl_clear_history();
+	//rl_clear_history();
 	exit(flag);
 }
