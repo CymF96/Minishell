@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   old_parse_tokenize.c                               :+:      :+:    :+:   */
+/*   parse_tokenize.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 10:42:27 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:01:59 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	copy_text(t_msh *msh, t_token *tkn)
+static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 {
 	int	i;
 	int	j;
@@ -24,40 +24,73 @@ static void	copy_text(t_msh *msh, t_token *tkn)
 		exit_cleanup("Malloc failed", msh, errno);
 	while (i <= tkn->end_pos)
 	{
-		tkn->token[j] = msh->input[i];
+		tkn->token[j] = pars->modified[i];
 		i++;
 		j++;
 	}
 	tkn->token[j] = '\0';
 }
 
-
+void	quote_token(char *temp, int *i)
+{
+	if (check_quote_ending(temp, *i))
+	{
+		if (temp[*i] == '\'')
+		{
+			(*i)++;
+			while (temp[*i] != '\'')
+				(*i)++;
+		}
+		else if (temp[*i] == '\"')
+		{
+			(*i)++;
+			while (temp[*i] != '\"')
+				(*i)++;
+		}
+		(*i)++;
+	}
+	else
+		(*i)++;
+}
 
 void	parse_tokenize(t_msh *msh, t_parse *prs)
 {
 	int		i;
+	int		j;
 	t_token	*tkn;
 	char	*temp;
 
 	i = 0;
-	temp = msh->input;
+	j = 0;
+	temp = prs->modified;
 	while (temp[i] != '\0')
 	{
 		tkn = token_malloc(msh, prs);
-		while (msh->input[i] == ' ' || msh->input[i] == '\t')
+		while (prs->modified[i] == ' ' || prs->modified[i] == '\t')
 			i++;
 		tkn->start_pos = i;
 		while (temp[i] != '\0')
 		{
 			if (temp[i] == '\'' || temp[i] == '\"')
-				handle_quotes(msh->input, &i);
+				quote_token(prs->modified, &i);
+			if (i + 1 == prs->poi[j][1])
+			{
+				i++;
+				break;
+			}
+			if (i == prs->poi[j][1])
+			{
+				i++;
+				j++;
+				break;
+			}
 			if (temp[i] == ' ' || temp[i] == '\t')
 				break ;
 			i++;
 		}
-		tkn->end_pos = i - 1;
+	tkn->end_pos = i - 1;
 		add_node((void **)&prs->head, (void *)tkn, \
 			FIELD_OFFSET(t_token, next), FIELD_OFFSET(t_token, prev));
-		copy_text(msh, tkn);
+		copy_text(msh, prs, tkn);
 	}
 }

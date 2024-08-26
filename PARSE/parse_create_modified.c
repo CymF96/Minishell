@@ -6,12 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 17:01:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:18:56 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// Expanding $'s. Specifically checking if it is ? or a space/tab.
 void	expand_dollars(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	int		k;
@@ -36,6 +37,7 @@ void	expand_dollars(t_msh *msh, t_parse *pars, int *i, int *j)
 	}
 }
 
+// If single quote, prints all as char. In double quote checks for $ and expands
 void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[(*i) - 1] == '\'')
@@ -56,6 +58,7 @@ void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
 	pars->modified[(*j)++] = msh->input[(*i)++];
 }
 
+// Checks if quote has closing end. If none found, it's treated as char
 int	check_quote_ending(char *input, int i)
 {
 	int		fl;
@@ -76,6 +79,7 @@ int	check_quote_ending(char *input, int i)
 	return (-1);
 }
 
+// Checks for special characters and direct them to their own functions
 void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[*i] == '$')
@@ -94,6 +98,7 @@ void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 		pars->modified[(*j)++] = msh->input[(*i)++];
 }
 
+// Checks for $, ' and ". Otherwise just copy everything to modified char *
 void	create_modified(t_msh *msh, t_parse *pars)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 15:57:57 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 12:02:30 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	get_here_doc(t_msh *msh, char *delim)
 // 	}
 // }
 
-
+// Main function of parse section. calls other major functions to parse input
 int	parse_main(t_msh *msh)
 {
 	t_parse	*pars;
@@ -82,8 +82,6 @@ int	parse_main(t_msh *msh)
 	parse_malloc(msh, pars);
 	create_modified(msh, pars);
 	parse_tokenize(msh, pars);
-	
-	
 	
 	return (0);
 }
