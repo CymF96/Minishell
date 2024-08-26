@@ -12,10 +12,16 @@
 
 #include "../minishell.h"
 
-void	input_validate(int ac, char **envp)
+int	input_validate(int ac, char **envp)
 {
 	if (ac != 1)
+	{
 		exit_cleanup("Too many clowns for this party", NULL, errno);
+		return (-1);
+	}
 	if (envp == NULL || *envp == NULL)
+	{
 		exit_cleanup("Where is my ENVP!", NULL, errno);
+		return (-1);
+	}
 }

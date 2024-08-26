@@ -15,7 +15,7 @@ int	node_strlen(t_pexe *node)
 	return (len);
 }
 
-int	append_args(t_msh *msh)
+int	append_args(t_msh *msh) // to check in terms of malloc and free temp_option pointers
 {
 	int		i;
 	int 	len_g;
@@ -64,4 +64,6 @@ void	find_exe(t_msh *msh, char *cmd)
 			//exit error cleanup to add
 		}
 	}
+	while (msh->pexe->group_id != msh->pexe->group_id++)
+		msh->pexe = msh->pexe->next;	
 }
