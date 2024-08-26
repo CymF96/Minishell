@@ -6,12 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 15:31:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 11:22:00 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// finds what the variable is after $ until it sees space, tab or null
 static char	*find_var(t_msh *msh, int *i)
 {
 	int		k;
@@ -32,6 +33,8 @@ static char	*find_var(t_msh *msh, int *i)
 	ft_strlcpy(temp, &msh->input[k], *i - k + 2);
 	return (temp);
 }
+
+// Goes through env values. If match is found, returns a malloced memory addr
 char	*expand_env(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	int		k;
