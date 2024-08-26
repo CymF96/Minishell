@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 12:16:13 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:14:44 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct s_pexe
 	char			**option;
 	int				group_id;
 	int				p_index;
-	int				*fd;
 	struct s_pexe	*prev;
 	struct s_pexe	*next;
 }	t_pexe;
@@ -75,12 +74,14 @@ typedef enum e_type
 	EXIT_ERROR,
 	RED,
 	PIPE,
+	WILDCARD,
+	INFILE,
 	FNAME,
 	SIGNAL,
 	HEREDOC,
 	OUTFILE,
 	APPEND,
-};
+}	t_type;
 
 /***********TYPE_SUMMARY*********/
 /* 1. builtin command			*/
@@ -123,9 +124,16 @@ t_token	*token_malloc(t_msh *msh, t_parse *prs);
 t_pexe	*pexe_malloc(t_msh *msh, t_parse *prs);
 void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
-void	expand_dollars(t_msh *msh, t_parse *pars, int flag);
-void	handle_quotes(char *input, int *i);
-
+void	create_modified(t_msh *msh, t_parse *pars);
+int		check_quote_ending(char *input, int i);
+char	*expand_env(t_msh *msh, t_parse *pars, int *i, int *j);
+void	quote_token(char *temp, int *i);
+void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j);
+void	handle_pipes(t_msh *msh, t_parse *pars, int *i, int *j);
+void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j);
+void	handle_paran(t_msh *msh, t_parse *pars, int *i, int *j);
+void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j);
+void	make_pexe(t_msh *msh, t_parse *pars);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);

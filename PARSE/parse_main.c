@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 12:02:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:04:11 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ int	parse_main(t_msh *msh)
 	parse_malloc(msh, pars);
 	create_modified(msh, pars);
 	parse_tokenize(msh, pars);
-	
+	make_pexe(msh, pars);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 10:12:15 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:35:05 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	clean_init_token_node(t_token *tkn)
 	tkn->token = NULL;
 	tkn->start_pos = -1;
 	tkn->end_pos = -1;
+	tkn->type = -1;
 	tkn->prev = NULL;
 	tkn->next = NULL;
 }
@@ -56,5 +57,6 @@ void	clean_initialize(t_msh *msh)
 	
 	msh->input = NULL;
 	msh->parse = NULL;
-	msh->parent_str = NULL;
+	msh->pipe_nb = 0;
+	// msh->parent_str = NULL;
 }

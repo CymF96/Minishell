@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 11:22:00 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:28:26 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ static char	*find_var(t_msh *msh, int *i)
 		(*i)++;
 		len++;
 	}
-	temp = malloc(sizeof(char) * (*i - k + 2));
+	temp = malloc(sizeof(char) * (*i - k + 3));
 	if (temp == NULL)
 		exit_cleanup("Malloc failed", msh, errno);
 	ft_strlcpy(temp, &msh->input[k], *i - k + 2);
+	temp[*i - k + 1] = '=';
+	temp[*i - k + 2] = '\0';
 	return (temp);
 }
 

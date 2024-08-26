@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 11:18:56 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 16:40:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	expand_dollars(t_msh *msh, t_parse *pars, int *i, int *j)
 }
 
 // If single quote, prints all as char. In double quote checks for $ and expands
-void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
+static void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[(*i) - 1] == '\'')
 	{
@@ -80,7 +80,7 @@ int	check_quote_ending(char *input, int i)
 }
 
 // Checks for special characters and direct them to their own functions
-void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
+static void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[*i] == '$')
 		expand_dollars(msh, pars, i, j);
