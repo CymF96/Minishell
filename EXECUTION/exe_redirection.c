@@ -24,7 +24,7 @@ void	open_file_input(t_msh *msh)
 	if (msh->pexe->next != NULL\
 		&& msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		if (msh->pexe->next->type == 7 && msh->pexe->next->cmd != NULL)
+		if (msh->pexe->next->type == FILENAME && msh->pexe->next->cmd != NULL)
 		{
 			msh->pexe = msh->pexe->next;
 			msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 664);
@@ -78,18 +78,4 @@ void	red_right(t_msh *msh)
 		msh->fd[1] = 1;
 		dup2(save_sdtout, STDOUT_FILENO);
 	}
-}
-
-void	check_redirection(t_msh *msh, char *cmd)
-{
-	if (ft_strlen(cmd) == 1 && !ft_strncmp("<", cmd, 1))
-		red_left(msh);
-	else if (ft_strlen(cmd) == 1 && !ft_strncmp(">", cmd, 1))
-		red_right(msh);
-	// else if (ft_strlen(cmd) == 2 && !ft_strncmp("<<", cmd, 2))
-	// 	double_red_left(msh);
-	else if (ft_strlen(cmd) == 2 && !ft_strncmp(">>", cmd, 2))
-		double_red_right(msh);
-	if (msh->pexe->next != NULL)
-		msh->pexe = msh->pexe->next;
 }

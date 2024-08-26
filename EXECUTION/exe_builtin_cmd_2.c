@@ -1,72 +1,23 @@
 #include "../minishell.h"
 
-void	cmd_env(t_msh *msh) // to test
-{
-	int	i;
-
-	i = 0; //calling the array that keep env var in main
-	while (msh->envp[i] != NULL)
-		ft_putstr_fd(msh->envp[i++], msh->fd[1]);
-}
-
-void	adding_var(t_msh *msh, char *new_var)
-{
-	int		i;
-	int		envp_len;
-	char	**temp_envp;
-
-	envp_len = 0;
-	while (msh->envp[envp_len] != NULL) // getting the number of line in envp 
-			envp_len++;
-	temp_envp = malloc(sizeof(char *) * (envp_len + 2)); // malloc new structure + 2 for new line to add and NULL
-	if (temp_envp == NULL)
-		return ;
-	i = 0;
-	while (i < envp_len) //copying old array to new one
-	{
-		temp_envp[i] = msh->envp[i];
-		i++;
-	}
-	if (msh->envp != NULL) //free old array pointer
-		free(msh->envp);
-	msh->envp = temp_envp; //copying temp array ptr to envp on
-	msh->envp[i] = ft_strdup(new_var); //adding the line at the end with dup malloc
-	if (msh->envp[i] == NULL) 
-		ft_printf ("Error adding variable\n");
-}
-
-void	updating_var(t_msh *msh, char *var_to_update, int i)
-{
-	if (!ft_strncmp(msh->envp[i], msh->pexe->cmd[i], ft_strlen(msh->pexe->cmd[i])))
-		ft_memmove(var_to_update[i],msh->pexe->cmd[i], ft_strlen(msh->pexe->cmd[i]));
-}
-
 void	cmd_export(t_msh *msh) //adding variable to environmnet variable array
 {
 	char	*var_name;
 	int		j;
 
 	j = 0;
-	if (msh->pexe->next->group_id == msh->pexe->group_id)
+	if (msh->pexe->next != NULL\
+		&& msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		if (msh->pexe->next != NULL && msh->pexe->next->type == 2\
-			&& msh->pexe->next->cmd != NULL)
+		if (msh->pexe->next->p_index == 1 && msh->pexe->next->cmd != NULL)
 		{
 			msh->pexe = msh->pexe->next;
-			while (msh->pexe->cmd[j] != '=') // save the variable name to var_name str by cpy char until finding '='
-			{
-				var_name[j] = msh->pexe->cmd[j];
-				j++;
-			}
-			j = 0;
-			while (msh->envp[j] != NULL) //looping through evp to find the var_name 
-			{
-				if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name))) //if already existing --> return 
-					updating_var(msh, msh->envp[j], j);
-			}
-			adding_var(msh, var_name);
+			if (updating_var(msh->envp, var_name, msh->pexe->cmd[j]) == 0)
+				adding_var(msh, msh->pexe->cmd, msh->envp);
 		}
 	}
+	while (msh->pexe->group_id != msh->pexe->group_id++)
+		msh->pexe = msh->pexe->next;
 }
 
 void	remove_var(t_msh *msh, char	*var_name)
@@ -96,10 +47,10 @@ void	cmd_unset(t_msh *msh, int i)
 	int		j;
 
 	j = 0;
-	if (msh->pexe->next->group_id == msh->pexe->group_id)
+	if (msh->pexe->next != NULL\
+		&& msh->pexe->next->group_id == msh->pexe->group_id)
 	{
-		if (msh->pexe->next != NULL && msh->pexe->next->type == 2\
-			&& msh->pexe->next->cmd != NULL)
+		if (msh->pexe->next->cmd != NULL)
 		{
 			msh->pexe = msh->pexe->next;
 			while (msh->pexe->cmd[j] != '=') // save the variable name to var_name str by cpy char until finding '='
@@ -110,4 +61,6 @@ void	cmd_unset(t_msh *msh, int i)
 			remove_var(msh, var_name);
 		}
 	}
+	while (msh->pexe->group_id != msh->pexe->group_id++)
+		msh->pexe = msh->pexe->next;
 }

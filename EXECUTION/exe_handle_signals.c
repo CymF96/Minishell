@@ -29,7 +29,7 @@ void	signals_handler(int sig)
 		signal_flags |= SIGEOF_FLAG;
 }
 
-void	signal_handler_init()
+void	signal_handler_init(t_msh *msh)
 {
 	struct sigaction	sa;
 
@@ -40,8 +40,7 @@ void	signal_handler_init()
 		|| sigaction(EOF, &sa, NULL) == -1
 		|| sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
-		ft_printf("Error handling the signal\n");
-		//add exit error code
-		exit(EXIT_FAILURE);
+		cleanup(msh);
+		exit_message("Error handling the signal\n", 6);
 	} 
 }

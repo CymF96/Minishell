@@ -1,10 +1,12 @@
 #include "../minishell.h"
 
-// void	check_exit_status_cmd(t_msh *msh, char *cmd)
-// {
-// 	if (ft_strlen(cmd) == 2 && !ft_strncmp("$?", cmd, 2))
-// 		cmd_exit_status(msh);
-// }
+void	check_exit_status_cmd(t_msh *msh, char *cmd)
+{
+	if (ft_strlen(cmd) == 2 && !ft_strncmp("$?", cmd, 2))
+	{
+		ft_printf("%d\n", msh->exit_error);
+	}
+}
 
 void	check_builtin_cmd(t_msh *msh, char *cmd)
 {
@@ -36,8 +38,14 @@ void	check_type(t_msh *msh)
 		find_exe(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == EXIT_ERROR)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
-	else if (msh->pexe->type == RED)
-		check_redirection(msh, msh->pexe->cmd);
+	else if (msh->pexe->type == INFILE)
+		red_left(msh); // pexe->cmd has the filename
+	else if (msh->pexe->type == OUTFILE)
+		red_right(msh); // pexe->cmd has the filename
+	else if (msh->pexe->type == APPEND)
+		double_red_right(msh); //pexe->cmd is filename
+	else if (msh->pexe->type == HEREDOC)
+		//function to pass the filename in option
 }
 
 int	execution(t_msh *msh)
@@ -48,17 +56,16 @@ int	execution(t_msh *msh)
 
 	i = 0;
 	p = 0;
-	msh->fd[0] = STDIN_FILENO;
-	msh->fd[1] = STDOUT_FILENO;
 	if (msh->pexe == NULL)
 		return (0);
-	g = msh->pexe->group_id;
-	while (msh->pexe != NULL)
-	{
-		check_type(msh);
-		if (msh->pexe->next != NULL)
-			msh->pexe = msh->pexe->next;
-		free_pexe(msh);
-	}
+	if (msh->pexe->group_id != 0)
+		msh->pexe = msh->pexe->next;
+	// while (msh->pexe != NULL && g = msh->pexe->group_id)
+	// {
+	check_type(msh);
+		// if (msh->pexe->next != NULL) to check!!!!
+		// 	msh->pexe = msh->pexe->next;
+		// free_pexe(msh);
+	// }
 	return (0);
 }
