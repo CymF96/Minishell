@@ -1,28 +1,35 @@
 #include "../minishell.h"
 
-void	sigint(t_msh *msh) //!!!! Buffer has to be discard as well
+void	sigint(t_msh *msh)
 {
 	ft_printf("\n");
-	free_pexe(msh);
-	free_parse(msh);
+	cleanup(msh);
+	msh = malloc(sizeof(t_msh));
+	if (msh == NULL)
+		exit_message("Allocation failed\n", 4);
 	minishell(msh);
 }
 
 void	sigeof(t_msh *msh)
 {
-	if (msh->input == NULL)
-		exit_cleanup("", msh, errno);
-	else if (msh->input != NULL)//prompt in work)
-		return ;
-	else if (msh->pexe != NULL)//prompt in work but time running is too long)
+	if (msh->input == NULL) // nothing in prompt
 	{
-		free_pexe(msh);
-		free_parse(msh);
+		cleanup(msh);
+		exit_message("SIGEOF\n", 20);
+	}
+	else if (msh->input != NULL)//prompt in work but not validated by user
+		return ;
+	else if (msh->pexe != NULL)//prompt in work and pexe initialized
+	{
+		cleanup(msh);
+		msh = malloc(sizeof(t_msh));
+		if (msh == NULL)
+			exit_message("Allocation failed\n", 4);
 		minishell(msh);
 	}
 }
 
-void	sigquit(t_msh *msh) //sigeof should never do something
+void	sigquit(t_msh *msh) //sigquit should never do something
 {
 	return ;
 }
