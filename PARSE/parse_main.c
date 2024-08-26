@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 12:40:26 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:57:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,6 @@ int	parse_main(t_msh *msh)
 		return (1);
 	parse_malloc(msh, pars);
 	create_modified(msh, pars);
-
-
-	
-	expand_dollars(msh, pars, 1);
 	parse_tokenize(msh, pars);
 	
 	

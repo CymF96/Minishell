@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 11:06:15 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:59:18 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ void	parse_malloc(t_msh *msh, t_parse *prs)
 	if (prs->modified == NULL)
 		exit_cleanup("Malloc failed", msh, errno);
 	prs->size_modified = 1000;
-	prs->poi = malloc(sizeof(char *) * 500);
+	prs->poi = malloc(sizeof(int *) * 100);
 	if (prs->poi == NULL)
 		exit_cleanup("Malloc failed", msh, errno);
-	while (i < 200)
+	while (i < 100)
 		prs->poi[i++] = NULL;
 }

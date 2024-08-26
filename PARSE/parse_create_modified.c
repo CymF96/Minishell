@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 12:41:03 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:01:40 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,11 @@ void	expand_dollars(t_msh *msh, t_parse *pars, int *i, int *j)
 		free(temp);
 	}
 	else
-		expand_env(msh, pars, i, j);
+	{
+		temp = expand_env(msh, pars, i, j);
+		while (temp != NULL && (temp[k] != '\n' || temp [k] != '\0'))
+			pars->modified[(*j)++] = temp[k++];
+	}
 }
 
 void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
@@ -76,7 +80,7 @@ void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[*i] == '$')
 		expand_dollars(msh, pars, i, j);
-	else if (msh->input[*i] == '<' || msh->input[(*i)] != '>')
+	else if (msh->input[*i] == '<' || msh->input[(*i)] == '>')
 		handle_redir(msh, pars, i, j);
 	else if (msh->input[*i] == '|' && msh->input[(*i) + 1] != '|')
 		handle_pipes(msh, pars, i, j);
@@ -113,4 +117,5 @@ void	create_modified(t_msh *msh, t_parse *pars)
 		else
 			check_character(msh, pars, &i, &j);
 	}
+	pars->modified[j] = '\0';
 }
