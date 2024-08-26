@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/19 20:10:36 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:59:18 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,15 @@ void	add_node(void **head, void *node, size_t next_off, size_t prev_off)
 	}
 }
 
-void	pexe_malloc(t_msh *msh, t_parse *prs)
+t_pexe	*pexe_malloc(t_msh *msh, t_parse *prs)
 {
-	msh->pexe = malloc(sizeof(t_pexe));
-	if (msh->pexe == NULL)
+	t_pexe	*temp;
+	
+	temp = malloc(sizeof(t_pexe));
+	if (temp == NULL)
 		exit_cleanup("Malloc Failed", msh, errno);
 	clean_init_pexe_node(msh->pexe);
+	return (temp);
 }
 
 t_token	*token_malloc(t_msh *msh, t_parse *prs)
@@ -59,9 +62,21 @@ t_token	*token_malloc(t_msh *msh, t_parse *prs)
 
 void	parse_malloc(t_msh *msh, t_parse *prs)
 {
+	int	i;
+
+	i = 0;
 	prs = malloc(sizeof(t_parse));
 	if (prs == NULL)
 		exit_cleanup("Malloc Failed", msh, errno);
 	clean_init_parse(prs);
 	msh->parse = prs;
+	prs->modified = malloc(sizeof(char) * 1000);
+	if (prs->modified == NULL)
+		exit_cleanup("Malloc failed", msh, errno);
+	prs->size_modified = 1000;
+	prs->poi = malloc(sizeof(int *) * 100);
+	if (prs->poi == NULL)
+		exit_cleanup("Malloc failed", msh, errno);
+	while (i < 100)
+		prs->poi[i++] = NULL;
 }
