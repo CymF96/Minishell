@@ -1,0 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/08/19 13:53:52 by mcoskune         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+// #include "./PARSE/parse.h"
+
+void	minishell(t_msh *msh, int ac, char **av, char **envp)
+{
+	//move structure in this function instead of main
+	input_validate(ac, envp);
+	clean_initialize(&msh);
+	while (1)
+	{
+		signal_input();
+		msh->input = readline("Heart of Gold>> ");
+		if (msh->input == NULL)
+			exit_cleanup("Problem in user input", msh, errno);
+		add_history(msh->input);
+		check_if_exit(*msh);
+		if (parse_main(msh) == 0)
+			execution(msh);
+		free(msh->input);
+		msh->input = NULL;
+	}
+}
+int main(int ac, char **av, char **envp)
+{
+	t_msh	msh;
+
+	(void)av;
+	signal_handler_init();
+	minishell(&msh, ac, av, envp); //correct the pointer if needed
+}

@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _GNU_SOURCE
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,28 +24,22 @@
 # include <errno.h>
 # include <stddef.h>
 # include <linux/limits.h>
+# include <stdbool.h>
 # include "./LIBFT/libft.h"
 # include "./PARSE/parse.h"
 
-#define FIELD_OFFSET(type, field) offsetof(type, field)
+# define FIELD_OFFSET(type, field) offsetof(type, field)
+# define SIGINT_FLAG 0x01	// 0001
+# define SIGQUIT_FLAG 0x02	// 0010
+# define SIGEOF_FLAG 0x04	// 0100
 
-typedef struct s_child //fork and pipe
-{
-	int		fd_in;
-	int		fd_out;
-	char	**commands;
-}	t_child;
+volatile sig_atomic_t signal_flags = 0;
 
-typedef struct s_parent //fork and pipe
+typedef struct s_pipex
 {
-	int		fd_in;
-	int		fd_out;
-	int		num_of_child;
-	char	*heredoc; // start 
-	char	*heredoc_delim; //end when same delimiter word
-	pid_t	*pids;
-	t_child	*children;
-}	t_parent;
+	int		fd[2];
+	pid_t	pid;
+}	t_pipex;
 
 typedef struct s_pexe
 {
@@ -65,20 +60,26 @@ typedef struct s_msh //master structure 'minishell'
 	//char		**parsed_args; // needed for execution
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			*fd;
+	int			pipe_nb;
+	int			exit_error;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
-	t_parent	*parent_str;
 }	t_msh;
 
 typedef enum e_type
 {
 	COMMAND,
-	STRING,
-	INFILE,
+	STR,
+	PATH,
+	EXE,
+	EXIT_ERROR,
+	RED,
+	PIPE,
+	FNAME,
+	SIGNAL,
 	HEREDOC,
 	OUTFILE,
 	APPEND,
-	
 };
 
 /***********TYPE_SUMMARY*********/
@@ -88,8 +89,8 @@ typedef enum e_type
 /* 4. execution					*/
 /* 5. $?						*/
 /* 6. redirection				*/
-/* 7. filename				*/
-/* 8. */
+/* 7. filename					*/
+/* 8. pipe						*/
 /* 9. signal					*/
 /* 10. */
 /********************************/
