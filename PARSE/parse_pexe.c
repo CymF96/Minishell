@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 19:50:18 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:34:49 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,67 @@ static t_type	check_special(t_token *tkn, t_pexe *temp)
 		return (PIPE);
 	else if (tkn->type == W_C)
 		return (WILDCARD);
+	else
+		return (-1);
 }
 
-static int	fill_pexe(t_pexe *pexe, t_token *token, int *count)
+static void handle_files(t_pexe *ite, int *prio)
 {
-	if (*count == 0)
+	t_pexe	*temp;
+
+	temp = ite;
+	while (temp != NULL)
 	{
-		pexe->type = EXE;
-		pexe->cmd = token->token;
-		pexe->option[0] = token->token;
+		if (temp->muk_note == INFILE || temp->muk_note == HEREDOC || \
+			temp->muk_note == OUTFILE || temp->muk_note == APPEND)
+		{
+			temp->type = temp->muk_note;
+			temp->cmd = temp->temp;
+			temp->p_index = *prio;
+			(*prio)++;
+		}
 	}
-	else if (pexe->type != -1)
+}
+
+static int	fill_pexe(t_pexe *pexe, t_token *token)
+{
+	int	prio;
+	int	group;
+	t_pexe	*ite;
+	int		flag;
+
+	prio = 0;
+	group = 0;
+	ite = pexe;
+	flag = 0;
+	handle_files(ite, &prio);
+	while (ite != NULL)
 	{
-		/* code */
+		if (ite->type == -1 && ite->muk_note == -1)
+		{
+			if (flag == 0)
+			{
+				ite->type = EXE;
+				flag++;
+				ite->group_id = group;
+				
+			}
+			else if(flag == 1)
+			{
+				ite->type = STRING;
+				ite->group_id = group;
+				ite->p_index = prio++;
+			}
+		}
+		else if (ite->muk_note == PIPE)
+		{
+			group++;
+			ite->type = EXE;
+			ite->group_id = group;
+			ite->p_index = prio++;
+		}
+		ite = ite->next;
 	}
-	
 }
 
 // Iterates through the token list and creates the pexe structure
@@ -48,27 +94,19 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 {
 	t_pexe	*temp;
 	t_token	*list;
-	int		count;
 
 	list = pars->head;
-	count = 0;
 	while (list != NULL)
 	{
+		
 		temp = pexe_malloc(msh, pars);
-		temp->type = check_special(list, temp);
-		if (temp->type == HEREDOC || temp->type == INFILE || \
-				temp->type == OUTFILE || temp->type == APPEND)
-		{
+		temp->muk_note = check_special(list, temp);
+		if (temp->muk_note != -1)
 			list = list->next;
-			temp->cmd = list->token;
-		}
-		else
-		{
-			fill_pexe(temp, list, &count);
-			count++;
-		}
+		temp->temp = list->token;
 		add_node((void **)&msh->pexe, (void *)temp, \
 				FIELD_OFFSET(t_pexe, next), FIELD_OFFSET(t_pexe, prev));
 		list = list->next;
 	}
+	fill_pexe(msh->pexe, pars->head);
 }

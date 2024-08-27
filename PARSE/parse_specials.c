@@ -6,12 +6,14 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 17:51:27 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 11:25:11 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// Marks point-of-interests in a separate list to avoid confusion between text
+// and actual special symbols
 static void	input_to_poi(t_msh *msh, t_parse *pars, int symbol, int j)
 {
 	int	i;

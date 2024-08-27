@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 19:50:34 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 12:16:25 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_pexe
 	char			**option;
 	int				group_id;
 	int				p_index;
+	t_type			muk_note;
+	char			*temp;
 	struct s_pexe	*prev;
 	struct s_pexe	*next;
 }	t_pexe;
