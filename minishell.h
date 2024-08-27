@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 12:16:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:50:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <errno.h>
 # include <stddef.h>
+# include <dirent.h>
 # include <linux/limits.h>
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
@@ -137,6 +138,7 @@ void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j);
 void	handle_paran(t_msh *msh, t_parse *pars, int *i, int *j);
 void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j);
 void	make_pexe(t_msh *msh, t_parse *pars);
+void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);
