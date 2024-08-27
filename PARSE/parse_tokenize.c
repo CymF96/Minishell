@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 12:01:59 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:32:52 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 			}
 			if (i == prs->poi[j][1])
 			{
+				tkn->type = prs->poi[j][0];
 				i++;
 				j++;
 				break;
@@ -88,7 +89,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 				break ;
 			i++;
 		}
-	tkn->end_pos = i - 1;
+		tkn->end_pos = i - 1;
 		add_node((void **)&prs->head, (void *)tkn, \
 			FIELD_OFFSET(t_token, next), FIELD_OFFSET(t_token, prev));
 		copy_text(msh, prs, tkn);

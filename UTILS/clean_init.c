@@ -6,7 +6,11 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2024/08/26 17:35:05 by mcoskune         ###   ########.fr       */
+=======
 /*   Updated: 2024/08/19 18:22:12 by mcoskune         ###   ########.fr       */
+>>>>>>> bc775e16d2e769939c25b04bf7d5784a4a751299
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +40,7 @@ void	clean_init_token_node(t_token *tkn)
 	tkn->token = NULL;
 	tkn->start_pos = -1;
 	tkn->end_pos = -1;
+	tkn->type = -1;
 	tkn->prev = NULL;
 	tkn->next = NULL;
 }
@@ -62,6 +67,11 @@ void	clean_msh_init(t_msh *msh)
 	msh->flag = -1;
 	msh->exit_error = -1;
 	msh->parse = NULL;
+<<<<<<< HEAD
+	msh->pipe_nb = 0;
+	// msh->parent_str = NULL;
+}
+=======
 	msh->pexe = NULL; 
 	msh->main_child = -1;	
 }
@@ -73,3 +83,4 @@ void	clean_msh_init(t_msh *msh)
 // 	msh->input = NULL; 
 // 	msh->parse = NULL;
 // }
+>>>>>>> bc775e16d2e769939c25b04bf7d5784a4a751299

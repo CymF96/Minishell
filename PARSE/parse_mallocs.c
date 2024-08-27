@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 15:59:18 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 19:49:56 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,18 @@ void	add_node(void **head, void *node, size_t next_off, size_t prev_off)
 t_pexe	*pexe_malloc(t_msh *msh, t_parse *prs)
 {
 	t_pexe	*temp;
-	
+	int		i;
+
+	i = 0;
 	temp = malloc(sizeof(t_pexe));
 	if (temp == NULL)
 		exit_cleanup("Malloc Failed", msh, errno);
 	clean_init_pexe_node(msh->pexe);
+	temp->option = malloc(sizeof(char *) * 4);
+	if (temp->option == NULL)
+		exit_cleanup("Malloc failed", msh, errno);
+	while (i < 4)
+		temp->option[i] == NULL;
 	return (temp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/23 17:01:02 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 17:51:27 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j)
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, HEREDOC, (*j) - 2);
+		input_to_poi(msh, pars, HEREDC, (*j) - 2);
 	}
 	else if (msh->input[*i] == '>' && msh->input[*i + 1] != '>')
 	{
@@ -63,7 +63,7 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j)
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, APPEND, (*j) - 2);
+		input_to_poi(msh, pars, APPND, (*j) - 2);
 	}
 }
 
@@ -72,8 +72,9 @@ void	handle_pipes(t_msh *msh, t_parse *pars, int *i, int *j)
 	if (msh->input[*i] == '|' && msh->input[*i + 1] != '|')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, PIPE, (*j) - 1);
+		input_to_poi(msh, pars, PIP, (*j) - 1);
 	}
+	msh->pipe_nb++;
 }
 
 void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j)

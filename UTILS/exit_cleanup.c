@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/20 13:41:34 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:02:02 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	free_pexe(t_msh *msh)
 	{
 		temp = msh->pexe->next;
 		free_mallocs(msh->pexe->cmd, msh->pexe->option);
-		free_mallocs(msh->pexe->fd, NULL);
 		free(msh->pexe);
 		msh->pexe = temp;
 	}
@@ -84,6 +83,16 @@ void	free_parse(t_msh *msh)
 
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
+<<<<<<< HEAD
+	if (msg != NULL)
+		printf("Program Termination Reason - %s\n", msg);
+	if (msh->input != NULL)
+		free(msh->input);
+	free_parse(msh);
+	free_pexe(msh);
+	//rl_clear_history();
+	if (check == -1)
+=======
 	if (msh->parse != NULL)
 		free_parse(msh);
 	if (msh->pexe != NULL)
@@ -94,5 +103,6 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 	if (msg != NULL)
 		printf("Program Termination Reason - %s\n", msg);
 	if (check == 1)
+>>>>>>> bc775e16d2e769939c25b04bf7d5784a4a751299
 		exit(flag);
 }
