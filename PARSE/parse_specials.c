@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 11:25:11 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:11:56 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j)
 {
 	if (msh->input[*i] == '*')
 	{
-		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, W_C, (*j) - 1);
+		handle_wild_character(msh, pars, i, j);
 	}
 }

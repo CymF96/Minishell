@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 16:40:04 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:19:35 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	expand_dollars(t_msh *msh, t_parse *pars, int *i, int *j)
 		pars->modified[(*j)++] = '$';
 	else if (msh->input[*i] == '?')
 	{
-		temp = ft_itoa(msh->exit_code);
+		temp = ft_itoa(msh->exit_error);
 		while (temp[k] != '\0')
 			pars->modified[(*j)++] = temp[k++];
 		free(temp);
