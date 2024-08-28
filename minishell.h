@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 17:50:33 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:51:25 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,17 @@ void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
 void	create_modified(t_msh *msh, t_parse *pars);
 int		check_quote_ending(char *input, int i);
-char	*expand_env(t_msh *msh, t_parse *pars, int *i, int *j);
+char	*expand_env(t_msh *msh, int *i, int *j);
 void	quote_token(char *temp, int *i);
 void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j);
 void	handle_pipes(t_msh *msh, t_parse *pars, int *i, int *j);
 void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j);
 void	handle_paran(t_msh *msh, t_parse *pars, int *i, int *j);
+void	handle_heredoc(t_msh *msh, t_parse *pars, int *i , int *j);
 void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j);
 void	make_pexe(t_msh *msh, t_parse *pars);
 void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j);
+char	*remove_quotes(char *str, int len);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag);

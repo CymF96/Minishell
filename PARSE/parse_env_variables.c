@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 16:28:26 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:20:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*find_var(t_msh *msh, int *i)
 }
 
 // Goes through env values. If match is found, returns a malloced memory addr
-char	*expand_env(t_msh *msh, t_parse *pars, int *i, int *j)
+char	*expand_env(t_msh *msh, int *i, int *j)
 {
 	int		k;
 	int		len;
