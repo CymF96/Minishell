@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 17:11:56 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 16:02:55 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static void	input_to_poi(t_msh *msh, t_parse *pars, int symbol, int j)
 	int	i;
 	int	k;
 
-	k = 0;
 	i = 0;
 	while (pars->poi[i] != NULL)
 		i++;
@@ -53,8 +52,8 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j)
 	else if (msh->input[*i] == '<' && msh->input[*i + 1] == '<')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, HEREDC, (*j) - 2);
+		input_to_poi(msh, pars, HEREDC, (*j) - 1);
+		handle_heredoc(msh, pars, i , j);
 	}
 	else if (msh->input[*i] == '>' && msh->input[*i + 1] != '>')
 	{
@@ -64,8 +63,7 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j)
 	else if (msh->input[*i] == '>' && msh->input[*i + 1] == '>')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, APPND, (*j) - 2);
+		input_to_poi(msh, pars, APPND, (*j) - 1);
 	}
 }
 
@@ -84,8 +82,7 @@ void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j)
 	if (msh->input[*i] == '|' && msh->input[*i + 1] == '|')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, OR, (*j) - 2);
+		input_to_poi(msh, pars, OR, (*j) - 1);
 	}
 }
 
@@ -100,14 +97,5 @@ void	handle_paran(t_msh *msh, t_parse *pars, int *i, int *j)
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
 		input_to_poi(msh, pars, R_PAR, (*j) - 1);
-	}
-	
-}
-
-void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j)
-{
-	if (msh->input[*i] == '*')
-	{
-		handle_wild_character(msh, pars, i, j);
 	}
 }

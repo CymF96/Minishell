@@ -6,13 +6,35 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 13:04:11 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 15:57:29 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_here_doc(t_msh *msh, char *delim)
+void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	if (flag == 0)
+	{
+		while (gnl[i] != '\n' || gnl[i] != '\0')
+		{
+			if (gnl[i] == '$')
+			{
+				temp = expand_env(msh, &i, NULL);
+				ft_putstr_fd(temp, fd_temp);
+				free (temp);
+			}
+		}
+	}
+	else
+		ft_putstr_fd(gnl, fd_temp);
+}
+
+void	get_here_doc(t_msh *msh, char *delim, int flag)
 {
 	int		fd_temp;
 	int		fd_stdin;
@@ -33,50 +55,73 @@ void	get_here_doc(t_msh *msh, char *delim)
 			break ;
 		}
 		else
-			ft_putstr_fd(gnl, fd_temp);
+			check_for_here_dollar(msh, gnl, fd_temp, flag);
 		free(gnl);
 	}
 }
 
-// void	check_heredoc(t_msh *msh, t_parse *pars)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*delim;
-// 	int		count;
+char	*remove_quotes(char *str, int len)
+{
+	int		i;
+	int		count;
+	char	*temp;
 
-// 	i = 0;
-// 	count = 0;
-// 	while (msh->input[i] != '\0')
-// 	{
-// 		if (msh->input[i] == '<' && msh->input[i + 1] == '<')
-// 		{
-// 			i +=2;
-// 			while (msh->input[i] == ' ')
-// 				i++;
-// 			j = i;
-// 			while (msh->input[i] != ' ' && msh->input[i] != '\t')
-// 			{
-// 				i++;
-// 				if (msh->input[i] == '\'')
-// 					count +=5;
-// 				else if (msh->input == '\"')
-// 					count++;
-// 			}
-// 			delim = malloc (sizeof(char) * (i - j + 2));
-// 			ft_strlcpy(delim, msh->input + j, i - j + 1);
-// 			get_here_doc(msh, delim);
-// 			free (delim);
-// 		}
-// 		i++;
-// 	}
-// }
+	i = 0;
+	count = 0;
+	while (str[i] != '\0' && i < len)
+	{
+		if (check_quote_ending(str, i) != -1)
+		{
+			i = check_quote_ending(&str[i], i) + 1;
+			continue ;
+		}
+		count++;
+	}
+	temp = malloc (sizeof(char) * (count + 1));
+	if (temp == NULL)
+		return (NULL);
+		i = 0;
+	while (str[i] != '\0' && i <= count)
+	{
+		if ((str[i] != '\"' && str[i] != '\'') || check_quote_ending(&str[i], i) == -1)
+			temp[i] = str[i];
+		i++;
+	}
+	temp[i] = '\0';
+	return (temp);
+}
+
+void	handle_heredoc(t_msh *msh, t_parse *pars, int *i, int *j)
+{
+	int		start;
+	int		flag;
+	char	*delim;
+
+	flag = 0;
+	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
+		(*i)++;
+	start = ++(*i);
+	while (msh->input[*i] != ' ' || msh->input[*i] != '\t')
+	{
+		if (msh->input[*i] == '\'' || msh->input[*i] == '\"')
+		{
+			if (check_quote_ending(&msh->input[*i], *i) != -1)
+			{
+				flag = 1;
+				*i = check_quote_ending(&msh->input[*i], *i) + 1;
+			}
+		}
+	}
+	delim = remove_quotes(&msh->input[start], *i - start + 1);
+	get_here_doc(msh, delim, flag);
+	free (delim);
+}
 
 // Main function of parse section. calls other major functions to parse input
 int	parse_main(t_msh *msh)
 {
 	t_parse	*pars;
-	
+
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh, pars);
