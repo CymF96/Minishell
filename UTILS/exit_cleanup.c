@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 17:12:07 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:22:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,13 @@ void	free_parse(t_msh *msh)
 
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
-	if (msh->parse != NULL)
-		free_parse(msh);
-	if (msh->pexe != NULL)
-		free_pexe(msh);
+	if (msh != NULL)
+	{
+		if (msh->parse != NULL)
+			free_parse(msh);
+		if (msh->pexe != NULL)
+			free_pexe(msh);
+	}
 	if (flag != 0 && msg == NULL)
 		perror("Error");
 	else if (msg != NULL)
