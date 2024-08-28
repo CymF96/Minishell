@@ -89,7 +89,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		free_pexe(msh);
 	if (flag != 0 && msg == NULL)
 		perror("Error");
-	else
+	else if (msg != NULL)
 		printf("%s\n", msg);
 	if (check == 1)
 		exit(EXIT_RESTART);

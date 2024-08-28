@@ -18,7 +18,7 @@ void	minishell_child(t_msh *msh)
 	add_history(msh->input);
 	check_if_exit(*msh);
 	if (parse_main(msh) == 0)
-		execution(msh)
+		execution(msh);
 	else
 		exit(EXIT_FAILURE);
 	free(msh->input);
@@ -32,38 +32,37 @@ int	minishell_parent(t_msh *msh)
 	int	exit_status;
 
 	waitpid(msh->main_child, &status, 0);
-	if (WIFEXITED(status) != 1)
+	if (WIFEXITED(status))
 	{
 		exit_status = WEXITSTATUS(status);
 		if (exit_status == EXIT_REINITIALISE)
 			return (EXIT_REINITIALISE);
-		else if (exit_status == EXIT_RESTART)
-			return (EXIT_RESTART);
 		else
 		{
 			perror("Error");
 			exit(EXIT_FAILURE);
 		}
 	}
-	else if (WIFSIGNALED(status))
+	else if (WIFSIGNALED(status)) // check if this caught the custom signals.
 	{
 		perror("Error");
 		exit(EXIT_FAILURE);
 	}
+	return (EXIT_RESTART);
 }
 
 void	minishell(t_msh *msh, int ac, char **av, char **envp)
 {
-	int	reinitialise;
+	int	loop;
 
-	reinitialise = 1;
-	while (reinitialise)
+	loop = 1;
+	while (loop)
 	{
 		signal_input();
 		msh->input = readline("Heart of Gold>> ");
 		if (msh->input == NULL)
 		{
-			exit_cleanup("Problem in user input", msh, errno, 1);  //check what is the use of this function
+			exit_cleanup("Problem in user input", msh, errno, 1 ou 0);  //check what is the use of this function
 			return ;
 		}
 		msh->main_child = fork();
@@ -71,12 +70,10 @@ void	minishell(t_msh *msh, int ac, char **av, char **envp)
 			minishell_child(msh);
 		else
 		{
-			if (minishell_parent(msh) == EXIT_RESTART)
-				reinitialise = 0;
-			else if (minishell_parent(msh) == EXIT_REINITIALISE)
+			if (minishell_parent(msh) == EXIT_REINITIALISE)
 				clean_msh_init(msh);
 			else
-				return ;			
+				loop = 0;
 		}
 	}
 }
@@ -102,5 +99,6 @@ int main(int ac, char **av, char **envp)
 	}
 	minishell(msh, ac, av, envp);
 	exit_cleanup(NULL, msh, 0, 1);
+	free(msh);
 	exit(EXIT_SUCCESS);
 }
