@@ -3,10 +3,7 @@
 void	check_exit_status_cmd(t_msh *msh, char *cmd)
 {
 	if (ft_strlen(cmd) == 2 && !ft_strncmp("$?", cmd, 2))
-	{
 		ft_printf("%d\n", msh->exit_error);
-		exit_cleanup(NULL, msh, 0, 0);
-	}
 }
 
 void	check_builtin_cmd(t_msh *msh, char *cmd)
@@ -48,23 +45,19 @@ void	check_type(t_msh *msh)
 		red_right(msh); // pexe->cmd has the filename
 	else if (msh->pexe->type == APPEND)
 		double_red_right(msh); //pexe->cmd is filename
-	else if (msh->pexe->type == HEREDOC)
+	// else if (msh->pexe->type == HEREDOC)
 		//function to pass the filename in option
 }
 
-int	execution(t_msh *msh)
+void	execution(t_msh *msh)
 {
 	int	g;
 
 	g = 0;
 	if (msh->pexe == NULL)
-	{
-		exit_cleanup(NULL, msh, errno, 0);
-		return (EXIT_REINITIALISE);
-	}
+		exit_cleanup(NULL, msh, errno, 3);
 	if (msh->pexe->group_id != 0)
 		msh->pexe = msh->pexe->next;
 	check_type(msh);
-	exit_cleanup(NULL, msh, 0, 0);
-	return (EXIT_REINITIALISE);
+	exit_cleanup(NULL, msh, errno, 0);
 }

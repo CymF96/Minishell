@@ -25,7 +25,7 @@ int struct_strlen(char **array)
 	return (len);
 }
 
-int	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // to check in terms of malloc and free temp_option pointers
+void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // to check in terms of malloc and free temp_option pointers
 {
 	int		i;
 	char	**temp_option;
@@ -33,10 +33,7 @@ int	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // t
 	i = 0;
 	temp_option = malloc(sizeof(char *) * (len_group + len_option + 1));
 	if (temp_option == NULL)
-	{
-		exit_cleanup(NULL, msh, errno, 1);
-		return (-1);
-	}
+		exit_cleanup(NULL, msh, errno, 2);
 	while (i < len_option)
 		temp_option[i] = current->option[i++]; 
 	if (current->option)
@@ -45,6 +42,8 @@ int	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // t
 			&& current->next->p_index == current->p_index + 1)
 	{
 		temp_option[i++] = ft_strdup(current->next->cmd);
+		if (temp_option == NULL)
+			exit_cleanup(NULL, msh, errno, 2);
 		current = current->next;
 		len_group--;
 	}

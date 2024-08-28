@@ -39,8 +39,5 @@ void	signal_handler_init(t_msh *msh)
 	if (sigaction(SIGINT, &sa, NULL) == -1
 		|| sigaction(EOF, &sa, NULL) == -1
 		|| sigaction(SIGQUIT, &sa, NULL) == -1)
-	{
-		cleanup(msh);
-		exit_message("Error handling the signal\n", 6);
-	} 
+		exit_cleanup(NULL, msh, errno, 2);
 }
