@@ -13,68 +13,47 @@
 #include "minishell.h"
 // #include "./PARSE/parse.h"
 
-void	minishell_child(t_msh *msh)
+int	minishell_running(t_msh *msh)
 {
 	add_history(msh->input);
-	check_if_exit(*msh);
+	if (!(check_if_exit(msh))
 	if (parse_main(msh) == 0)
-		execution(msh);
-	else
-		exit(EXIT_FAILURE);
-	free(msh->input);
-	msh->input = NULL;
-	exit(EXIT_REINITIALISE);
-}
-
-int	minishell_parent(t_msh *msh)
-{
-	int	status;
-	int	exit_status;
-
-	waitpid(msh->main_child, &status, 0);
-	if (WIFEXITED(status))
+		execution(msh);	
+	if (msh->input != NULL)
 	{
-		exit_status = WEXITSTATUS(status);
-		if (exit_status == EXIT_REINITIALISE)
-			return (EXIT_REINITIALISE);
-		else
-		{
-			perror("Error");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else if (WIFSIGNALED(status)) // check if this caught the custom signals.
-	{
-		perror("Error");
-		exit(EXIT_FAILURE);
-	}
+		free(msh->input);
+		msh->input = NULL;
+	}	
 	return (EXIT_RESTART);
 }
 
-void	minishell(t_msh *msh, int ac, char **av, char **envp)
+
+int	minishell_start(t_msh *msh, int ac, char **av, char **envp)
 {
 	int	loop;
 
 	loop = 1;
+	clean_msh_init(msh);
+	msh->exit_error = 0;
+	signal_handler_init(msh);
+	if (input_validate(ac, envp) != 0)
+	{
+		exit_cleanup("invalid input\n", msh, 0, 1);
+		return ;
+	}
 	while (loop)
 	{
 		signal_input();
 		msh->input = readline("Heart of Gold>> ");
 		if (msh->input == NULL)
 		{
-			exit_cleanup("Problem in user input", msh, errno, 1 ou 0);  //check what is the use of this function
+			exit_cleanup("Problem in user input", msh, errno, 1);  //check what is the use of this function
 			return ;
 		}
-		msh->main_child = fork();
-		if (msh->main_child == 0)
-			minishell_child(msh);
+		if (minishell_running(msh) == EXIT_RESTART)
+			clean_msh_init(msh);
 		else
-		{
-			if (minishell_parent(msh) == EXIT_REINITIALISE)
-				clean_msh_init(msh);
-			else
-				loop = 0;
-		}
+			loop = 0;
 	}
 }
 
@@ -89,16 +68,9 @@ int main(int ac, char **av, char **envp)
 		perror("Error");
 		exit(EXIT_FAILURE);
 	}
-	clean_msh_init(msh);
-	msh->exit_error = -1;
-	signal_handler_init(msh);
-	if (input_validate(ac, envp) != 0)
-	{
-		exit_cleanup("invalid input\n", msh, 0, 1);
-		return ;
-	}
-	minishell(msh, ac, av, envp);
-	exit_cleanup(NULL, msh, 0, 1);
-	free(msh);
-	exit(EXIT_SUCCESS);
+	minishell_start(msh, ac, av, envp);
+	exit_cleanup(NULL, msh, errno, 1);
+	if (msh != NULL)
+		free(msh);
+	return (0);
 }
