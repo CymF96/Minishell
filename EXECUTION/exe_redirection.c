@@ -10,7 +10,7 @@ void	double_red_right(t_msh *msh)
 	msh->fd[1] = open(msh->pexe->cmd, O_WRONLY | O_CREAT | O_APPEND, 0664);
 	if (msh->fd[1] == -1)
 	{
-		exit_cleanup(NULL, msh, error erno, 0);
+		exit_cleanup(NULL, msh, errno, 0);
 		return ;
 	}
 	if (dup2(msh->fd[1], STDOUT_FILENO) < 0)

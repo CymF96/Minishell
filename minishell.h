@@ -64,7 +64,7 @@ typedef struct s_msh //master structure 'minishell'
 	int			fd[2];
 	int			pipe_nb;
 	int			flag;
-	int			exit_error;
+	int			exit_error; // initialise only one time to keep track of exit error code
 	int			exit_parent;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
@@ -145,7 +145,7 @@ void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j);
 char	*remove_quotes(char *str, int len);
 
 /*------- CLEANUP -------*/
-void	exit_cleanup(char *msg, t_msh *msh, int flag);
+void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);
 void	free_parse(t_msh *msh);
 void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);

@@ -5,26 +5,30 @@ void	check_exit_status_cmd(t_msh *msh, char *cmd)
 	if (ft_strlen(cmd) == 2 && !ft_strncmp("$?", cmd, 2))
 	{
 		ft_printf("%d\n", msh->exit_error);
+		exit_cleanup(NULL, msh, 0, 0);
 	}
 }
 
 void	check_builtin_cmd(t_msh *msh, char *cmd)
 {
+	int	g;
+
+	g = msh->pexe->group_id;
 	if (ft_strlen(cmd) == 4 && !ft_strncmp("exit", cmd, 4))
 		cmd_exit(msh);
 	else if (ft_strlen(cmd) == 4 && !ft_strncmp("echo", cmd, 4))
-		cmd_echo(msh);
+		cmd_echo(msh, g);
 	else if (ft_strlen(cmd) == 2 && !ft_strncmp("cd", cmd, 2))
-		cmd_cd(msh);
+		cmd_cd(msh, g);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("pwd", cmd, 3))
 		cmd_pwd(msh);
 	else if (ft_strlen(cmd) == 6 && !ft_strncmp("export", cmd, 6))
-		cmd_export(msh);
+		cmd_export(msh, g);
 	else if (ft_strlen(cmd) == 5 && !ft_strncmp("unset", cmd, 5))
-		cmd_unset(msh);
+		cmd_unset(msh, g);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
-		cmd_env(msh);
-	if (msh->pexe->next != NULL)
+		cmd_env(msh, g);
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id != g)
 		msh->pexe = msh->pexe->next;
 }
 
@@ -50,22 +54,17 @@ void	check_type(t_msh *msh)
 
 int	execution(t_msh *msh)
 {
-	int	i;
-	int	p;
 	int	g;
 
-	i = 0;
-	p = 0;
+	g = 0;
 	if (msh->pexe == NULL)
-		return (0);
+	{
+		exit_cleanup(NULL, msh, errno, 0);
+		return (EXIT_REINITIALISE);
+	}
 	if (msh->pexe->group_id != 0)
 		msh->pexe = msh->pexe->next;
-	// while (msh->pexe != NULL && g = msh->pexe->group_id)
-	// {
 	check_type(msh);
-		// if (msh->pexe->next != NULL) to check!!!!
-		// 	msh->pexe = msh->pexe->next;
-		// free_pexe(msh);
-	// }
-	return (0);
+	exit_cleanup(NULL, msh, 0, 0);
+	return (EXIT_REINITIALISE);
 }

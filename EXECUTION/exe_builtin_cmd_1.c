@@ -2,33 +2,31 @@
 
 void    cmd_exit(t_msh *msh)
 {
-	msh->exit_parent = 1;
 	exit_cleanup(NULL, msh, 0, 1);
 }
 
-void    cmd_echo(t_msh *msh)
+void    cmd_echo(t_msh *msh, int g)
 {
-	if (msh->pexe->next == NULL)
+	int	p;
+	int flag;
+
+	p = msh->pexe->p_index;
+	flag = 0;
+	if (ft_strlen(msh->pexe->prev->option[1]) == 2\
+			&& !ft_strncmp("-n", msh->pexe->prev->option[1], 2))
+		flag = 1;
+	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 		write(msh->fd[1], '\n', 1);
-	else if (msh->pexe->next != NULL\
-				&& msh->pexe->next->group_id == msh->pexe->group_id)
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id = g\
+			&& msh->pexe->next->cmd != NULL\
+			&& msh->pexe->next->p_index == p + 1)
 	{
-		if (msh->pexe->next->cmd != NULL\
-			&& msh->pexe->next->p_index == (msh->pexe->p_index) + 1)
-		{
-			msh->pexe = msh->pexe->next;
-			if (ft_strlen(msh->pexe->prev->option[1]) == 2\
-				&& !ft_strncmp("-n", msh->pexe->prev->option[1], 2))
-				ft_putstr_fd(msh->pexe->cmd, msh->fd[1]);
-			else
-			{
-				ft_putstr_fd(msh->pexe->cmd, msh->fd[1]);
-				ft_putchar_fd('\n', msh->fd[1]);
-			}
-		}
-	}
-	while (msh->pexe->group_id != msh->pexe->group_id++)
+		ft_putstr_fd(msh->pexe->next->cmd, msh->fd[1]);
+		p++;
 		msh->pexe = msh->pexe->next;
+	}
+	if (flag == 0)
+		ft_putchar_fd('\n', msh->fd[1]);
 }
 
 void	cmd_pwd(t_msh *msh)
@@ -38,47 +36,47 @@ void	cmd_pwd(t_msh *msh)
 	if (getcwd(path, sizeof(path)) != NULL)
 	{
 		ft_putstr_fd(path, msh->fd[1]);
+		ft_putchar_fd('\n', msh->fd[1]);
 	}
 	else
-		perror("Error printing current directoy");
-	while (msh->pexe->group_id != msh->pexe->group_id++)
-		msh->pexe = msh->pexe->next;
+		exit_cleanup(NULL, msh, errno, 0);
 }
 
-void	cmd_cd(t_msh *msh) // absolute path is ok but need adding the relative path
+void	cmd_cd(t_msh *msh, int g) // absolute path is ok but need adding the relative path
 {
-	int	temp;
+	int	directory;
 
-	if (msh->pexe->next != NULL\
-		&& msh->pexe->next->group_id == msh->pexe->group_id)
+	directory = getenv("HOME");
+	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
+		chdir(directory);
+	if (msh->pexe->next->next == NULL || msh->pexe->next->next->group_id == g)
+		exit_cleanup("Too many arguments", msh, 1, 0);
+	else if (msh->pexe->next->type == PATH && msh->pexe->next->cmd != NULL\
+			&& msh->pexe->next->group_id == g)
 	{
-		if (msh->pexe->next->type == PATH && msh->pexe->next->cmd != NULL\
-			&& access(msh->pexe->next->cmd, F_OK) == 0)
+		if (access(msh->pexe->cmd, R_OK) == 0) // before moving to directory, checking if permission with access
 		{
-			msh->pexe = msh->pexe->next;
-			if (access(msh->pexe->cmd, R_OK) == 0) // before moving to directory, checking if permission with access
-			{
-				temp = chdir(msh->pexe->cmd);
-				if (temp == 1)
-					ft_printf("ok"); // to change for return as ok is to check if it is working correctly
-				else
-					exit_cleanup("Permission denied\n", msh, code access, 0);
-			}
+			directory = getenv(msh->pexe->next->cmd);
+			if (directory != NULL)
+				chdir(directory);// to change for return as ok is to check if it is working correctly
 			else
-				ft_printf("The directory %s doesn't exist\n", msh->pexe->cmd);
+				exit_cleanup(NULL, msh, errno, 0);
 		}
+		else
+			exit_cleanup(NULL, msh, errno, 0);
 	}
-	while (msh->pexe->group_id != msh->pexe->group_id++)
-		msh->pexe = msh->pexe->next;
+	ft_putchar_fd('\n', msh->fd[1]);
+	exit_cleanup(NULL, msh, 0,0);
 }
 
-void	cmd_env(t_msh *msh) // to test
+void	cmd_env(t_msh *msh, int g) // to test
 {
 	int	i;
 
-	i = 0; //calling the array that keep env var in main
+	i = 0;
+	if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
+		exit_cleanup("invalid input with env command", msh, 0, 0);
 	while (msh->envp[i] != NULL)
 		ft_putstr_fd(msh->envp[i++], msh->fd[1]);
-	while (msh->pexe->group_id != msh->pexe->group_id++)
-		msh->pexe = msh->pexe->next;
+		ft_putchar_fd('\n', msh->fd[1]);
 }
