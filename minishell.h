@@ -102,7 +102,7 @@ typedef enum e_type
 /********************************/
 
 /*------- INPUT_VALIDATE -------*/
-void	input_validate(int ac, char **envp);
+int	input_validate(int ac, char **envp);
 
 /*------- INITIALIZE -------*/
 void	clean_initialize(t_msh *msh);
@@ -111,16 +111,39 @@ void	clean_init_token_node(t_token *tkn);
 void	clean_init_pexe_node(t_pexe *pexe);
 
 /*------- EXECUTION -------*/
-void	check_if_exit(t_msh msh);
-int		execution(t_msh *msh);
+void	execution(t_msh *msh);
+void	check_type(t_msh *msh);
 void	check_builtin_cmd(t_msh *msh, char *cmd);
 void	check_exit_status_cmd(t_msh *msh, char *cmd);
-void	cmd_exit(t_msh *msh);
-void	cmd_echo(t_msh *msh);
-void	cmd_pwd(t_msh *msh);
-void	cmd_cd(t_msh *msh);
-void	cmd_env(t_msh *msh);
+void	double_red_right(t_msh *msh);
+void	red_left(t_msh *msh);
+void	red_right(t_msh *msh);
+void	pipex(t_msh *msh);
+void	signal_input(t_msh *msh);
+void	signals_handler(int sig);
+void	signal_handler_init(t_msh *msh);
+void	chd1_fork(t_msh *msh, t_pipex *chds);
+void	mdlchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
+void	lstchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
+void	kill_children(t_msh *msh, t_pipex **chds, int chd_index);
+void	closing(t_msh *msh, t_pipex **chds, int chd_index);
+int	node_strlen(t_pexe *node);
+int struct_strlen(char **array);
+void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option);
 void	find_exe(t_msh *msh, char *cmd);
+void	sigint(t_msh *msh);
+void	sigeof(t_msh *msh);
+void	sigquit(t_msh *msh);
+void    cmd_exit(t_msh *msh);
+void    cmd_echo(t_msh *msh, int g);
+void	cmd_pwd(t_msh *msh);
+void	cmd_cd(t_msh *msh, int g);
+void	cmd_env(t_msh *msh, int g);
+void	check_update_tempenv(t_msh *msh, char *cmd);
+void	cmd_export(t_msh *msh, int g);
+void	check_remove_tempenv(t_msh *msh, char *cmd);
+int	remove_var(t_msh *msh, char	*var_name);
+void	cmd_unset(t_msh *msh, int g);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
@@ -148,5 +171,10 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);
 void	free_parse(t_msh *msh);
 void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);
+
+/*-------MINISHELL-------*/
+void	check_if_exit(t_msh *msh);
+int	minishell_running(t_msh *msh);
+int	minishell_start(t_msh *msh, int ac, char **av, char **envp);
 
 #endif

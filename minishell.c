@@ -13,12 +13,18 @@
 #include "minishell.h"
 // #include "./PARSE/parse.h"
 
+void	check_if_exit(t_msh *msh)
+{
+	if (ft_strlen(msh->input) == 4 && !ft_strncmp("exit", msh->input, 4))
+		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+}
+
 int	minishell_running(t_msh *msh)
 {
 	add_history(msh->input);
-	if (!(check_if_exit(msh))
+	check_if_exit(msh);
 	if (parse_main(msh) == 0)
-		execution(msh);	
+		execution(msh);
 	if (msh->input != NULL)
 	{
 		free(msh->input);
@@ -26,7 +32,6 @@ int	minishell_running(t_msh *msh)
 	}	
 	return (EXIT_RESTART);
 }
-
 
 int	minishell_start(t_msh *msh, int ac, char **av, char **envp)
 {
@@ -50,10 +55,7 @@ int	minishell_start(t_msh *msh, int ac, char **av, char **envp)
 			exit_cleanup("Problem in user input", msh, errno, 1);  //check what is the use of this function
 			return ;
 		}
-		if (minishell_running(msh) == EXIT_RESTART)
-			clean_msh_init(msh);
-		else
-			loop = 0;
+		clean_msh_init(msh);
 	}
 }
 
@@ -69,7 +71,6 @@ int main(int ac, char **av, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	minishell_start(msh, ac, av, envp);
-	exit_cleanup(NULL, msh, errno, 1);
 	if (msh != NULL)
 		free(msh);
 	return (0);

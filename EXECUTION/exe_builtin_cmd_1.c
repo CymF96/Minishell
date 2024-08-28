@@ -17,7 +17,7 @@ void    cmd_echo(t_msh *msh, int g)
 		flag = 1;
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 		write(msh->fd[1], '\n', 1);
-	while (msh->pexe->next != NULL && msh->pexe->next->group_id = g\
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
 			&& msh->pexe->next->cmd != NULL\
 			&& msh->pexe->next->p_index == p + 1)
 	{
