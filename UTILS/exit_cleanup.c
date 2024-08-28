@@ -81,7 +81,7 @@ void	free_parse(t_msh *msh)
 	}
 }
 
-void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
+int	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
 	if (msh->parse != NULL)
 		free_parse(msh);
@@ -91,11 +91,22 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		perror("Error");
 	else if (msg != NULL)
 		printf("%s\n", msg);
-	if (check == 1)
-		exit(EXIT_RESTART);
+	if (check == 2)
+	{
+		if (msh != NULL)
+			free(msh);
+		exit(EXIT_FAILURE);
+	}
+	else if (check == 1)
+	{
+		if (msh != NULL)
+			free(msh);
+		exit(EXIT_SUCCESS);
+	}
 	else
 	{
 		msh->exit_error = flag;
-		exit(EXIT_REINITIALISE);
+		return (EXIT_RESTART);
 	}
+	return (0);
 }
