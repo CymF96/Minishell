@@ -33,6 +33,8 @@
 # define SIGINT_FLAG 0x01	// 0001
 # define SIGQUIT_FLAG 0x02	// 0010
 # define SIGEOF_FLAG 0x04	// 0100
+# define EXIT_REINITIALISE 42
+# define EXIT_RESTART 43
 
 volatile sig_atomic_t signal_flags = 0;
 
