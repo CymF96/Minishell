@@ -65,7 +65,6 @@ void	clean_msh_init(t_msh *msh)
 	msh->fd[1] = STDOUT_FILENO;
 	msh->pipe_nb = 0;
 	msh->flag = -1;
-	msh->exit_error = -1;
 	msh->parse = NULL;
 <<<<<<< HEAD
 	msh->pipe_nb = 0;

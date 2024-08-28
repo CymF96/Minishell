@@ -87,11 +87,15 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		free_parse(msh);
 	if (msh->pexe != NULL)
 		free_pexe(msh);
-	if (msh != NULL)
-		free(msh);
-	msh = NULL;
-	if (msg != NULL)
-		printf("Program Termination Reason - %s\n", msg);
+	if (flag != 0 && msg == NULL)
+		perror("Error");
+	else
+		printf("%s\n", msg);
 	if (check == 1)
-		exit(flag);
+		exit(EXIT_RESTART);
+	else
+	{
+		msh->exit_error = flag;
+		exit(EXIT_REINITIALISE);
+	}
 }
