@@ -21,7 +21,7 @@ static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 	j = 0;
 	tkn->token = malloc(sizeof(tkn->end_pos - tkn->start_pos + 2));
 	if (tkn->token == NULL)
-		exit_cleanup("Malloc failed", msh, errno);
+		exit_cleanup("Malloc failed", msh, errno, 2); //verify which exist is better
 	while (i <= tkn->end_pos)
 	{
 		tkn->token[j] = pars->modified[i];
@@ -65,7 +65,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 	temp = prs->modified;
 	while (temp[i] != '\0')
 	{
-		tkn = token_malloc(msh, prs);
+		tkn = token_malloc(msh); // prs parameters
 		while (prs->modified[i] == ' ' || prs->modified[i] == '\t')
 			i++;
 		tkn->start_pos = i;

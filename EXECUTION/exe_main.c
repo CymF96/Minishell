@@ -51,9 +51,6 @@ void	check_type(t_msh *msh)
 
 void	execution(t_msh *msh)
 {
-	int	g;
-
-	g = 0;
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
 	if (msh->pexe->group_id != 0)

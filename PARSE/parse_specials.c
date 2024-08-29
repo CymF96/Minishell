@@ -22,9 +22,9 @@ static void	input_to_poi(t_msh *msh, t_parse *pars, int symbol, int j)
 	i = 0;
 	while (pars->poi[i] != NULL)
 		i++;
-	pars->poi[i] == malloc(sizeof(int) * 4);
+	pars->poi[i] = malloc(sizeof(int) * 4);
 	if (pars->poi[i] == NULL)
-		exit_cleanup ("Malloc failed", msh, errno);
+		exit_cleanup ("Malloc failed", msh, errno, 2);  //verify which exist is better
 	pars->poi[i][0] = symbol;
 	pars->poi[i][1] = j;
 	pars->poi[i][2] = -1;

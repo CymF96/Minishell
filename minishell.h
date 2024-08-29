@@ -32,10 +32,23 @@
 # define FIELD_OFFSET(type, field) offsetof(type, field)
 # define SIGINT_FLAG 0x01	// 0001
 # define SIGQUIT_FLAG 0x02	// 0010
-# define SIGEOF_FLAG 0x04	// 0100
-# define EXIT_RESTART 42
 
-volatile sig_atomic_t signal_flags = 0;
+typedef enum s_type
+{
+	COMMAND,
+	STRING,
+	PATH,
+	EXE,
+	EXIT_ERROR,
+	PIPE,
+	WILDCARD,
+	FNAME,
+	SIGNAL,
+	HEREDOC,
+	INFILE,
+	OUTFILE,
+	APPEND,
+}	t_type;
 
 typedef struct s_pipex
 {
@@ -64,29 +77,13 @@ typedef struct s_msh //master structure 'minishell'
 	int			pipe_nb;
 	int			flag;
 	int			exit_error; // initialise only one time to keep track of exit error code
-	int			exit_parent;
+	volatile sig_atomic_t signal_flags;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
 	pid_t		main_child;
 }	t_msh;
 
-typedef enum e_type
-{
-	COMMAND,
-	STRING,
-	PATH,
-	EXE,
-	EXIT_ERROR,
-	PIPE,
-	WILDCARD,
-	INFILE,
-	FNAME,
-	SIGNAL,
-	HEREDOC,
-	INFILE,
-	OUTFILE,
-	APPEND,
-}	t_type;
+
 
 /***********ERROR_TYPE***********/
 /* 1. command not found			*/
@@ -105,10 +102,16 @@ typedef enum e_type
 int	input_validate(int ac, char **envp);
 
 /*------- INITIALIZE -------*/
-void	clean_initialize(t_msh *msh);
+void	clean_init_chds(t_pipex *chds);
 void	clean_init_parse(t_parse *pars);
 void	clean_init_token_node(t_token *tkn);
 void	clean_init_pexe_node(t_pexe *pexe);
+void	clean_msh_init(t_msh *msh);
+
+/*------- UTILS -------*/
+void	adding_var(t_msh *msh, char *new_var, char **env_struct);
+void	set_var_name(char *cmd, char *var_name);
+int	updating_var(char **env_struct, char *var_name, char *cmd);
 
 /*------- EXECUTION -------*/
 void	execution(t_msh *msh);
@@ -118,15 +121,14 @@ void	check_exit_status_cmd(t_msh *msh, char *cmd);
 void	double_red_right(t_msh *msh);
 void	red_left(t_msh *msh);
 void	red_right(t_msh *msh);
-void	pipex(t_msh *msh);
-void	signal_input(t_msh *msh);
-void	signals_handler(int sig);
+void	ft_pipex(t_msh *msh);
+void	signals_handler(int sig, siginfo_t *info, void *context);
 void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, t_pipex *chds);
 void	mdlchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
 void	lstchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
-void	kill_children(t_msh *msh, t_pipex **chds, int chd_index);
-void	closing(t_msh *msh, t_pipex **chds, int chd_index);
+void	kill_children(t_pipex **chds);
+void	closing(t_msh *msh, t_pipex **chds);
 int	node_strlen(t_pexe *node);
 int struct_strlen(char **array);
 void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option);
@@ -147,9 +149,9 @@ void	cmd_unset(t_msh *msh, int g);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
-void	parse_malloc(t_msh *msh, t_parse *prs);
-t_token	*token_malloc(t_msh *msh, t_parse *prs);
-t_pexe	*pexe_malloc(t_msh *msh, t_parse *prs);
+void	parse_malloc(t_msh *msh);
+t_token	*token_malloc(t_msh *msh); //t_parse *prs
+t_pexe	*pexe_malloc(t_msh *msh); //t_parse *prs
 void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
 void	create_modified(t_msh *msh, t_parse *pars);
@@ -171,10 +173,12 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);
 void	free_parse(t_msh *msh);
 void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);
+void	free_pipex(t_pipex **children);
+void	clear_msh(t_msh *msh, int check, char *msg);
 
 /*-------MINISHELL-------*/
 void	check_if_exit(t_msh *msh);
-int	minishell_running(t_msh *msh);
-int	minishell_start(t_msh *msh, int ac, char **av, char **envp);
+void	minishell_running(t_msh *msh);
+void	minishell_start(t_msh *msh, int ac, char **av, char **envp);
 
 #endif

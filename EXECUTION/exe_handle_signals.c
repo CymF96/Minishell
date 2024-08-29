@@ -1,43 +1,38 @@
 #include "../minishell.h"
 
-void	signal_input(t_msh *msh)
+void	sigeof(t_msh *msh)
 {
-	if (signal_flags & SIGINT_FLAG)
-	{
-		signal_flags &= ~SIGINT_FLAG;
-		sigint(msh);
-	}
-	else if (signal_flags & SIGQUIT_FLAG)
-	{
-		signal_flags &= ~SIGQUIT_FLAG;
-		sigquit(msh);
-	}
-	else if (signal_flags & SIGEOF_FLAG)
-	{
-		signal_flags &= ~SIGEOF_FLAG;
-		sigeof(msh);
-	}
+	if (msh->pexe != NULL)//prompt in work and pexe initialized
+		exit_cleanup(NULL, msh, errno, 0);
+	else// nothing in prompt
+		exit_cleanup(NULL, msh, errno, 1);
+
 }
 
-void	signals_handler(int sig)
+void	signals_handler(int sig, siginfo_t *info, void *context)
 {
+	(void)context; //t_msh *msh = (t_msh *)context;
+    (void)info;
+	
 	if (sig == SIGINT)
-		signal_flags |= SIGINT_FLAG;
-	else if (sig == SIGQUIT)
-		signal_flags |= SIGQUIT_FLAG;
-	else if (sig == EOF)
-		signal_flags |= SIGEOF_FLAG;
+	if (write(STDOUT_FILENO, "\n", 1) == -1)
+		return ;
+    rl_replace_line("", 0);  // Clear the current input line in readline
+	//exit_cleanup(NULL, msh, errno, 0);    
+	rl_on_new_line();  // Move to a new line
+    rl_redisplay();
 }
 
 void	signal_handler_init(t_msh *msh)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = signals_handler;
-	sa.sa_flags = SA_RESTART; // | SA_SIGINFO;
+	sa.sa_sigaction = signals_handler;
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGINT, &sa, NULL) == -1
-		|| sigaction(EOF, &sa, NULL) == -1
-		|| sigaction(SIGQUIT, &sa, NULL) == -1)
+	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);
+    sa.sa_handler = SIG_IGN;
+    if (sigaction(SIGQUIT, &sa, NULL) == -1)
+        exit_cleanup(NULL, msh, errno, 2);
 }

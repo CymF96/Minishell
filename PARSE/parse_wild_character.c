@@ -26,8 +26,8 @@ static char	*find_exp(t_msh *msh, int *i, int *j)
 		(*i)++;
 	str = malloc (sizeof(char) * (*i - z + 2));
 	if (str == NULL)
-		exit_cleanup("Malloc failed", msh, errno);
-	ft_strlcpy(str, &msh->input[z], *i - z + 2);
+		exit_cleanup("Malloc failed", msh, errno, 2); //verify which exist is better
+	ft_strlcpy(str, &msh->input[z], *i - z + 2); 
 	*j = z;
 	return (str);
 }
@@ -43,6 +43,7 @@ static int	special_nonzero(char *str, char *dname, char **arr, int *y)
 			return (-1);
 		(*y)++;
 	}
+	return (0);
 }
 
 static int	special_nonfinal(char *str, char *dname, char **arr, int *y)
@@ -60,6 +61,7 @@ static int	special_nonfinal(char *str, char *dname, char **arr, int *y)
 			return (-1);
 		(*y)++;
 	}
+	return (0);
 }
 
 static int	find_matching(char *str, char *dname)
@@ -74,20 +76,21 @@ static int	find_matching(char *str, char *dname)
 	if (str[0] != '*')
 	{
 		if (special_nonzero(str, dname, arr, &y) == -1)
-			return (free_mallocs(NULL, arr), free(arr), -1);
+			return (free_mallocs(NULL, (void **)arr), free(*arr), -1); // I don't know how to correct that
 	}
 	backup = NULL;
 	while (arr[y] != NULL)
 	{
 		temp = ft_strnstr(dname, arr[y], ft_strlen(arr[y]));
 		if (temp == NULL || (backup != NULL && temp <= backup))
-			return (free_mallocs(NULL, arr), free(arr), -1);
+			return (free_mallocs(NULL, (void **)arr), free(arr), -1);
 		backup = temp;
 		if (arr[y + 1] == NULL && str[ft_strlen(str)] != '*')
 			if (special_nonfinal(str, dname, arr, &y) == -1)
-				return (free_mallocs(NULL, arr), free(arr), -1);
+				return (free_mallocs(NULL, (void **)arr), free(arr), -1);
 		y++;
 	}
+	return (0);
 }
 
 void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j)
@@ -98,10 +101,10 @@ void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j)
 	int				k;
 
 	str = find_exp(msh, i, j);
-	dir = opendir (".");
+	dir = opendir(".");
 	if (dir == NULL)
-		exit_cleanup("Opendir", msh, errno);
-	entry = readdir (dir);
+		exit_cleanup("Opendir", msh, errno, 2); //verify which exist is better
+	entry = readdir(dir);
 	while (entry != NULL)
 	{
 		k = 0;
@@ -112,8 +115,8 @@ void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j)
 				pars->modified[(*j)++] = entry->d_name[k++];
 			pars->modified[(*j)++] = ' ';
 		}
-		entry = readdir (dir);
+		entry = readdir(dir);
 	}
-	closedir (dir);
-	free (str);
+	closedir(dir);
+	free(str);
 }

@@ -1,13 +1,11 @@
 #include "../minishell.h"
 
-void	pipex(t_msh *msh)
+void	ft_pipex(t_msh *msh)
 {
 	int		i;
-	int		j;
 	t_pipex *chds[msh->pipe_nb]; //check question of null term
 
 	i = 0;
-	j = 0;
 	while (msh->pipe_nb >= 0)
 	{
 		chds[i] = (t_pipex *)malloc(sizeof(t_pipex));
@@ -17,15 +15,28 @@ void	pipex(t_msh *msh)
 			exit_cleanup("Error handling pipe\n", msh, 1, 0);
 			return ;
 		}
-		clean_init_chds(chds[i++]);
+		clean_init_chds(chds[i]);
+		i++; // i is the number of child in the array - 1 (if pipe 2 ->3 children and i = 2 (0,1,2))
 		msh->pipe_nb--;
 	}
-	while (j < i) // while j is < to nb of chds minus 1 for the extra i++ at the end of the loop
-		pipe(chds[j++]->fd);
+	chds[i] = NULL; // chds[3] 3 is NULL
+	i = 0;
+	while (chds[i + 1] != NULL)
+	{ // while j is < to nb of chds minus 1 for the extra i++ at the end of the loop
+		if (pipe(chds[i]->fd) == -1)
+		{
+			free_pipex(chds);
+			exit_cleanup(NULL, msh, errno, 0);
+		}
+		i++;
+	}
 	chd1_fork(msh, chds[0]);
-	j = 1;
-	while (j < i)
-		mdlchd_fork(msh, chds[i - 1], chds[i++]);
+	i = 1;
+	while (chds[i + 1] != NULL)
+	{
+		mdlchd_fork(msh, chds[i - 1], chds[i]);
+		i++;
+	}
 	lstchd_fork(msh, chds[i - 1], chds[i]);// check if i -1 or i - 2
-	closing(msh, chds, i - 1); //parent wait the children and close everything + total cleanup
+	closing(msh, chds); //parent wait the children and close everything + total cleanup
 }

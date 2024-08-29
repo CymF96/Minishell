@@ -32,7 +32,7 @@ typedef struct s_parse
 	t_token	*head;
 }	t_parse;
 
-typedef enum e_symbols
+typedef enum s_symbols
 {
 	IO_I = 1,
 	HEREDC = 2,
@@ -44,7 +44,7 @@ typedef enum e_symbols
 	L_PAR = 8,
 	R_PAR = 9,
 	W_C = 10,
-};
+} t_symbols;
 
 // typedef enum e_type
 // {

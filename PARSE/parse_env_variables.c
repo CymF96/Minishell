@@ -29,7 +29,7 @@ static char	*find_var(t_msh *msh, int *i)
 	}
 	temp = malloc(sizeof(char) * (*i - k + 3));
 	if (temp == NULL)
-		exit_cleanup("Malloc failed", msh, errno);
+		exit_cleanup("Malloc failed", msh, errno, 2); //verifiy the correct exit check
 	ft_strlcpy(temp, &msh->input[k], *i - k + 2);
 	temp[*i - k + 1] = '=';
 	temp[*i - k + 2] = '\0';
@@ -43,6 +43,7 @@ char	*expand_env(t_msh *msh, int *i, int *j)
 	int		len;
 	char	*temp;
 
+	(void)j;// to remove if needed
 	k = 0;
 	temp = find_var(msh, i);
 	len = ft_strlen(temp);
@@ -51,7 +52,7 @@ char	*expand_env(t_msh *msh, int *i, int *j)
 		if (!ft_strncmp(temp, msh->envp[k], len))
 		{
 			free(temp);
-			temp = msh->envp[k][len];
+			temp = strdup(msh->envp[k] + len); // error: assignment to ‘char *’ from ‘char’ makes pointer from integer without a cast [-Werror=int-conversion] temp = msh->envp[k][len]
 			return (temp);
 		}
 		k++;

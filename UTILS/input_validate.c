@@ -14,14 +14,15 @@
 
 int	input_validate(int ac, char **envp)
 {
-	if (ac != 1)
+	if (ac < 0)
 	{
-		exit_cleanup("Too many clowns for this party", NULL, errno);
+		exit_cleanup("Too many clowns for this party", NULL, errno, 2);
 		return (-1);
 	}
 	if (envp == NULL || *envp == NULL)
 	{
-		exit_cleanup("Where is my ENVP!", NULL, errno);
+		exit_cleanup("Where is my ENVP!", NULL, errno, 2);
 		return (-1);
 	}
+	return (0);
 }
