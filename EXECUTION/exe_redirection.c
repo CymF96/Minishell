@@ -48,10 +48,8 @@ void	red_left(t_msh *msh)
 
 void	red_right(t_msh *msh)
 {
-	int	g;
 	int	save_sdtout;
 	
-	g = msh->pexe->group_id;
 	save_sdtout = dup(STDOUT_FILENO);
 	msh->fd[1] = open(msh->pexe->cmd, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (msh->fd[1] == -1)

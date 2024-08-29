@@ -35,7 +35,10 @@ void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // 
 	if (temp_option == NULL)
 		exit_cleanup(NULL, msh, errno, 2);
 	while (i < len_option)
-		temp_option[i] = current->option[i++]; 
+	{
+		temp_option[i] = current->option[i];
+		i++;
+	}
 	if (current->option)
 		free(current->option);
 	while (current->next != NULL && len_group > 0 && current->next->cmd != NULL\

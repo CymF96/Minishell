@@ -19,7 +19,7 @@ void	check_if_exit(t_msh *msh)
 		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 }
 
-int	minishell_running(t_msh *msh)
+void	minishell_running(t_msh *msh)
 {
 	add_history(msh->input);
 	check_if_exit(msh);
@@ -29,32 +29,26 @@ int	minishell_running(t_msh *msh)
 	{
 		free(msh->input);
 		msh->input = NULL;
-	}	
-	return (EXIT_RESTART);
+	}
 }
 
-int	minishell_start(t_msh *msh, int ac, char **av, char **envp)
+void	minishell_start(t_msh *msh, int ac, char **av, char **envp)
 {
 	int	loop;
 
+	(void)av;
 	loop = 1;
 	clean_msh_init(msh);
 	msh->exit_error = 0;
 	signal_handler_init(msh);
 	if (input_validate(ac, envp) != 0)
-	{
 		exit_cleanup("invalid input\n", msh, 0, 1);
-		return ;
-	}
 	while (loop)
 	{
-		signal_input();
 		msh->input = readline("Heart of Gold>> ");
 		if (msh->input == NULL)
-		{
-			exit_cleanup("Problem in user input", msh, errno, 1);  //check what is the use of this function
-			return ;
-		}
+			sigeof(msh);
+		minishell_running(msh);
 		clean_msh_init(msh);
 	}
 }

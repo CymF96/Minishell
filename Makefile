@@ -9,14 +9,25 @@ LIBFT = $(LIBFT_PATH)/libft
 
 SRC =	minishell.c\
 		PARSE/parse_main.c\
-		PARSE/parse_utils.c\
+		PARSE/parse_create_modified.c\
+		PARSE/parse_env_variables.c\
+		PARSE/parse_mallocs.c\
+		PARSE/parse_pexe.c\
+		PARSE/parse_specials.c\
+		PARSE/parse_tokenize.c\
+		PARSE/parse_wild_character.c\
 		EXECUTION/exe_builtin_cmd_1.c\
 		EXECUTION/exe_builtin_cmd_2.c\
-		EXECUTION/exe_execution.c\
-		EXECUTION/exe_exit.c\
+		EXECUTION/exe_executable.c\
+		EXECUTION/exe_fork.c\
+		EXECUTION/exe_handle_signals.c\
+		EXECUTION/exe_main.c\
+		EXECUTION/exe_pipe.c\
+		EXECUTION/exe_redirection.c\
 		UTILS/clean_init.c\
 		UTILS/exit_cleanup.c\
 		UTILS/input_validate.c\
+		UTILS/utils.c\
 
 SRCS = $(addprefix $(SRC_PATH), $(SRC))
 OBJ = $(SRC:.c=.o)

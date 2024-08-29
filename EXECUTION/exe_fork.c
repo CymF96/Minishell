@@ -36,19 +36,19 @@ void	lstchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds)
 	}
 }
 
-void	kill_children(t_msh *msh, t_pipex **chds, int chd_index)
+void	kill_children(t_pipex **chds) //t_msh *msh
 {
 	int	i;
 
 	i = 0;
-	while (i < chd_index - 1)
+	while (chds[i] != NULL)
 	{
 		if (chds[i] != NULL && waitpid(chds[i]->pid, NULL, WNOHANG) == 0)
 			kill(chds[i]->pid, SIGTERM);
 		i++;
 	}
 	i = 0;
-	while (i < chd_index - 1)
+	while (chds[i] != NULL)
 	{
 		if (chds[i] != NULL)
 		{
@@ -60,7 +60,7 @@ void	kill_children(t_msh *msh, t_pipex **chds, int chd_index)
 }
 
 
-void	closing(t_msh *msh, t_pipex **chds, int chd_index)
+void	closing(t_msh *msh, t_pipex **chds)
 {
 	int	i;
 	int	flag;
@@ -68,19 +68,20 @@ void	closing(t_msh *msh, t_pipex **chds, int chd_index)
 
 	i = 0;
 	flag = 1;
-	while (i < (chd_index - 1))
+	while (chds[i] != NULL)
 	{
 		close(chds[i]->fd[0]);
 		close(chds[i++]->fd[1]);
 	}
 	i = 0;
-	while (i < chd_index)
+	while (chds[i] != NULL)
 	{
 		waitpid(chds[i]->pid, &status, 0);
 		if ((WIFSIGNALED(status)))
 			flag = 0;
 	}
 	if (!flag)
-		kill_children(msh, chds, chd_index);
+		kill_children(chds);
 	free_pipex(chds);
+	exit_cleanup(NULL, msh, errno, 0);
 }

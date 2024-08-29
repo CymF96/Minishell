@@ -6,7 +6,9 @@
 		"stddef.h": "c",
 		"compare": "c",
 		"type_traits": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"limits.h": "c",
+		"history.h": "c"
 	},
 	"makefile.configureOnOpen": true
 }

@@ -26,7 +26,6 @@ void	clean_init_pexe_node(t_pexe *pexe)
 	pexe->option = NULL;
 	pexe->group_id = -1;
 	pexe->p_index = -1;
-	pexe->fd = NULL;
 	pexe->prev = NULL;
 	pexe->next = NULL;
 }
@@ -58,5 +57,6 @@ void	clean_msh_init(t_msh *msh)
 	msh->parse = NULL;
 	msh->pipe_nb = 0;
 	msh->pexe = NULL; 
-	msh->main_child = -1;	
+	msh->main_child = -1;
+	msh->signal_flags = 0;
 }

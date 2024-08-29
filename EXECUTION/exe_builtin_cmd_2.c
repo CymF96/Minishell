@@ -1,28 +1,28 @@
 #include "../minishell.h"
 
-void	check_update_tempenv(t_msh *msh, char *cmd) //flag = 1 if use with export
-{
-	int		i;
-	int		j;
-	char	*new_var;
+// void	check_update_tempenv(t_msh *msh, char *cmd) //flag = 1 if use with export
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*new_var;
 
-	i = 0;
-	j = 0;
-	while (msh->temp_env[i] != NULL)
-	{
-		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
-		{
-			while (msh->temp_env[i][j] != '\0')
-			{
-				new_var[j] = msh->temp_env[i][j];
-				j++;
-			}
-			new_var[j] = '\0';
-			adding_var(msh, new_var, msh->envp);
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	while (msh->temp_env[i] != NULL)
+// 	{
+// 		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
+// 		{
+// 			while (msh->temp_env[i][j] != '\0')
+// 			{
+// 				new_var[j] = msh->temp_env[i][j];
+// 				j++;
+// 			}
+// 			new_var[j] = '\0';
+// 			adding_var(msh, new_var, msh->envp);
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable array
 {
@@ -30,6 +30,7 @@ void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable arr
 	int		p;
 
 	p = 0;
+	var_name = NULL;
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 		cmd_env(msh, g);
 	else if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
@@ -45,35 +46,35 @@ void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable arr
 				if (updating_var(msh->envp, var_name, msh->pexe->cmd) == 0)
 					adding_var(msh, msh->pexe->cmd, msh->envp);
 			}
-			else
-				check_temp_env(msh, msh->pexe->cmd);
+			// else
+			// 	check_temp_env(msh, msh->pexe->cmd);
 		}
 	}
 }
 
-void	check_remove_tempenv(t_msh *msh, char *cmd)
-{
-	int		i;
-	int		j;
-	char	*new_var;
+// void	check_remove_tempenv(t_msh *msh, char *cmd)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*new_var;
 
-	i = 0;
-	j = 0;
-	while (msh->temp_env[i] != NULL)
-	{
-		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
-		{
-			free(msh->temp_env[i]); //freeing the string of variable to remove
-			while (msh->temp_env[i + 1] != NULL) //swifting the pointer until the end to remove 
-			{
-				msh->temp_env[i] = msh->temp_env[i + 1];
-				i++;
-			}
-			return ;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	while (msh->temp_env[i] != NULL)
+// 	{
+// 		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
+// 		{
+// 			free(msh->temp_env[i]); //freeing the string of variable to remove
+// 			while (msh->temp_env[i + 1] != NULL) //swifting the pointer until the end to remove 
+// 			{
+// 				msh->temp_env[i] = msh->temp_env[i + 1];
+// 				i++;
+// 			}
+// 			return ;
+// 		}
+// 		i++;
+// 	}
+// }
 
 int	remove_var(t_msh *msh, char	*var_name)
 {
@@ -103,6 +104,7 @@ void	cmd_unset(t_msh *msh, int g)
 	int		p;
 
 	p = 0;
+	var_name = NULL;
 	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
 			&& msh->pexe->next->p_index == p + 1\
 			&& msh->pexe->next->cmd != NULL)
@@ -111,8 +113,9 @@ void	cmd_unset(t_msh *msh, int g)
 		if (ft_strchr(msh->pexe->cmd, '=') ==  NULL)
 		{
 			set_var_name(msh->pexe->cmd, var_name);
-			if (remove_var(msh, var_name))
-				check_remove_tempenv(msh, msh->pexe->cmd);
+			remove_var(msh, var_name);
+			// if (remove_var(msh, var_name))
+				// check_remove_tempenv(msh, msh->pexe->cmd);
 		}
 	}
 }

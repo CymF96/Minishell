@@ -108,8 +108,8 @@ void	create_modified(t_msh *msh, t_parse *pars)
 	j = 0;
 	while (msh->input[i] != '\0')
 	{
-		if (ft_isalnum(msh->input[i]) || msh->input[i] == ' ' || \
-														msh->input == '\t')
+		if (ft_isalnum(msh->input[i]) || msh->input[i] == ' '\
+				|| msh->input[i] == '\t')
 			pars->modified[j++] = msh->input[i++];
 		else if (msh->input[i] == '$')
 			expand_dollars(msh, pars, &i, &j);

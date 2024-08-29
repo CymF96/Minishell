@@ -40,11 +40,12 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	int		fd_stdin;
 	char	*gnl;
 
+	fd_temp = 0; //initialise the variable with 0
 	msh->parse->here_fd = open(".here_doc.tmp", O_CREAT | O_WRONLY | \
 															O_TRUNC, 0644);
 	fd_stdin = dup(STDIN_FILENO);
 	if (fd_temp == -1)
-		exit_cleanup("fd problem", msh, errno);
+		exit_cleanup("fd problem", msh, errno, 2); //verify which exist is better
 	while (1)
 	{
 		gnl = get_next_line(fd_stdin);
@@ -80,7 +81,7 @@ char	*remove_quotes(char *str, int len)
 	temp = malloc (sizeof(char) * (count + 1));
 	if (temp == NULL)
 		return (NULL);
-		i = 0;
+	i = 0;
 	while (str[i] != '\0' && i <= count)
 	{
 		if ((str[i] != '\"' && str[i] != '\'') || check_quote_ending(&str[i], i) == -1)
@@ -97,6 +98,8 @@ void	handle_heredoc(t_msh *msh, t_parse *pars, int *i, int *j)
 	int		flag;
 	char	*delim;
 
+	(void)pars;// to remove if needed
+	(void)j;// to remove if needed
 	flag = 0;
 	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
 		(*i)++;
@@ -120,13 +123,11 @@ void	handle_heredoc(t_msh *msh, t_parse *pars, int *i, int *j)
 // Main function of parse section. calls other major functions to parse input
 int	parse_main(t_msh *msh)
 {
-	t_parse	*pars;
-
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
-	parse_malloc(msh, pars);
-	create_modified(msh, pars);
-	parse_tokenize(msh, pars);
-	make_pexe(msh, pars);
+	parse_malloc(msh);
+	create_modified(msh, msh->parse);
+	parse_tokenize(msh, msh->parse);
+	make_pexe(msh, msh->parse);
 	return (0);
 }
