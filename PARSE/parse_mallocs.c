@@ -48,12 +48,12 @@ t_pexe	*pexe_malloc(t_msh *msh)//t_parse *prs parameter
 	temp = malloc(sizeof(t_pexe));
 	if (temp == NULL)
 		exit_cleanup("Malloc Failed", msh, errno, 2);//verifiy the correct exit check
-	clean_init_pexe_node(msh->pexe);
+	clean_init_pexe_node(temp);
 	temp->option = malloc(sizeof(char *) * 4);
 	if (temp->option == NULL)
 		exit_cleanup("Malloc failed", msh, errno, 2);//verifiy the correct exit check
 	while (i < 4)
-		temp->option[i] = NULL;
+		temp->option[i++] = NULL;
 	return (temp);
 }
 

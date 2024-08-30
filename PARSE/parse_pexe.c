@@ -45,6 +45,7 @@ static void handle_files(t_pexe *ite, int *prio)
 			temp->p_index = *prio;
 			(*prio)++;
 		}
+		temp = temp->next;
 	}
 }
 

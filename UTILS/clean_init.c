@@ -21,7 +21,7 @@ void	clean_init_chds(t_pipex *chds)
 
 void	clean_init_pexe_node(t_pexe *pexe)
 {
-	pexe->type = -1;
+	// pexe->type = -1;
 	pexe->cmd = NULL;
 	pexe->option = NULL;
 	pexe->group_id = -1;
@@ -44,6 +44,10 @@ void	clean_init_parse(t_parse *pars)
 {
 	
 	pars->head = NULL;
+	pars->modified = NULL;
+	pars->size_modified = -1;
+	pars->poi = NULL;
+	pars->here_fd = -1;
 }
 
 void	clean_msh_init(t_msh *msh)

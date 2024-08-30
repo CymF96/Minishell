@@ -73,12 +73,12 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 		{
 			if (temp[i] == '\'' || temp[i] == '\"')
 				quote_token(prs->modified, &i);
-			if (i + 1 == prs->poi[j][1])
+			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1]) //segmentation fault here at i position 0
 			{
 				i++;
 				break;
 			}
-			if (i == prs->poi[j][1])
+			if (prs->poi[j] != NULL && i == prs->poi[j][1])
 			{
 				tkn->type = prs->poi[j][0];
 				i++;
