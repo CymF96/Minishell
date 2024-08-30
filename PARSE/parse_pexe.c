@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/27 15:34:49 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 12:51:29 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	fill_pexe(t_pexe *pexe) //t_token *token parameter
 			if (flag == 0)
 			{
 				ite->type = EXE;
+				ite->cmd = ite->temp;
+				ite->option[0] = ite->temp;
 				flag++;
 				ite->group_id = group;
 				
@@ -75,6 +77,7 @@ void	fill_pexe(t_pexe *pexe) //t_token *token parameter
 			else if(flag == 1)
 			{
 				ite->type = STRING;
+				ite->cmd = ite->temp;
 				ite->group_id = group;
 				ite->p_index = prio++;
 			}
