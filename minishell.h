@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/28 15:51:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 10:50:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void	mdlchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
 void	lstchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
 void	kill_children(t_pipex **chds);
 void	closing(t_msh *msh, t_pipex **chds);
-int	node_strlen(t_pexe *node);
-int struct_strlen(char **array);
+int		node_strlen(t_pexe *node);
+int		struct_strlen(char **array);
 void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option);
 void	find_exe(t_msh *msh, char *cmd);
 void	sigint(t_msh *msh);
@@ -144,7 +144,7 @@ void	cmd_env(t_msh *msh, int g);
 void	check_update_tempenv(t_msh *msh, char *cmd);
 void	cmd_export(t_msh *msh, int g);
 void	check_remove_tempenv(t_msh *msh, char *cmd);
-int	remove_var(t_msh *msh, char	*var_name);
+int		remove_var(t_msh *msh, char	*var_name);
 void	cmd_unset(t_msh *msh, int g);
 
 /*------- PARSE USER INPUT -------*/
@@ -167,6 +167,7 @@ void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j);
 void	make_pexe(t_msh *msh, t_parse *pars);
 void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j);
 char	*remove_quotes(char *str, int len);
+void	update_pexe_main(t_msh *msh, t_pexe *pexe);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);
