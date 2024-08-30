@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-// #include "./PARSE/parse.h"
 
 void	check_if_exit(t_msh *msh)
 {

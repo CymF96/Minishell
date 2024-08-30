@@ -11,14 +11,15 @@ void	sigeof(t_msh *msh)
 
 void	signals_handler(int sig, siginfo_t *info, void *context)
 {
-	(void)context; //t_msh *msh = (t_msh *)context;
+	t_msh *msh = (t_msh *)context;
     (void)info;
 	
 	if (sig == SIGINT)
 	if (write(STDOUT_FILENO, "\n", 1) == -1)
 		return ;
     rl_replace_line("", 0);  // Clear the current input line in readline
-	//exit_cleanup(NULL, msh, errno, 0);    
+	if (msh->pexe != NULL)
+		exit_cleanup(NULL, msh, errno, 0);    
 	rl_on_new_line();  // Move to a new line
     rl_redisplay();
 }
