@@ -27,7 +27,7 @@ static t_type	check_special(t_token *tkn) //t_pexe *temp parameter
 	else if (tkn->type == W_C)
 		return (WILDCARD);
 	else
-		return (-1);
+		return (0);
 }
 
 static void handle_files(t_pexe *ite, int *prio)
@@ -63,7 +63,7 @@ void	fill_pexe(t_pexe *pexe) //t_token *token parameter
 	handle_files(ite, &prio);
 	while (ite != NULL)
 	{
-		if ((int)ite->type == -1 && (int)ite->muk_note == -1) // adding int type to match -1
+		if ((int)ite->type == -1 && (int)ite->muk_note == 0) // adding int type to match -1
 		{
 			if (flag == 0)
 			{
@@ -104,7 +104,7 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 	{
 		temp = pexe_malloc(msh); //pars parameter
 		temp->muk_note = check_special(list); //temp parameter
-		if ((int)temp->muk_note != -1) //adding int type to match -1
+		if ((int)temp->muk_note != 0) //adding int type to match -1
 			list = list->next;
 		temp->temp = list->token;
 		add_node((void **)&msh->pexe, (void *)temp, \

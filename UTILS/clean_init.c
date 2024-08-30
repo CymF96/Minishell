@@ -21,13 +21,15 @@ void	clean_init_chds(t_pipex *chds)
 
 void	clean_init_pexe_node(t_pexe *pexe)
 {
-	// pexe->type = -1;
+	pexe->type = -1;
 	pexe->cmd = NULL;
 	pexe->option = NULL;
 	pexe->group_id = -1;
 	pexe->p_index = -1;
 	pexe->prev = NULL;
 	pexe->next = NULL;
+	pexe->muk_note = 0;
+	pexe->temp = NULL;
 }
 
 void	clean_init_token_node(t_token *tkn)

@@ -35,7 +35,7 @@
 
 typedef enum s_type
 {
-	COMMAND,
+	BUILTIN,
 	STRING,
 	PATH,
 	EXE,
