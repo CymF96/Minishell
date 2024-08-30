@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+		"parse.h": "c",
+		"minishell.h": "c",
+		"errno.h": "c",
+		"stddef.h": "c",
+		"compare": "c",
+		"type_traits": "c",
+		"libft.h": "c",
+		"limits.h": "c",
+		"history.h": "c"
+	},
+	"makefile.configureOnOpen": true
+}
