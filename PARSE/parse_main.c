@@ -129,6 +129,6 @@ int	parse_main(t_msh *msh)
 	create_modified(msh, msh->parse);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
-	update_pexe(msh, msh->pexe);
+	//update_pexe(msh, msh->pexe);
 	return (0);
 }
