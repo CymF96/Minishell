@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/28 16:02:55 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:47:25 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,23 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j)
 	if (msh->input[*i] == '<' && msh->input[*i + 1] != '<')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, IO_I, (*j) - 1);
+		input_to_poi(msh, pars, INFILE, (*j) - 1);
 	}
 	else if (msh->input[*i] == '<' && msh->input[*i + 1] == '<')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, HEREDC, (*j) - 1);
+		input_to_poi(msh, pars, HEREDOC, (*j) - 1);
 		handle_heredoc(msh, pars, i , j);
 	}
 	else if (msh->input[*i] == '>' && msh->input[*i + 1] != '>')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, IO_O, (*j) - 1);
+		input_to_poi(msh, pars, OUTFILE, (*j) - 1);
 	}
 	else if (msh->input[*i] == '>' && msh->input[*i + 1] == '>')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, APPND, (*j) - 1);
+		input_to_poi(msh, pars, APPEND, (*j) - 1);
 	}
 }
 
@@ -72,7 +72,7 @@ void	handle_pipes(t_msh *msh, t_parse *pars, int *i, int *j)
 	if (msh->input[*i] == '|' && msh->input[*i + 1] != '|')
 	{
 		pars->modified[(*j)++] = msh->input[(*i)++];
-		input_to_poi(msh, pars, PIP, (*j) - 1);
+		input_to_poi(msh, pars, PIPE, (*j) - 1);
 	}
 	msh->pipe_nb++;
 }

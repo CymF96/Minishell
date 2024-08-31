@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/19 13:53:52 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:39:52 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ void	minishell_running(t_msh *msh)
 	}
 }
 
-void	minishell_start(t_msh *msh, int ac, char **av, char **envp)
+void	minishell_start(t_msh *msh, int ac, char **envp)
 {
 	int	loop;
 
-	(void)av;
 	loop = 1;
 	clean_msh_init(msh);
 	msh->exit_error = 0;
@@ -52,7 +51,7 @@ void	minishell_start(t_msh *msh, int ac, char **av, char **envp)
 	}
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_msh	*msh;
 
@@ -63,7 +62,7 @@ int main(int ac, char **av, char **envp)
 		perror("Error");
 		exit(EXIT_FAILURE);
 	}
-	minishell_start(msh, ac, av, envp);
+	minishell_start(msh, ac, envp);
 	if (msh != NULL)
 		free(msh);
 	return (0);
