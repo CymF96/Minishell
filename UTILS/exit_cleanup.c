@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/28 18:47:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/31 14:37:02 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 		while (d_ptr[i] != NULL)
 		{
 			free(d_ptr[i]);
+			d_ptr[i] = NULL;
 			i++;
 		}
 		free (d_ptr);
@@ -75,10 +76,12 @@ void	free_parse(t_msh *msh)
 
 	if (msh->parse != NULL)
 	{
-		free_mallocs (msh->parse->modified, (void **)msh->parse->poi);
+		free_mallocs ((void *)msh->parse->modified, (void **)msh->parse->poi);
 		while (msh->parse->head != NULL)
 		{
 			temp = msh->parse->head->next;
+			free (msh->parse->head->token);
+			msh->parse->head->token = NULL;
 			free (msh->parse->head);
 			msh->parse->head = temp;
 		}
@@ -115,6 +118,9 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 	}
 }
 
+// Main cleanup function. Takes optional message to output, main data struct,
+// errno for flag, and check is for programmers. 1 is for exit success, 2 for
+// exit due to failure, 3 for cleaning up the mallocs for next input
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
 	if (check == 1 || check == 2)

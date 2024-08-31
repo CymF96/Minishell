@@ -52,7 +52,7 @@ char	*expand_env(t_msh *msh, int *i, int *j)
 		if (!ft_strncmp(temp, msh->envp[k], len))
 		{
 			free(temp);
-			temp = strdup(msh->envp[k] + len); // error: assignment to ‘char *’ from ‘char’ makes pointer from integer without a cast [-Werror=int-conversion] temp = msh->envp[k][len]
+			temp = ft_strdup(msh->envp[k] + len); // error: assignment to ‘char *’ from ‘char’ makes pointer from integer without a cast [-Werror=int-conversion] temp = msh->envp[k][len]
 			return (temp);
 		}
 		k++;

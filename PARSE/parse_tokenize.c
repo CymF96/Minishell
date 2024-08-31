@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/26 17:32:52 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/31 19:17:10 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 
 	i = tkn->start_pos;
 	j = 0;
-	tkn->token = malloc(sizeof(tkn->end_pos - tkn->start_pos + 2));
+	ft_printf("******** %i %i %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
+	fflush(stdout);
+	tkn->token = malloc(sizeof(char) * (tkn->end_pos - tkn->start_pos + 2));
 	if (tkn->token == NULL)
-		exit_cleanup("Malloc failed", msh, errno, 2); //verify which exist is better
+		exit_cleanup("Malloc failed", msh, errno, 2);
 	while (i <= tkn->end_pos)
 	{
 		tkn->token[j] = pars->modified[i];
@@ -73,7 +75,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 		{
 			if (temp[i] == '\'' || temp[i] == '\"')
 				quote_token(prs->modified, &i);
-			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1]) //segmentation fault here at i position 0
+			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1])
 			{
 				i++;
 				break;

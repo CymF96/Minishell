@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/30 12:51:29 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:30:50 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static t_type	check_special(t_token *tkn) //t_pexe *temp parameter
 {
-	if (tkn->type == IO_I)
+	if (tkn->type == INFILE)
 		return (INFILE);
-	else if (tkn->type == HEREDC)
+	else if (tkn->type == HEREDOC)
 		return (HEREDOC);
-	else if (tkn->type == IO_O)
+	else if (tkn->type == OUTFILE)
 		return (OUTFILE);
-	else if (tkn->type == APPND)
+	else if (tkn->type == APPEND)
 		return (APPEND);
 	else if (tkn->type == PIPE)
 		return (PIPE);
-	else if (tkn->type == W_C)
+	else if (tkn->type == WILDCARD)
 		return (WILDCARD);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/30 10:50:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:46:53 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <linux/limits.h>
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
-# include "./PARSE/parse.h"
 
 # define FIELD_OFFSET(type, field) offsetof(type, field)
 # define SIGINT_FLAG 0x01	// 0001
@@ -48,6 +47,10 @@ typedef enum s_type
 	INFILE,
 	OUTFILE,
 	APPEND,
+	L_PAR,
+	R_PAR,
+	OR,
+	AND,
 }	t_type;
 
 typedef struct s_pipex
@@ -55,6 +58,25 @@ typedef struct s_pipex
 	int		fd[2];
 	pid_t	pid;
 }	t_pipex;
+
+typedef struct s_token
+{
+	char			*token;
+	int				start_pos;
+	int				end_pos;
+	int				type;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_parse
+{
+	char	*modified;
+	int		size_modified;
+	int		**poi;
+	int		here_fd;
+	t_token	*head;
+}	t_parse;
 
 typedef struct s_pexe
 {
@@ -97,6 +119,11 @@ typedef struct s_msh //master structure 'minishell'
 /* 9. signal					*/
 /* 10. */
 /********************************/
+
+/*------- MAIN/CONTROL FUNCTIONS -------*/
+void	minishell_start(t_msh *msh, int ac, char **envp);
+void	minishell_running(t_msh *msh);
+void	check_if_exit(t_msh *msh);
 
 /*------- INPUT_VALIDATE -------*/
 int	input_validate(int ac, char **envp);
@@ -177,9 +204,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr);
 void	free_pipex(t_pipex **children);
 void	clear_msh(t_msh *msh, int check, char *msg);
 
-/*-------MINISHELL-------*/
-void	check_if_exit(t_msh *msh);
-void	minishell_running(t_msh *msh);
-void	minishell_start(t_msh *msh, int ac, char **av, char **envp);
+
+
 
 #endif
