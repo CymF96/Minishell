@@ -6,24 +6,47 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:18:05 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 13:49:56 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:04:21 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*copy_input_modified(t_msh *msh, t_parse *pars, char *to_copy)
+void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev)
+{
+	void *current;
+
+	current = *head;
+
+	if (current == NULL)
+	{
+		addnode(node, head, offs_next, offs_prev);
+		return ;
+	}
+	while (*(void **)((char *)current + offs_next) != NULL)
+		current = *(void **)((char *)current + offs_next);
+	*(void **)((char *)current + offs_next) = node;
+	*(void **)((char *)node + offs_prev) = current;
+	*(void **)((char *)node + offs_next) = NULL;
+}
+
+void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end)
 {
 	char	*temp;
+	char	*temp_free;
 
 	if (to_copy == NULL)
 		return ;
-	temp = pars->modified;
-	pars->modified = ft_strjoin(temp, to_copy);
-	if (pars->modified == NULL)
+	temp = malloc (sizeof(char) * (end - start + 1));
+	if (temp == NULL)
 		exit_cleanup("Malloc Failed", msh, errno, 2);
+	ft_strlcpy(temp, &to_copy[start], end - start + 1);
+	temp_free = msh->parse->modified;
+	msh->parse->modified = ft_strjoin(temp, to_copy);
+	if (msh->parse->modified == NULL)
+		exit_cleanup("Malloc Failed", msh, errno, 2);
+	free (temp_free);
 	free (temp);
-	free (to_copy);
 }
 
 
@@ -83,7 +106,7 @@ t_type	check_special(char *str, int *i)
 		return (R_PAR);
 	else if (str[*i] == '*')
 		return (WILDCARD);
-	if (check_if_qt(str, i) != REGULAR)
+	else if (check_if_qt(str, i) != REGULAR)
 		return (check_if_qt(str, i));
 	return (REGULAR);
 }

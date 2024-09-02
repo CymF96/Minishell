@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 13:25:48 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:12:48 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
 
-# define FIELD_OFFSET(type, field) offsetof(type, field)
 # define SIGINT_FLAG 0x01	// 0001
 # define SIGQUIT_FLAG 0x02	// 0010
 
@@ -185,6 +184,9 @@ void	cmd_unset(t_msh *msh, int g);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
+void	parse_malloc(t_msh *msh);
+t_token	*token_malloc(t_msh *msh);
+t_pexe	*pexe_malloc(t_msh *msh);
 int		analyse_input(t_msh *msh, t_parse *pars);
 void	request_more_input(t_msh *msh, t_parse *pars);
 t_type	check_special(char *str, int *i);
@@ -192,6 +194,23 @@ t_type	check_if_qt(char *str, int *i);
 int		check_quote_ending(char *input, int i);
 void	create_modified(t_msh *msh, t_parse *pars);
 void	input_to_modified(t_msh *msh, t_parse *pars);
+void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end);
+void	expand_dollars(t_msh *msh, int *i);
+char	*expand_env(t_msh *msh, int *i);
+void	handle_paran(t_msh *msh, t_parse *pars, int *i);
+void	handle_logic(t_msh *msh, t_parse *pars, int *i);
+void	handle_pipes(t_msh *msh, t_parse *pars, int *i);
+void	handle_redir(t_msh *msh, t_parse *pars, int *i);
+void	handle_wild_character(t_msh *msh, int *i);
+void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev);
+void	parse_tokenize(t_msh *msh, t_parse *prs);
+void	handle_heredoc(t_msh *msh, int *i);
+void	get_here_doc(t_msh *msh, char *delim, int flag);
+char	*remove_quotes(char *str, int len);
+void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
+void	make_pexe(t_msh *msh, t_parse *pars);
+void	fill_pexe(t_pexe *pexe);
+
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);

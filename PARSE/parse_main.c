@@ -6,11 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 14:04:26 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:26:11 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+//valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
 
 static int	check_something_exists(t_msh *msh, int *i)
 {
@@ -90,24 +92,23 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 
 int	parse_main(t_msh *msh)
 {
-	t_parse	*pars;
 	int		test;
 
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh);
-	test = analyse_input(msh, pars);
+	test = analyse_input(msh, msh->parse);
 	if (test == 1)
 		return (1);
 	while (1)
 	{
-		if (pars->l_count == pars->r_count)
+		if (msh->parse->l_count == msh->parse->r_count)
 			break ;
-		request_more_input(msh, pars);
+		request_more_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
+	parse_tokenize(msh, msh->parse);
+	make_pexe(msh, msh->parse);
 	return (0);
 }
 
-	// parse_tokenize(msh, msh->parse);
-	// make_pexe(msh, msh->parse);

@@ -8,14 +8,16 @@ LIBFT_PATH = ./LIBFT
 LIBFT = $(LIBFT_PATH)/libft
 
 SRC =	minishell.c\
-		PARSE/parse_main.c\
-		PARSE/parse_create_modified.c\
-		PARSE/parse_env_variables.c\
-		PARSE/parse_mallocs.c\
-		PARSE/parse_pexe.c\
-		PARSE/parse_specials.c\
-		PARSE/parse_tokenize.c\
-		PARSE/parse_wild_character.c\
+		PARSE/parse_create_modified.c \
+		PARSE/parse_env_variables.c \
+		PARSE/parse_heredoc.c \
+		PARSE/parse_main.c \
+		PARSE/parse_mallocs.c \
+		PARSE/parse_pexe.c \
+		PARSE/parse_specials.c \
+		PARSE/parse_tokenize.c \
+		PARSE/parse_utils.c \
+		PARSE/parse_wild_character.c \
 		EXECUTION/exe_builtin_cmd_1.c\
 		EXECUTION/exe_builtin_cmd_2.c\
 		EXECUTION/exe_executable.c\
