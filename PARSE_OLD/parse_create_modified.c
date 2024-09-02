@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 14:01:02 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/08/28 14:21:01 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,27 @@ static void	handle_quote(t_msh *msh, t_parse *pars, int *i, int *j)
 	pars->modified[(*j)++] = msh->input[(*i)++];
 }
 
+// Checks if quote has closing end. If none found, it's treated as char
+int	check_quote_ending(char *input, int i)
+{
+	int		fl;
+	int		j;
+
+	fl = 0;
+	if (input[i] == '\'')
+		fl = 1;
+	j = i + 1;
+	while (input[j] != '\0')
+	{
+		if ((fl == 0 && input[j] == '\"') || (fl == 1 && input[j] == '\''))
+		{
+			return (j);
+		}
+		j++;
+	}
+	return (-1);
+}
+
 // Checks for special characters and direct them to their own functions
 static void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 {
@@ -78,37 +99,6 @@ static void	check_character(t_msh *msh, t_parse *pars, int *i, int *j)
 }
 
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
-void	input_to_modified(t_msh *msh, t_parse *pars)
-{
-	int		start;
-	int		i;
-	t_type	type;
-
-	start = 0;
-	i = 0;
-	while (msh->input[i] != '\0')
-	{
-		type = check_special(msh->input, &i);
-		if (type == DOLLAR)
-			expand_dollars(msh, pars, &i);
-		else if (type == S_QT || type == D_QT)
-		{
-			pars->modified[j++] = msh->input[i++];
-			if (check_quote_ending(msh->input, i - 1) != -1)
-				handle_quote(msh, pars, &i, &j);
-		}
-		
-		
-		if (type == REGULAR)
-			pars->modified[j++] = msh->input[i++];
-		
-		else
-			check_character(msh, pars, &i, &j);
-	}
-	pars->modified[j] = '\0';
-}
-
-// Main function to create the modified string
 void	create_modified(t_msh *msh, t_parse *pars)
 {
 	int	i;
@@ -118,19 +108,19 @@ void	create_modified(t_msh *msh, t_parse *pars)
 	j = 0;
 	while (msh->input[i] != '\0')
 	{
-		if (check_special(msh->input, &i) != REGULAR)
-			j++;
-		i++;
+		if (ft_isalnum(msh->input[i]) || msh->input[i] == ' '\
+				|| msh->input[i] == '\t')
+			pars->modified[j++] = msh->input[i++];
+		else if (msh->input[i] == '$')
+			expand_dollars(msh, pars, &i, &j);
+		else if (msh->input[i] == '\"' || msh->input[i] == '\'')
+		{
+			pars->modified[j++] = msh->input[i++];
+			if (check_quote_ending(msh->input, i - 1) != -1)
+				handle_quote(msh, pars, &i, &j);
+		}
+		else
+			check_character(msh, pars, &i, &j);
 	}
-	pars->poi = malloc (sizeof(int *) * j);
-	if (pars->poi == NULL)
-		exit_cleanup("Malloc Failed", msh, errno, 2);
-		i = 0;
-	while (i < j)
-		pars->poi[i++] = NULL;
-	pars->size_modified = 1;
-	pars->modified = malloc (sizeof(char) * pars->size_modified);
-	pars->modified[pars->size_modified] = '\0';
-	if (pars->modified == NULL)
-		exit_cleanup ("Malloc Failed", msh, errno, 2);
+	pars->modified[j] = '\0';
 }

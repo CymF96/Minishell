@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/19 18:22:12 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:41:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	clean_init_parse(t_parse *pars)
 	
 	pars->head = NULL;
 	pars->modified = NULL;
+	pars->no_poi = 0;
 	pars->size_modified = -1;
 	pars->poi = NULL;
 	pars->here_fd = -1;
