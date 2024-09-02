@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/31 14:37:02 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:10:23 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_mallocs(void *s_ptr, void **d_ptr)
 {
-	int	i;
+	int i;
 
 	if (s_ptr != NULL)
 	{
@@ -30,7 +30,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 			d_ptr[i] = NULL;
 			i++;
 		}
-		free (d_ptr);
+		free(d_ptr);
 		d_ptr = NULL;
 	}
 }

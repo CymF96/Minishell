@@ -6,29 +6,11 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/30 16:30:50 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:14:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static t_type	check_special(t_token *tkn) //t_pexe *temp parameter
-{
-	if (tkn->type == INFILE)
-		return (INFILE);
-	else if (tkn->type == HEREDOC)
-		return (HEREDOC);
-	else if (tkn->type == OUTFILE)
-		return (OUTFILE);
-	else if (tkn->type == APPEND)
-		return (APPEND);
-	else if (tkn->type == PIPE)
-		return (PIPE);
-	else if (tkn->type == WILDCARD)
-		return (WILDCARD);
-	else
-		return (0);
-}
 
 static void handle_files(t_pexe *ite, int *prio)
 {
@@ -63,7 +45,7 @@ void	fill_pexe(t_pexe *pexe) //t_token *token parameter
 	handle_files(ite, &prio);
 	while (ite != NULL)
 	{
-		if ((int)ite->type == -1 && (int)ite->muk_note == 0) // adding int type to match -1
+		if ((int)ite->type == -1 && (int)ite->muk_note == 0)
 		{
 			if (flag == 0)
 			{
@@ -103,13 +85,12 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 	while (list != NULL)
 	{
 		temp = pexe_malloc(msh); //pars parameter
-		temp->muk_note = check_special(list); //temp parameter
-		if ((int)temp->muk_note != 0) //adding int type to match -1
+		temp->muk_note = check_special(list->token, 0); //temp parameter
+		if ((int)temp->muk_note != 0)
 			list = list->next;
 		temp->temp = list->token;
-		add_node((void **)&msh->pexe, (void *)temp, \
-				FIELD_OFFSET(t_pexe, next), FIELD_OFFSET(t_pexe, prev));
+		addnode(temp, (void**)msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
 		list = list->next;
 	}
-	fill_pexe(msh->pexe); //pars->head parameter
+	fill_pexe(msh->pexe);
 }

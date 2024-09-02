@@ -6,13 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:10:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/28 12:20:32 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:40:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*find_exp(t_msh *msh, int *i, int *j)
+static char	*find_exp(t_msh *msh, int *i)
 {
 	int		z;
 	char	*str;
@@ -27,8 +27,7 @@ static char	*find_exp(t_msh *msh, int *i, int *j)
 	str = malloc (sizeof(char) * (*i - z + 2));
 	if (str == NULL)
 		exit_cleanup("Malloc failed", msh, errno, 2); //verify which exist is better
-	ft_strlcpy(str, &msh->input[z], *i - z + 2); 
-	*j = z;
+	ft_strlcpy(str, &msh->input[z], *i - z + 2);
 	return (str);
 }
 
@@ -93,27 +92,23 @@ static int	find_matching(char *str, char *dname)
 	return (0);
 }
 
-void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j)
+void	handle_wild_character(t_msh *msh, int *i)
 {
 	char			*str;
 	DIR				*dir;
 	struct dirent	*entry;
-	int				k;
 
-	str = find_exp(msh, i, j);
+	str = find_exp(msh, i);
 	dir = opendir(".");
 	if (dir == NULL)
 		exit_cleanup("Opendir", msh, errno, 2); //verify which exist is better
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		k = 0;
 		if (find_matching(str, entry->d_name) != -1)
 		{
-			k = 0;
-			while (entry->d_name[k] != '\0')
-				pars->modified[(*j)++] = entry->d_name[k++];
-			pars->modified[(*j)++] = ' ';
+			copy_input_mod(msh, entry->d_name, 0, ft_strlen(entry->d_name));
+			copy_input_mod(msh, " ", 0, 1);
 		}
 		entry = readdir(dir);
 	}

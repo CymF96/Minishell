@@ -8,7 +8,8 @@
 		"type_traits": "c",
 		"libft.h": "c",
 		"limits.h": "c",
-		"history.h": "c"
+		"history.h": "c",
+		"stdio.h": "c"
 	},
 	"makefile.configureOnOpen": true
 }

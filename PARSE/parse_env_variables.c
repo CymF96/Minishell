@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/28 14:20:33 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 16:05:45 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ static char	*find_var(t_msh *msh, int *i)
 }
 
 // Goes through env values. If match is found, returns a malloced memory addr
-char	*expand_env(t_msh *msh, int *i, int *j)
+char	*expand_env(t_msh *msh, int *i)
 {
 	int		k;
 	int		len;
 	char	*temp;
 
-	(void)j;// to remove if needed
 	k = 0;
 	temp = find_var(msh, i);
 	len = ft_strlen(temp);
