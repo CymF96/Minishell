@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/30 16:46:53 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/02 13:25:48 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ typedef enum s_type
 	R_PAR,
 	OR,
 	AND,
+	DOLLAR,
+	REGULAR,
+	S_QT,
+	D_QT,
 }	t_type;
 
 typedef struct s_pipex
@@ -73,6 +77,10 @@ typedef struct s_parse
 {
 	char	*modified;
 	int		size_modified;
+	int		no_poi;
+	int		l_count;
+	int		r_count;
+	int		pip_count;
 	int		**poi;
 	int		here_fd;
 	t_token	*head;
@@ -96,6 +104,7 @@ typedef struct s_msh //master structure 'minishell'
 	char		*input;
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			fd[2];
+	char		*text;
 	int			pipe_nb;
 	int			flag;
 	int			exit_error; // initialise only one time to keep track of exit error code
@@ -176,25 +185,13 @@ void	cmd_unset(t_msh *msh, int g);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
-void	parse_malloc(t_msh *msh);
-t_token	*token_malloc(t_msh *msh); //t_parse *prs
-t_pexe	*pexe_malloc(t_msh *msh); //t_parse *prs
-void	add_node(void **head, void *node, size_t next_off, size_t prev_off);
-void	parse_tokenize(t_msh *msh, t_parse *prs);
-void	create_modified(t_msh *msh, t_parse *pars);
+int		analyse_input(t_msh *msh, t_parse *pars);
+void	request_more_input(t_msh *msh, t_parse *pars);
+t_type	check_special(char *str, int *i);
+t_type	check_if_qt(char *str, int *i);
 int		check_quote_ending(char *input, int i);
-char	*expand_env(t_msh *msh, int *i, int *j);
-void	quote_token(char *temp, int *i);
-void	handle_redir(t_msh *msh, t_parse *pars, int *i, int *j);
-void	handle_pipes(t_msh *msh, t_parse *pars, int *i, int *j);
-void	handle_logic(t_msh *msh, t_parse *pars, int *i, int *j);
-void	handle_paran(t_msh *msh, t_parse *pars, int *i, int *j);
-void	handle_heredoc(t_msh *msh, t_parse *pars, int *i , int *j);
-void	handle_wildcard(t_msh *msh, t_parse *pars, int *i, int *j);
-void	make_pexe(t_msh *msh, t_parse *pars);
-void	handle_wild_character(t_msh *msh, t_parse *pars, int *i, int *j);
-char	*remove_quotes(char *str, int len);
-void	update_pexe_main(t_msh *msh, t_pexe *pexe);
+void	create_modified(t_msh *msh, t_parse *pars);
+void	input_to_modified(t_msh *msh, t_parse *pars);
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);

@@ -5,129 +5,109 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 12:01:50 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/31 14:37:08 by mcoskune         ###   ########.fr       */
+/*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/09/02 14:04:26 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
+static int	check_something_exists(t_msh *msh, int *i)
 {
-	int		i;
-	char	*temp;
+	int		j;
+	t_type	type;
 
-	i = 0;
-	if (flag == 0)
+	j = *i;
+	while (msh->input[j] != '\0')
 	{
-		while (gnl[i] != '\n' || gnl[i] != '\0')
+		type = check_special(msh->input, &j);
+		if (msh->input[j] == ' ' && msh->input[j] == '\t')
 		{
-			if (gnl[i] == '$')
-			{
-				temp = expand_env(msh, &i, NULL);
-				ft_putstr_fd(temp, fd_temp);
-				free (temp);
-			}
-		}
-	}
-	else
-		ft_putstr_fd(gnl, fd_temp);
-}
-
-void	get_here_doc(t_msh *msh, char *delim, int flag)
-{
-	int		fd_temp;
-	int		fd_stdin;
-	char	*gnl;
-
-	fd_temp = 0; //initialise the variable with 0
-	msh->parse->here_fd = open(".here_doc.tmp", O_CREAT | O_WRONLY | \
-															O_TRUNC, 0644);
-	fd_stdin = dup(STDIN_FILENO);
-	if (fd_temp == -1)
-		exit_cleanup("fd problem", msh, errno, 2); //verify which exist is better
-	while (1)
-	{
-		gnl = get_next_line(fd_stdin);
-		if (ft_strlen(delim) + 1 == ft_strlen(gnl)
-			&& !ft_strncmp(gnl, delim, ft_strlen(delim + 1)))
-		{
-			close(fd_stdin);
-			break ;
-		}
-		else
-			check_for_here_dollar(msh, gnl, fd_temp, flag);
-		free(gnl);
-	}
-}
-
-char	*remove_quotes(char *str, int len)
-{
-	int		i;
-	int		count;
-	char	*temp;
-
-	i = 0;
-	count = 0;
-	while (str[i] != '\0' && i < len)
-	{
-		if (check_quote_ending(str, i) != -1)
-		{
-			i = check_quote_ending(&str[i], i) + 1;
+			j++;
 			continue ;
 		}
-		count++;
+		else if (type != REGULAR && type != DOLLAR && \
+				type != S_QT && type != D_QT)
+			return (1);
+		else if (type == REGULAR)
+			return (0);
+		j++;
 	}
-	temp = malloc (sizeof(char) * (count + 1));
-	if (temp == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\0' && i <= count)
+	return (1);
+}
+
+void	request_more_input(t_msh *msh, t_parse *pars)
+{
+	char	*temp;
+	char	*gnl_temp;
+
+	clean_init_parse(pars);
+	if (msh->text == NULL)
+		msh->text = ft_strdup(msh->input);
+	else
 	{
-		if ((str[i] != '\"' && str[i] != '\'') || check_quote_ending(&str[i], i) == -1)
-			temp[i] = str[i];
+		temp = msh->text;
+		gnl_temp = get_next_line(STDIN_FILENO);
+		msh->text = ft_strjoin(temp, gnl_temp);
+		free (temp);
+		temp = NULL;
+		free (gnl_temp);
+		free (msh->input);
+		msh->input = msh->text;
+	}
+	analyse_input(msh, pars);
+}
+
+int	analyse_input(t_msh *msh, t_parse *pars)
+{
+	int		i;
+	t_type	tye;
+
+	i = 0;
+	while (msh->input[i] != '\0')
+	{
+		tye = check_special(msh->input, &i);
+		if (tye == HEREDOC || tye == APPEND || tye == INFILE || \
+				tye == OUTFILE || tye == PIPE)
+		{
+			if (check_something_exists(msh, &i) != 0)
+				return (1);
+		}
+		else if (tye == D_QT || tye == S_QT)
+		{
+			if (check_quote_ending(msh->input, i) == -1)
+				request_more_input(msh, pars);
+			i = check_quote_ending(msh->input, i);
+		}
+		else if (tye == L_PAR)
+			pars->l_count++;
+		else if (tye == R_PAR)
+			pars->r_count++;
 		i++;
 	}
-	temp[i] = '\0';
-	return (temp);
+	return (0);
 }
 
-void	handle_heredoc(t_msh *msh, t_parse *pars, int *i, int *j)
-{
-	int		start;
-	int		flag;
-	char	*delim;
-
-	(void)pars;// to remove if needed
-	(void)j;// to remove if needed
-	flag = 0;
-	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
-		(*i)++;
-	start = ++(*i);
-	while (msh->input[*i] != ' ' || msh->input[*i] != '\t')
-	{
-		if (msh->input[*i] == '\'' || msh->input[*i] == '\"')
-		{
-			if (check_quote_ending(&msh->input[*i], *i) != -1)
-			{
-				flag = 1;
-				*i = check_quote_ending(&msh->input[*i], *i) + 1;
-			}
-		}
-	}
-	delim = remove_quotes(&msh->input[start], *i - start + 1);
-	get_here_doc(msh, delim, flag);
-	free (delim);
-}
-
-// Main function of parse section. calls other major functions to parse input
 int	parse_main(t_msh *msh)
 {
+	t_parse	*pars;
+	int		test;
+
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh);
+	test = analyse_input(msh, pars);
+	if (test == 1)
+		return (1);
+	while (1)
+	{
+		if (pars->l_count == pars->r_count)
+			break ;
+		request_more_input(msh, pars);
+	}
 	create_modified(msh, msh->parse);
-	parse_tokenize(msh, msh->parse);
-	make_pexe(msh, msh->parse);
 	return (0);
 }
+
+	// parse_tokenize(msh, msh->parse);
+	// make_pexe(msh, msh->parse);
