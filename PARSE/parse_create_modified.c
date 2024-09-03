@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:34:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:40:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	input_to_modified(t_msh *msh, t_parse *pars)
 		else if (type == REGULAR)
 		{
 			start = i;
-			while (check_special(msh->input, &i) == REGULAR)
+			while (check_special(msh->input, &i) == REGULAR && msh->input[i] != '\0')
 				i++;
 			copy_input_mod(msh, &msh->input[start], start, i);
 		}
@@ -124,7 +124,7 @@ void	create_modified(t_msh *msh, t_parse *pars)
 			j++;
 		i++;
 	}
-	// printf("%d\n", j);
+	printf("%d\n", j);
 	pars->poi = malloc(sizeof(int *) * (j + 1));
 	if (pars->poi == NULL)
 		exit_cleanup("Malloc Failed", msh, errno, 2);
