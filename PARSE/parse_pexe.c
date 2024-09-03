@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:14:33 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:57:38 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,18 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 {
 	t_pexe	*temp;
 	t_token	*list;
+	int	z;
 
+	z = 0;
 	list = pars->head;
 	while (list != NULL)
 	{
 		temp = pexe_malloc(msh); //pars parameter
-		temp->muk_note = check_special(list->token, 0); //temp parameter
-		if ((int)temp->muk_note != 0)
+		temp->muk_note = check_special(list->token, &z); //temp parameter
+		if (temp->muk_note != REGULAR)
 			list = list->next;
 		temp->temp = list->token;
-		addnode(temp, (void**)msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
+		addnode((void *)temp, (void**)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
 		list = list->next;
 	}
 	fill_pexe(msh->pexe);
