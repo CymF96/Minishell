@@ -170,7 +170,6 @@ void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option);
 void	find_exe(t_msh *msh, char *cmd);
 void	sigint(t_msh *msh);
 void	sigeof(t_msh *msh);
-void	sigquit(t_msh *msh);
 void    cmd_exit(t_msh *msh);
 void    cmd_echo(t_msh *msh, int g);
 void	cmd_pwd(t_msh *msh);

@@ -19,7 +19,7 @@ static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 
 	i = tkn->start_pos;
 	j = 0;
-	ft_printf("******** %i %i %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
+	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, tkn->end_pos - tkn->start_pos + 2 : %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
 	fflush(stdout);
 	tkn->token = malloc(sizeof(char) * (tkn->end_pos - tkn->start_pos + 2));
 	if (tkn->token == NULL)
@@ -75,6 +75,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 		{
 			if (temp[i] == '\'' || temp[i] == '\"')
 				quote_token(prs->modified, &i);
+			//ft_printf("in parse token poi[i][j]: %d\n", prs->poi[j][1]);
 			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1])
 			{
 				i++;

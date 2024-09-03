@@ -12,8 +12,9 @@ void    cmd_echo(t_msh *msh, int g)
 
 	p = msh->pexe->p_index;
 	flag = 0;
-	if (ft_strlen(msh->pexe->prev->option[1]) == 2\
-			&& !ft_strncmp("-n", msh->pexe->prev->option[1], 2))
+	
+	if (msh->pexe->option[1] != NULL && ft_strlen(msh->pexe->option[1]) == 2\
+			&& !ft_strncmp("-n", msh->pexe->option[1], 2))
 		flag = 1;
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 	{

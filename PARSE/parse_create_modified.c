@@ -124,7 +124,7 @@ void	create_modified(t_msh *msh, t_parse *pars)
 			j++;
 		i++;
 	}
-	printf("%d\n", j);
+	// printf("%d\n", j);
 	pars->poi = malloc(sizeof(int *) * (j + 1));
 	if (pars->poi == NULL)
 		exit_cleanup("Malloc Failed", msh, errno, 2);

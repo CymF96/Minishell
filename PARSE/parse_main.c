@@ -72,6 +72,10 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 		if (tye == HEREDOC || tye == APPEND || tye == INFILE || \
 				tye == OUTFILE || tye == PIPE)
 		{
+			if (tye == HEREDOC || tye == APPEND)
+				i += 2;
+			else
+				i++;
 			if (check_something_exists(msh, &i) != 0)
 				return (1);
 		}
