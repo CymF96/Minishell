@@ -52,22 +52,26 @@ void	free_pipex(t_pipex **children)
 
 void	free_pexe(t_msh *msh)
 {
-	t_pexe	*temp;
+	t_pexe	*current;
+	t_pexe	*next;
 
-	while (msh->pexe != NULL)
+	current = msh->pexe;
+	while (current != NULL)
 	{
-		temp = msh->pexe->next;
-		free_mallocs(msh->pexe->cmd, (void **)msh->pexe->option);
-		if (temp != NULL)
-			free (temp);
-		free(msh->pexe);
-		msh->pexe = temp;
+		next = current->next;
+		if (current->cmd != NULL)
+		{
+			free(current->cmd);
+			current->cmd = NULL;
+		}
+		if (current->option != NULL)
+			free_mallocs(NULL, (void **)current->option);
+		current->prev = NULL;
+		free(current);
+		current = NULL;
+		current = next;
 	}
-	if (msh->pexe != NULL)
-	{
-		free(msh->pexe);
-		msh->pexe = NULL;
-	}
+	msh->pexe = NULL;
 }
 
 void	free_parse(t_msh *msh)
