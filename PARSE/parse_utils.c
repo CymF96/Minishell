@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:18:05 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:04:21 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:45:55 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev)
 {
 	void *current;
 
-	current = *head;
-
+	if (head != NULL)
+		current = *head;
+	else
+		current = NULL;
 	if (current == NULL)
 	{
 		addnode(node, head, offs_next, offs_prev);
