@@ -21,13 +21,15 @@ static void	input_to_poi(t_msh *msh, t_parse *pars, int symbol)
 	i = 0;
 	while (pars->poi[i] != NULL)
 		i++;
-	pars->poi[i] = malloc(sizeof(int) * 4);
+	pars->poi[i] = malloc(sizeof(int) * 2);
 	if (pars->poi[i] == NULL)
 		exit_cleanup ("Malloc failed", msh, errno, 2);
 	pars->poi[i][0] = symbol;
 	pars->poi[i][1] = ft_strlen(pars->modified);
-	pars->poi[i][2] = -1;
-	pars->poi[i][3] = -1;
+	ft_printf("len pars->modified: %d\n",pars->poi[i][1]);
+	// pars->poi[i][2] = -1;
+	// pars->poi[i][3] = -1;
+	ft_printf("poi[i][0]: %d, poi[i][1]: %d\n", pars->poi[i][0], pars->poi[i][1]);
 }
 
 void	handle_redir(t_msh *msh, t_parse *pars, int *i)

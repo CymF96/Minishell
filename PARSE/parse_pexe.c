@@ -93,6 +93,7 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 		temp->temp = list->token;
 		addnode((void *)temp, (void**)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
 		list = list->next;
+		temp->group_id=0;
 	}
 	fill_pexe(msh->pexe);
 }

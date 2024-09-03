@@ -51,7 +51,7 @@ void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
-	while (msh->pexe->group_id != 0 && msh->pexe->p_index != 0)
+	while (msh->pexe->group_id != 0) //&& msh->pexe->p_index != 0
 		msh->pexe = msh->pexe->next;
 	check_type(msh);
 	exit_cleanup(NULL, msh, errno, 0);

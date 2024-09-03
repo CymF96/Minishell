@@ -27,17 +27,17 @@
 void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable array
 {
 	char	*var_name;
-	int		p;
+	// int		p;
 
-	p = 0;
+	// p = 0;
 	var_name = NULL;
+	ft_printf("%p\n", var_name);
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 		cmd_env(msh, g);
 	else if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
 	{
 		while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
-				&& msh->pexe->next->p_index == p + 1\
-				&& msh->pexe->next->cmd != NULL)
+				&& msh->pexe->next->cmd != NULL) //&& msh->pexe->next->p_index == p + 1
 		{
 			msh->pexe = msh->pexe->next;
 			if (ft_strchr(msh->pexe->cmd, '=') !=  NULL)
