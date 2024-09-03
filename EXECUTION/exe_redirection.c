@@ -59,10 +59,11 @@ void	red_right(t_msh *msh)
 		close(msh->fd[1]);
 		exit_cleanup(NULL, msh, errno, 0);
 	}
-	close(msh->fd[1]);
 	if (msh->pexe->next)
 		msh->pexe = msh->pexe->next;
 	check_type(msh);
+	close(msh->fd[1]);
 	msh->fd[1] = save_sdtout;
 	dup2(msh->fd[1], STDOUT_FILENO);
+	close(msh->fd[1]);
 }

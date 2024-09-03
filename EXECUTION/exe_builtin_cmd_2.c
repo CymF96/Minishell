@@ -1,28 +1,31 @@
 #include "../minishell.h"
 
-// void	check_update_tempenv(t_msh *msh, char *cmd) //flag = 1 if use with export
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*new_var;
+void	adding_var(t_msh *msh, char *new_var) // 3lines too long
+{
+	int		i;
+	int		envp_len;
+	char	**temp_envp;
 
-// 	i = 0;
-// 	j = 0;
-// 	while (msh->temp_env[i] != NULL)
-// 	{
-// 		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
-// 		{
-// 			while (msh->temp_env[i][j] != '\0')
-// 			{
-// 				new_var[j] = msh->temp_env[i][j];
-// 				j++;
-// 			}
-// 			new_var[j] = '\0';
-// 			adding_var(msh, new_var, msh->envp);
-// 		}
-// 		i++;
-// 	}
-// }
+	envp_len = 0;
+	while (msh->envp[envp_len] != NULL) // getting the number of line in envp 
+			envp_len++;
+	temp_envp = malloc(sizeof(char *) * (envp_len + 2)); // malloc new structure + 2 for new line to add and NULL
+	if (temp_envp == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	i = 0;
+	while (i < envp_len) //copying old array to new one
+	{
+		temp_envp[i] = ft_strdup(msh->envp[i]);
+		free(msh->envp[i++]);
+	}
+    temp_envp[i] = ft_strdup(new_var);
+    if (temp_envp[i] == NULL)
+        exit_cleanup(NULL, msh, errno, 1);
+    temp_envp[envp_len + 1] = NULL;
+	if (msh->envp != NULL) //free old array pointer
+		free(msh->envp);
+	msh->envp = temp_envp; //copying temp array ptr to envp on
+}
 
 void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable array
 {
@@ -31,50 +34,23 @@ void	cmd_export(t_msh *msh, int g) //adding variable to environmnet variable arr
 
 	// p = 0;
 	var_name = NULL;
-	ft_printf("%p\n", var_name);
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 		cmd_env(msh, g);
-	else if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
-	{
-		while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
 				&& msh->pexe->next->cmd != NULL) //&& msh->pexe->next->p_index == p + 1
+	{
+		msh->pexe = msh->pexe->next;
+		if (ft_strchr(msh->pexe->cmd, '=') !=  NULL)
 		{
-			msh->pexe = msh->pexe->next;
-			if (ft_strchr(msh->pexe->cmd, '=') !=  NULL)
-			{
-				set_var_name(msh->pexe->cmd, var_name);
-				if (updating_var(msh->envp, var_name, msh->pexe->cmd) == 0)
-					adding_var(msh, msh->pexe->cmd, msh->envp);
-			}
-			// else
-			// 	check_temp_env(msh, msh->pexe->cmd);
+			var_name = set_var_name(msh->pexe->cmd);
+			if (updating_var(msh->envp, var_name, msh->pexe->cmd) == 0)
+				adding_var(msh, msh->pexe->cmd);
+			free(var_name);
 		}
+		// else
+		// 	check_update_localenvp(msh, msh->pexe->cmd);
 	}
 }
-
-// void	check_remove_tempenv(t_msh *msh, char *cmd)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*new_var;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (msh->temp_env[i] != NULL)
-// 	{
-// 		if (!ft_strncmp(msh->temp_env[i], cmd, ft_strlen(cmd)))
-// 		{
-// 			free(msh->temp_env[i]); //freeing the string of variable to remove
-// 			while (msh->temp_env[i + 1] != NULL) //swifting the pointer until the end to remove 
-// 			{
-// 				msh->temp_env[i] = msh->temp_env[i + 1];
-// 				i++;
-// 			}
-// 			return ;
-// 		}
-// 		i++;
-// 	}
-// }
 
 int	remove_var(t_msh *msh, char	*var_name)
 {
@@ -85,8 +61,12 @@ int	remove_var(t_msh *msh, char	*var_name)
 	{
 		if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name)))
 		{
-			free(msh->envp[j]); //freeing the string of variable to remove
-			while (msh->envp[j + 1] != NULL) //swifting the pointer until the end to remove 
+			if (msh->envp[j + 1] == NULL)
+			{
+				free(msh->envp[j]);
+				msh->envp[j] = NULL;
+			}
+			while (msh->envp[j + 1] != NULL)
 			{
 				msh->envp[j] = msh->envp[j + 1];
 				j++;
@@ -112,10 +92,11 @@ void	cmd_unset(t_msh *msh, int g)
 		msh->pexe = msh->pexe->next;
 		if (ft_strchr(msh->pexe->cmd, '=') ==  NULL)
 		{
-			set_var_name(msh->pexe->cmd, var_name);
-			remove_var(msh, var_name);
-			// if (remove_var(msh, var_name))
-				// check_remove_tempenv(msh, msh->pexe->cmd);
+			var_name = set_var_name(msh->pexe->cmd);
+			if (remove_var(msh, var_name) == 1)
+				return ;
+				//check removal from the temporary envp
 		}
+		free(var_name);
 	}
 }

@@ -41,8 +41,8 @@ void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option) // 
 	}
 	if (current->option)
 		free(current->option);
-	while (current->next != NULL && len_group > 0 && current->next->cmd != NULL\
-			&& current->next->p_index == current->p_index + 1)
+	while (current->next != NULL && len_group > 0 && current->next->cmd != NULL)\
+			//&& current->next->p_index == current->p_index + 1)
 	{
 		temp_option[i++] = ft_strdup(current->next->cmd);
 		if (temp_option == NULL)

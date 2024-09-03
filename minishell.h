@@ -144,9 +144,11 @@ void	clean_init_pexe_node(t_pexe *pexe);
 void	clean_msh_init(t_msh *msh);
 
 /*------- UTILS -------*/
-void	adding_var(t_msh *msh, char *new_var, char **env_struct);
-void	set_var_name(char *cmd, char *var_name);
+void	adding_temp_var(t_msh *msh, char *new_var);
+char	*set_var_name(char *cmd);
 int	updating_var(char **env_struct, char *var_name, char *cmd);
+void	check_update_tempenv(t_msh *msh, char *cmd);
+void	check_remove_tempenv(t_msh *msh, char *cmd);
 
 /*------- EXECUTION -------*/
 void	execution(t_msh *msh);
@@ -175,9 +177,8 @@ void    cmd_echo(t_msh *msh, int g);
 void	cmd_pwd(t_msh *msh);
 void	cmd_cd(t_msh *msh, int g);
 void	cmd_env(t_msh *msh, int g);
-void	check_update_tempenv(t_msh *msh, char *cmd);
+void	adding_var(t_msh *msh, char *new_var);
 void	cmd_export(t_msh *msh, int g);
-void	check_remove_tempenv(t_msh *msh, char *cmd);
 int		remove_var(t_msh *msh, char	*var_name);
 void	cmd_unset(t_msh *msh, int g);
 
@@ -218,8 +219,5 @@ void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);
 void	free_pipex(t_pipex **children);
 void	clear_msh(t_msh *msh, int check, char *msg);
-
-
-
 
 #endif

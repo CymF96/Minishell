@@ -25,7 +25,7 @@ void	check_builtin_cmd(t_msh *msh, char *cmd)
 		cmd_unset(msh, g);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
 		cmd_env(msh, g);
-	while (msh->pexe->next != NULL && msh->pexe->next->group_id != g)
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id != g++)
 		msh->pexe = msh->pexe->next;
 }
 
@@ -51,8 +51,8 @@ void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
-	while (msh->pexe->group_id != 0) //&& msh->pexe->p_index != 0
-		msh->pexe = msh->pexe->next;
+	//while (msh->pexe->group_id != 0) //&& msh->pexe->p_index != 0
+	//	msh->pexe = msh->pexe->next;
 	check_type(msh);
-	exit_cleanup(NULL, msh, errno, 0);
+	//exit_cleanup(NULL, msh, errno, 0);
 }
