@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 17:31:52 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 09:52:19 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 			i++;
 		}
 		tkn->end_pos = i - 1;
-		addnode(tkn, (void**)prs->head, offsetof(t_token, next), offsetof(t_token, prev));
+		addnode((void *)tkn, (void**)&prs->head, offsetof(t_token, next), offsetof(t_token, prev));
 		copy_text(msh, prs, tkn);
 	}
 }
