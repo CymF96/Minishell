@@ -40,14 +40,19 @@ void	free_pipex(t_pipex **children)
 	int	i;
 
 	i = 0;
-	if (children[i] != NULL)
+	while (children[i] != NULL)
 	{
 		free(children[i]);
-		children[i++] = NULL;
+		children[i] = NULL;
+		i++;
 	}
-	if (children != NULL)
-		free(children);
-	children = NULL;
+}
+
+static t_pexe	*head(t_pexe *current)
+{
+	while (current->prev != NULL)
+		current = current->prev;
+	return (current);
 }
 
 void	free_pexe(t_msh *msh)
@@ -55,7 +60,7 @@ void	free_pexe(t_msh *msh)
 	t_pexe	*current;
 	t_pexe	*next;
 
-	current = msh->pexe;
+	current = head(msh->pexe); // not having the correct head
 	while (current != NULL)
 	{
 		next = current->next;
