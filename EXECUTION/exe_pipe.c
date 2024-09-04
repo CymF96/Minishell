@@ -3,8 +3,13 @@
 void	ft_pipex(t_msh *msh)
 {
 	int		i;
-	t_pipex *chds[msh->pipe_nb]; //check question of null term
+	t_pipex **chds; //check question of null term
 
+	i = 0;
+	chds = NULL;
+	chds = malloc(sizeof(t_pipex *) * (msh->pipe_nb + 2));
+	while (i < msh->pipe_nb + 2)
+		chds[i++] = NULL;
 	i = 0;
 	while (msh->pipe_nb >= 0)
 	{
@@ -21,8 +26,8 @@ void	ft_pipex(t_msh *msh)
 	}
 	chds[i] = NULL; // chds[3] 3 is NULL
 	i = 0;
-	while (chds[i + 1] != NULL)
-	{ // while j is < to nb of chds minus 1 for the extra i++ at the end of the loop
+	while (chds[i + 1] != NULL) //to check
+	{
 		if (pipe(chds[i]->fd) == -1)
 		{
 			free_pipex(chds);
@@ -31,6 +36,13 @@ void	ft_pipex(t_msh *msh)
 		i++;
 	}
 	chd1_fork(msh, chds[0]);
+	int g = msh->pexe->group_id;
+	while (msh->pexe != NULL)
+	{
+		if (msh->pexe->group_id == g + 1)
+			break ;
+		msh->pexe = msh->pexe->next;
+	}
 	i = 1;
 	while (chds[i + 1] != NULL)
 	{
