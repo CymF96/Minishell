@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -O3
+CFLAGS = -Wall -Wextra -Werror -g3 -O3 -O0
 LDFLAGS = -lreadline -lncurses
 
 SRC_PATH = ./

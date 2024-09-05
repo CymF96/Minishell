@@ -7,29 +7,24 @@ void    cmd_exit(t_msh *msh)
 
 void    cmd_echo(t_msh *msh, int g)
 {
-	int	p;
 	int flag;
 
-	p = msh->pexe->p_index;
 	flag = 0;
-	if (msh->pexe->option[1] != NULL && ft_strlen(msh->pexe->option[1]) == 2\
-			&& !ft_strncmp("-n", msh->pexe->option[1], 2))
-		flag = 1;
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
+		ft_printf("\n");
+	if (msh->pexe->next != NULL && ft_strlen(msh->pexe->next->cmd) == 2\
+			&& !ft_strncmp("-n", msh->pexe->next->cmd, 2))
 	{
-		if (write(msh->fd[1], "\n", 1) == -1)
-			exit_cleanup(NULL, msh, errno, 0);
+		flag = 1;
+		msh->pexe = msh->pexe->next;
 	}
-	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
-			&& msh->pexe->next->cmd != NULL\
-			&& msh->pexe->next->p_index == p + 1)
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
 	{
-		ft_putstr_fd(msh->pexe->next->cmd, msh->fd[1]);
-		p++;
+		ft_printf("%s", msh->pexe->next->cmd);
 		msh->pexe = msh->pexe->next;
 	}
 	if (flag == 0)
-		ft_putchar_fd('\n', msh->fd[1]);
+		ft_printf("\n");
 }
 
 void	cmd_pwd(t_msh *msh)
@@ -38,8 +33,8 @@ void	cmd_pwd(t_msh *msh)
 
 	if (getcwd(path, sizeof(path)) != NULL)
 	{
-		ft_putstr_fd(path, msh->fd[1]);
-		ft_putchar_fd('\n', msh->fd[1]);
+		ft_printf("%s", path);
+		ft_printf("\n");
 	}
 	else
 		exit_cleanup(NULL, msh, errno, 0);
@@ -75,7 +70,7 @@ void	cmd_env(t_msh *msh, int g) // to test
 		exit_cleanup("invalid input with env command", msh, 0, 0);
 	while (msh->envp[i] != NULL)
 	{
-		ft_putstr_fd(msh->envp[i++], msh->fd[1]);
-		ft_putchar_fd('\n', msh->fd[1]);
+		ft_printf("%s", msh->envp[i++]);
+		ft_printf("\n");
 	}
 }
