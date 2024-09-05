@@ -21,6 +21,7 @@ void	ft_pipex(t_msh *msh)
 			return ;
 		}
 		clean_init_chds(chds[i]);
+		//ft_printf("AFTER INIT: chds[%i]--> fd[0]: %d, fd[1]: %d, pid: %d\n", i, chds[i]->fd[0], chds[i]->fd[1], chds[i]->pid);
 		i++; // i is the number of child in the array - 1 (if pipe 2 ->3 children and i = 2 (0,1,2))
 		msh->pipe_nb--;
 	}
@@ -28,13 +29,20 @@ void	ft_pipex(t_msh *msh)
 	i = 0;
 	while (chds[i + 1] != NULL) //to check
 	{
+		//ft_printf("looping: %i/2\n", i);
 		if (pipe(chds[i]->fd) == -1)
 		{
 			free_pipex(chds);
 			exit_cleanup(NULL, msh, errno, 0);
 		}
+		//ft_printf("*****************************\nIN PIPE: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
 		i++;
 	}
+	//ft_printf("*****************************\nAFTER PIPE: chds[0]--> fd[0]: %d, fd[1]: %d\n", chds[0]->fd[0], chds[0]->fd[1]);
+	//ft_printf("AFTER PIPE: chds[1]--> fd[0]: %d, fd[1]: %d\n", chds[1]->fd[0], chds[1]->fd[1]);
+	//ft_printf("AFTER PIPE: chds[2]--> fd[0]: %d, fd[1]: %d\n", chds[2]->fd[0], chds[2]->fd[1]);
+	//if (chds[3] == NULL)
+	//	ft_printf("chds[3] is NULL\n");
 	chd1_fork(msh, chds[0]);
 	int g = msh->pexe->group_id;
 	while (msh->pexe != NULL)
@@ -46,9 +54,26 @@ void	ft_pipex(t_msh *msh)
 	i = 1;
 	while (chds[i + 1] != NULL)
 	{
+		while (msh->pexe != NULL)
+		{
+			if (msh->pexe->group_id == g + 1)
+			{
+				g++;
+				break ;
+			}
+			msh->pexe = msh->pexe->next;
+		}
+		//ft_printf("*************************\n MIDDLECHILD: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
 		mdlchd_fork(msh, chds[i - 1], chds[i]);
 		i++;
 	}
+	while (msh->pexe != NULL)
+	{
+		if (msh->pexe->group_id == g + 1)
+			break ;
+		msh->pexe = msh->pexe->next;
+	}
+	//ft_printf("*************************\n LASTCHILD:chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
 	lstchd_fork(msh, chds[i - 1], chds[i]);// check if i -1 or i - 2
 	closing(msh, chds); //parent wait the children and close everything + total cleanup
 }

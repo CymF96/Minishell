@@ -110,7 +110,7 @@ typedef struct s_msh //master structure 'minishell'
 	volatile sig_atomic_t signal_flags;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
-	pid_t		main_child;
+	int			child;
 }	t_msh;
 
 
@@ -168,7 +168,7 @@ void	kill_children(t_pipex **chds);
 void	closing(t_msh *msh, t_pipex **chds);
 int		node_strlen(t_pexe *node);
 int		struct_strlen(char **array);
-void	append_args(t_msh *msh, t_pexe *current, int len_group, int len_option);
+void	append_args(t_msh *msh, t_pexe *current, int len_group);
 void	find_exe(t_msh *msh, char *cmd);
 void	sigint(t_msh *msh);
 void	sigeof(t_msh *msh);
