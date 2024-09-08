@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 16:14:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 11:28:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ void	clean_init_chds(t_pipex *chds)
 
 void	clean_init_pexe_node(t_pexe *pexe)
 {
-	pexe->type = -1;
+	pexe->type = TEMP;
 	pexe->cmd = NULL;
 	pexe->option = NULL;
 	pexe->group_id = -1;
 	pexe->p_index = -1;
+	pexe->muk_note = REGULAR;
+	pexe->temp = NULL;
 	pexe->prev = NULL;
 	pexe->next = NULL;
-	pexe->muk_note = 0;
-	pexe->temp = NULL;
 }
 
 void	clean_init_token_node(t_token *tkn)

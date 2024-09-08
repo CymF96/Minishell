@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 15:34:36 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 12:12:31 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef enum s_type
 	REGULAR,
 	S_QT,
 	D_QT,
+	TEMP,
 }	t_type;
 
 typedef struct s_pipex
@@ -82,6 +83,7 @@ typedef struct s_parse
 	int		pip_count;
 	int		**poi;
 	int		here_fd;
+	char	*temp;
 	t_token	*head;
 }	t_parse;
 
@@ -146,7 +148,7 @@ void	clean_msh_init(t_msh *msh);
 /*------- UTILS -------*/
 void	adding_temp_var(t_msh *msh, char *new_var);
 char	*set_var_name(char *cmd);
-int	updating_var(char **env_struct, char *var_name, char *cmd);
+int		updating_var(char **env_struct, char *var_name, char *cmd);
 void	check_update_tempenv(t_msh *msh, char *cmd);
 void	check_remove_tempenv(t_msh *msh, char *cmd);
 
@@ -196,20 +198,20 @@ void	create_modified(t_msh *msh, t_parse *pars);
 void	input_to_modified(t_msh *msh, t_parse *pars);
 void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end);
 void	expand_dollars(t_msh *msh, int *i);
-char	*expand_env(t_msh *msh, int *i);
-void	handle_paran(t_msh *msh, t_parse *pars, int *i);
-void	handle_logic(t_msh *msh, t_parse *pars, int *i);
-void	handle_pipes(t_msh *msh, t_parse *pars, int *i);
-void	handle_redir(t_msh *msh, t_parse *pars, int *i);
+char	*expand_env(t_msh *msh, int *i, int flag);
+void	handle_paran(t_msh *msh, t_parse *pars, t_type type);
+void	handle_logic(t_msh *msh, t_parse *pars, int *i, t_type type);
+void	handle_pipes(t_msh *msh, t_parse *pars, t_type type);
+void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type);
 void	handle_wild_character(t_msh *msh, int *i);
 void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
 void	handle_heredoc(t_msh *msh, int *i);
 void	get_here_doc(t_msh *msh, char *delim, int flag);
-char	*remove_quotes(char *str, int len);
+void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
-void	fill_pexe(t_pexe *node);
+void	fill_pexe(t_msh *msh);
 
 
 /*------- CLEANUP -------*/

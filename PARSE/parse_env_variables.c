@@ -6,57 +6,63 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 16:05:45 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 12:14:58 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // finds what the variable is after $ until it sees space, tab or null
-static char	*find_var(t_msh *msh, int *i)
+static char	*find_var(t_msh *msh, int *i, int flag)
 {
 	int		k;
 	int		len;
 	char	*temp;
+	char	*text;
 
 	k = *i;
 	len = 0;
-	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' \
-			&& msh->input[*i] != '\0')
+	text = msh->input;
+	if (flag != 0)
+		text = msh->parse->temp;
+	while (text[*i] != ' ' && text[*i] != '\n' && text[*i] != '\t' && \
+			text[*i] != '\0' && check_special(text, i) == REGULAR)
 	{
 		(*i)++;
 		len++;
 	}
-	temp = malloc(sizeof(char) * (*i - k + 3));
+	temp = malloc(sizeof(char) * (*i - k + 2));
 	if (temp == NULL)
-		exit_cleanup("Malloc failed", msh, errno, 2); //verifiy the correct exit check
-	ft_strlcpy(temp, &msh->input[k], *i - k + 2);
-	temp[*i - k + 1] = '=';
-	temp[*i - k + 2] = '\0';
+		exit_cleanup("Malloc failed", msh, errno, 2);
+	ft_strlcpy(temp, &text[k], *i - k + 2);
+	temp[*i - k] = '=';
+	temp[*i - k + 1] = '\0';
 	return (temp);
 }
 
 // Goes through env values. If match is found, returns a malloced memory addr
-char	*expand_env(t_msh *msh, int *i)
+char	*expand_env(t_msh *msh, int *i, int flag)
 {
 	int		k;
 	int		len;
 	char	*temp;
+	char	*str;
 
-	k = 0;
-	temp = find_var(msh, i);
+	printf("the passed string is %s\n", &msh->input[*i]);
+	temp = find_var(msh, i, flag);
 	len = ft_strlen(temp);
-	while (msh->envp[k] != NULL)
+	k = 0;
+	while (msh->envp != NULL && msh->envp[k] != NULL && msh->envp[k][0] != '\0')
 	{
-		if (!ft_strncmp(temp, msh->envp[k], len))
+		str = ft_strnstr(msh->envp[k], temp, len);
+		if (str)
 		{
-			free(temp);
-			temp = ft_strdup(msh->envp[k] + len); // error: assignment to ‘char *’ from ‘char’ makes pointer from integer without a cast [-Werror=int-conversion] temp = msh->envp[k][len]
-			return (temp);
+			str = ft_substr(str, len, ft_strlen(str));
+			free (temp);
+			return (str);
 		}
 		k++;
 	}
-	ft_printf("variable %s doesn't exist\n", temp);
 	free(temp);
 	return (NULL);
 }

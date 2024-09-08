@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell_correct.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:16:36 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:19:05 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,18 @@
 
 void	check_if_exit(t_msh *msh)
 {
-	if (ft_strlen(msh->input) == 4 && !ft_strncmp("exit", msh->input, 4))
+	char	*temp;
+
+	temp = malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
+	if (temp == NULL)
+		exit_cleanup("Malloc Failed", msh, errno, 2);
+	remove_quotes(msh->input, ft_strlen(msh->input), temp);
+	if (ft_strlen(temp) == 4 && !ft_strncmp("exit", temp, 4))
+	{
+		free(temp);
 		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+	}
+	free(temp);
 }
 
 void	minishell_running(t_msh *msh)
@@ -23,7 +33,9 @@ void	minishell_running(t_msh *msh)
 	add_history(msh->input);
 	check_if_exit(msh);
 	if (parse_main(msh) == 0)
-		execution(msh);
+		printf("EXE WOULD BE HAPPENING HERE\n");
+		// execution(msh);
+	exit_cleanup(NULL, msh, 0, 3);
 	if (msh->input != NULL)
 	{
 		free(msh->input);
@@ -48,6 +60,7 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 			sigeof(msh);
 		minishell_running(msh);
 		clean_msh_init(msh);
+		msh->envp = envp;
 	}
 }
 

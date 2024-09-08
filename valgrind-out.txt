@@ -1,371 +1,211 @@
-==520955== Memcheck, a memory error detector
-==520955== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==520955== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
-==520955== Command: ./minishell
-==520955== Parent PID: 475326
-==520955== 
---520955-- 
---520955-- Valgrind options:
---520955--    --suppressions=./OTHER/debugging/rl.supp
---520955--    --leak-check=full
---520955--    --show-leak-kinds=all
---520955--    --track-origins=yes
---520955--    --verbose
---520955--    --log-file=valgrind-out.txt
---520955-- Contents of /proc/version:
---520955--   Linux version 5.15.0-119-generic (buildd@lcy02-amd64-075) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #129-Ubuntu SMP Fri Aug 2 19:25:20 UTC 2024
---520955-- 
---520955-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---520955-- Page sizes: currently 4096, max supported 4096
---520955-- Valgrind library directory: /usr/libexec/valgrind
---520955-- Reading syms from /home/mcoskune/minishell/minishell
---520955-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---520955--   Considering /usr/lib/debug/.build-id/41/86944c50f8a32b47d74931e3f512b811813b64.debug ..
---520955--   .. build-id is valid
---520955-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---520955--    object doesn't have a symbol table
---520955--    object doesn't have a dynamic symbol table
---520955-- Scheduler: using generic scheduler lock implementation.
---520955-- Reading suppressions file: ./OTHER/debugging/rl.supp
---520955-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==520955== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-520955-by-mcoskune-on-???
-==520955== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-520955-by-mcoskune-on-???
-==520955== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-520955-by-mcoskune-on-???
-==520955== 
-==520955== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==520955== don't want to do, unless you know exactly what you're doing,
-==520955== or are doing some strange experiment):
-==520955==   /usr/bin/vgdb --pid=520955 ...command...
-==520955== 
-==520955== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==520955==   /path/to/gdb ./minishell
-==520955== and then give GDB the following command
-==520955==   target remote | /usr/bin/vgdb --pid=520955
-==520955== --pid is optional if only one valgrind process is running
-==520955== 
---520955-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
---520955-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
---520955-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---520955--    object doesn't have a symbol table
---520955-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---520955--    object doesn't have a symbol table
-==520955== WARNING: new redirection conflicts with existing -- ignoring it
---520955--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
---520955--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
---520955-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
---520955-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
---520955-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.1
---520955--    object doesn't have a symbol table
---520955-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---520955--   Considering /usr/lib/debug/.build-id/49/0fef8403240c91833978d494d39e537409b92e.debug ..
---520955--   .. build-id is valid
-==520955== WARNING: new redirection conflicts with existing -- ignoring it
---520955--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---520955--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==520955== WARNING: new redirection conflicts with existing -- ignoring it
---520955--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---520955--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
-==520955== WARNING: new redirection conflicts with existing -- ignoring it
---520955--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---520955--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
-==520955== WARNING: new redirection conflicts with existing -- ignoring it
---520955--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
---520955--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
---520955-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
---520955--    object doesn't have a symbol table
---520955-- REDIR: 0x496d720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d9e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d2e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x498bcd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e6d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x498a540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496ec10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x498a370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e5a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
-==520955== Preferring higher priority redirection:
---520955--     old: 0x04a657c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
---520955--     new: 0x04a657c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
---520955-- REDIR: 0x498a3f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e9e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x498a9b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496ea70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x498a470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d1d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496eb60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x4976570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x4970010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496eb10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d6a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d8d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e3f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496db00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e7d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496eac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496ff80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496d7a0 (libc.so.6:strncat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x49f9280 (libc.so.6:__memcpy_chk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x496e310 (libc.so.6:strstr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
---520955-- REDIR: 0x4a62610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
---520955-- REDIR: 0x496a0a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
---520955-- REDIR: 0x4a627e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
---520955-- REDIR: 0x4a657c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852880 (memmove)
---520955-- REDIR: 0x4a62400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
---520955-- REDIR: 0x490a150 (libc.so.6:setenv) redirected to 0x48542d0 (setenv)
---520955-- REDIR: 0x4a62180 (libc.so.6:__strchr_avx2) redirected to 0x484e9f0 (index)
---520955-- REDIR: 0x4a5dd80 (libc.so.6:__strncmp_avx2) redirected to 0x484f3e0 (strncmp)
---520955-- REDIR: 0x496a740 (libc.so.6:realloc) redirected to 0x484dc50 (realloc)
---520955-- REDIR: 0x4a65780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
---520955-- REDIR: 0x4a5d940 (libc.so.6:__strcmp_avx2) redirected to 0x484fbd0 (strcmp)
---520955-- REDIR: 0x496b520 (libc.so.6:calloc) redirected to 0x484d9d0 (calloc)
---520955-- REDIR: 0x4a62960 (libc.so.6:__strnlen_avx2) redirected to 0x484ecb0 (strnlen)
---520955-- REDIR: 0x496a3e0 (libc.so.6:free) redirected to 0x484b210 (free)
---520955-- REDIR: 0x4a63cb0 (libc.so.6:__strcpy_avx2) redirected to 0x484ee60 (strcpy)
---520955-- REDIR: 0x496dfc0 (libc.so.6:__GI_strstr) redirected to 0x4853ae0 (__strstr_sse2)
---520955-- REDIR: 0x4a65790 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853940 (__memcpy_chk)
---520955-- REDIR: 0x4a65f80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852770 (memset)
---520955-- REDIR: 0x4a64040 (libc.so.6:__strncpy_avx2) redirected to 0x484efe0 (strncpy)
---520955-- REDIR: 0x4a5e2c0 (libc.so.6:__memchr_avx2) redirected to 0x484fd50 (memchr)
---520955-- REDIR: 0x4a649a0 (libc.so.6:__stpcpy_avx2) redirected to 0x4852130 (stpcpy)
---520955-- REDIR: 0x4a5f130 (libc.so.6:__strcasecmp_avx) redirected to 0x484f560 (strcasecmp)
---520955-- REDIR: 0x4a607b0 (libc.so.6:__strncasecmp_avx) redirected to 0x484f640 (strncasecmp)
---520955-- REDIR: 0x4a5ea80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852010 (bcmp)
-==520955== Invalid read of size 8
-==520955==    at 0x10CED0: free_pexe (exit_cleanup.c:64)
-==520955==    by 0x10CED0: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61848 is 8 bytes inside a block of size 64 free'd
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEBD: free_pexe (exit_cleanup.c:62)
-==520955==    by 0x10CEBD: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Block was alloc'd at
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A537: pexe_malloc (parse_mallocs.c:21)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
-==520955== Invalid read of size 8
-==520955==    at 0x10CE64: free_pexe (exit_cleanup.c:59)
-==520955==    by 0x10CE64: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61878 is 56 bytes inside a block of size 64 free'd
-==520955== ==475181== 
-==475181== Process terminating with default action of signal 1 (SIGHUP)
-==475181==    at 0x490775B: kill (syscall-template.S:120)
-==475181==    by 0x48A4F39: _rl_signal_handler (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x48A15ED: rl_cleanup_after_signal (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x48A4F9B: _rl_signal_handler (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x48A542E: rl_read_key (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x4889C86: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x4892D14: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
-==475181==    by 0x10972B: minishell_start (minishell.c:46)
-==475181==    by 0x1094AB: main (minishell.c:65)
-==475181== 
-==475181== HEAP SUMMARY:
-==475181==     in use at exit: 214,558 bytes in 255 blocks
-==475181==   total heap usage: 452 allocs, 197 frees, 229,228 bytes allocated
-==475181== 
-==475181== Searching for pointers to 255 not-freed blocks
-==475181== Checked 253,288 bytes
-==475181== 
-==475181== 72 bytes in 1 blocks are still reachable in loss record 29 of 84
-==475181==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==475181==    by 0x109499: main (minishell.c:59)
-==475181== 
-==475181== LEAK SUMMARY:
-==475181==    definitely lost: 0 bytes in 0 blocks
-==475181==    indirectly lost: 0 bytes in 0 blocks
-==475181==      possibly lost: 0 bytes in 0 blocks
-==475181==    still reachable: 72 bytes in 1 blocks
-==475181==         suppressed: 214,486 bytes in 254 blocks
-==475181== 
-==475181== ERROR SUMMARY: 11 errors from 2 contexts (suppressed: 1 from 1)
-==475181== 
-==475181== 1 errors in context 1 of 2:
-==475181== Conditional jump or move depends on uninitialised value(s)
-==475181==    at 0x10CD65: free_mallocs (exit_cleanup.c:27)
-==475181==    by 0x10CD65: free_mallocs (exit_cleanup.c:15)
-==475181==    by 0x10CD65: free_parse (exit_cleanup.c:79)
-==475181==    by 0x10CE1F: clear_msh (exit_cleanup.c:98)
-==475181==    by 0x10CF72: exit_cleanup (exit_cleanup.c:141)
-==475181==    by 0x10975D: minishell_running (minishell.c:26)
-==475181==    by 0x10975D: minishell_start (minishell.c:49)
-==475181==    by 0x1094AB: main (minishell.c:65)
-==475181==  Uninitialised value was created by a heap allocation
-==475181==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==475181==    by 0x109BF8: create_modified (parse_create_modified.c:127)
-==475181==    by 0x10A50A: parse_main (parse_main.c:106)
-==475181==    by 0x109751: minishell_running (minishell.c:25)
-==475181==    by 0x109751: minishell_start (minishell.c:49)
-==475181==    by 0x1094AB: main (minishell.c:65)
-==475181== 
-==475181== 
-==475181== 10 errors in context 2 of 2:
-==475181== Conditional jump or move depends on uninitialised value(s)
-==475181==    at 0x10ACC3: parse_tokenize (parse_tokenize.c:77)
-==475181==    by 0x10A516: parse_main (parse_main.c:107)
-==475181==    by 0x109751: minishell_running (minishell.c:25)
-==475181==    by 0x109751: minishell_start (minishell.c:49)
-==475181==    by 0x1094AB: main (minishell.c:65)
-==475181==  Uninitialised value was created by a heap allocation
-==475181==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==475181==    by 0x109BF8: create_modified (parse_create_modified.c:127)
-==475181==    by 0x10A50A: parse_main (parse_main.c:106)
-==475181==    by 0x109751: minishell_running (minishell.c:25)
-==475181==    by 0x109751: minishell_start (minishell.c:49)
-==475181==    by 0x1094AB: main (minishell.c:65)
-==475181== 
---475181-- 
---475181-- used_suppression:     79 leak readline ./OTHER/debugging/rl.supp:3 suppressed: 210,423 bytes in 250 blocks
---475181-- used_suppression:      4 leak add_history ./OTHER/debugging/rl.supp:9 suppressed: 4,063 bytes in 4 blocks
-==475181== 
-==475181== ERROR SUMMARY: 11 errors from 2 contexts (suppressed: 1 from 1)
-nters to 224 not-freed blocks
-==520955== Checked 248,544 bytes
-==520955== 
-==520955== 64 bytes in 2 blocks are definitely lost in loss record 16 of 64
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A551: pexe_malloc (parse_mallocs.c:25)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
-==520955== LEAK SUMMARY:
-==520955==    definitely lost: 64 bytes in 2 blocks
-==520955==    indirectly lost: 0 bytes in 0 blocks
-==520955==      possibly lost: 0 bytes in 0 blocks
-==520955==    still reachable: 0 bytes in 0 blocks
-==520955==         suppressed: 208,191 bytes in 222 blocks
-==520955== 
-==520955== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
-==520955== 
-==520955== 1 errors in context 1 of 5:
-==520955== Invalid free() / delete / delete[] / realloc()
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEE1: free_pexe (exit_cleanup.c:63)
-==520955==    by 0x10CEE1: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61840 is 0 bytes inside a block of size 64 free'd
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEBD: free_pexe (exit_cleanup.c:62)
-==520955==    by 0x10CEBD: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Block was alloc'd at
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A537: pexe_malloc (parse_mallocs.c:21)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
-==520955== 
-==520955== 1 errors in context 2 of 5:
-==520955== Invalid read of size 8
-==520955==    at 0x10CE68: free_pexe (exit_cleanup.c:60)
-==520955==    by 0x10CE68: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61850 is 16 bytes inside a block of size 64 free'd
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEBD: free_pexe (exit_cleanup.c:62)
-==520955==    by 0x10CEBD: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Block was alloc'd at
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A537: pexe_malloc (parse_mallocs.c:21)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
-==520955== 
-==520955== 1 errors in context 3 of 5:
-==520955== Invalid read of size 8
-==520955==    at 0x10CE64: free_pexe (exit_cleanup.c:59)
-==520955==    by 0x10CE64: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61878 is 56 bytes inside a block of size 64 free'd
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEBD: free_pexe (exit_cleanup.c:62)
-==520955==    by 0x10CEBD: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Block was alloc'd at
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A537: pexe_malloc (parse_mallocs.c:21)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
-==520955== 
-==520955== 1 errors in context 4 of 5:
-==520955== Invalid read of size 8
-==520955==    at 0x10CED0: free_pexe (exit_cleanup.c:64)
-==520955==    by 0x10CED0: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Address 0x4b61848 is 8 bytes inside a block of size 64 free'd
-==520955==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10CEBD: free_pexe (exit_cleanup.c:62)
-==520955==    by 0x10CEBD: clear_msh (exit_cleanup.c:100)
-==520955==    by 0x10CFA2: exit_cleanup (exit_cleanup.c:141)
-==520955==    by 0x10975D: minishell_running (minishell.c:26)
-==520955==    by 0x10975D: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955==  Block was alloc'd at
-==520955==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==520955==    by 0x10A537: pexe_malloc (parse_mallocs.c:21)
-==520955==    by 0x10A777: make_pexe (parse_pexe.c:88)
-==520955==    by 0x10A502: parse_main (parse_main.c:108)
-==520955==    by 0x109751: minishell_running (minishell.c:25)
-==520955==    by 0x109751: minishell_start (minishell.c:49)
-==520955==    by 0x1094AB: main (minishell.c:65)
-==520955== 
---520955-- 
---520955-- used_suppression:     62 leak readline ./OTHER/debugging/rl.supp:3 suppressed: 204,175 bytes in 221 blocks
---520955-- used_suppression:      1 leak add_history ./OTHER/debugging/rl.supp:9 suppressed: 4,016 bytes in 1 blocks
-==520955== 
-==520955== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
+==302076== Memcheck, a memory error detector
+==302076== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==302076== Using Valgrind-3.18.1-42b08ed5bd-20211015 and LibVEX; rerun with -h for copyright info
+==302076== Command: ./minishell
+==302076== Parent PID: 261350
+==302076== 
+--302076-- 
+--302076-- Valgrind options:
+--302076--    --suppressions=./OTHER/debugging/rl.supp
+--302076--    --leak-check=full
+--302076--    --show-leak-kinds=all
+--302076--    --track-origins=yes
+--302076--    --verbose
+--302076--    --log-file=valgrind-out.txt
+--302076-- Contents of /proc/version:
+--302076--   Linux version 5.15.0-119-generic (buildd@lcy02-amd64-075) (gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #129-Ubuntu SMP Fri Aug 2 19:25:20 UTC 2024
+--302076-- 
+--302076-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--302076-- Page sizes: currently 4096, max supported 4096
+--302076-- Valgrind library directory: /usr/libexec/valgrind
+--302076-- Reading syms from /home/mcoskune/minishell/minishell
+--302076-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--302076--   Considering /usr/lib/debug/.build-id/41/86944c50f8a32b47d74931e3f512b811813b64.debug ..
+--302076--   .. build-id is valid
+--302076-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--302076--    object doesn't have a symbol table
+--302076--    object doesn't have a dynamic symbol table
+--302076-- Scheduler: using generic scheduler lock implementation.
+--302076-- Reading suppressions file: ./OTHER/debugging/rl.supp
+--302076-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==302076== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-302076-by-mcoskune-on-???
+==302076== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-302076-by-mcoskune-on-???
+==302076== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-302076-by-mcoskune-on-???
+==302076== 
+==302076== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==302076== don't want to do, unless you know exactly what you're doing,
+==302076== or are doing some strange experiment):
+==302076==   /usr/bin/vgdb --pid=302076 ...command...
+==302076== 
+==302076== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==302076==   /path/to/gdb ./minishell
+==302076== and then give GDB the following command
+==302076==   target remote | /usr/bin/vgdb --pid=302076
+==302076== --pid is optional if only one valgrind process is running
+==302076== 
+--302076-- REDIR: 0x402aa40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bcec2 (???)
+--302076-- REDIR: 0x402a810 (ld-linux-x86-64.so.2:index) redirected to 0x580bcedc (???)
+--302076-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--302076--    object doesn't have a symbol table
+--302076-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--302076--    object doesn't have a symbol table
+==302076== WARNING: new redirection conflicts with existing -- ignoring it
+--302076--     old: 0x0402aa40 (strlen              ) R-> (0000.0) 0x580bcec2 ???
+--302076--     new: 0x0402aa40 (strlen              ) R-> (2007.0) 0x0484ee30 strlen
+--302076-- REDIR: 0x4027220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x484fcd0 (strcmp)
+--302076-- REDIR: 0x402afa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853840 (mempcpy)
+--302076-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+--302076--    object doesn't have a symbol table
+--302076-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--302076--   Considering /usr/lib/debug/.build-id/49/0fef8403240c91833978d494d39e537409b92e.debug ..
+--302076--   .. build-id is valid
+==302076== WARNING: new redirection conflicts with existing -- ignoring it
+--302076--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--302076--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==302076== WARNING: new redirection conflicts with existing -- ignoring it
+--302076--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--302076--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+==302076== WARNING: new redirection conflicts with existing -- ignoring it
+--302076--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--302076--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e050 aligned_alloc
+==302076== WARNING: new redirection conflicts with existing -- ignoring it
+--302076--     old: 0x0496ac60 (memalign            ) R-> (1011.0) 0x0484e080 memalign
+--302076--     new: 0x0496ac60 (memalign            ) R-> (1017.0) 0x0484e020 aligned_alloc
+--302076-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+--302076--    object doesn't have a symbol table
+--302076-- REDIR: 0x496d720 (libc.so.6:strnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d9e0 (libc.so.6:strpbrk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d2e0 (libc.so.6:strcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x498bcd0 (libc.so.6:wcsnlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e6d0 (libc.so.6:memset) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x498a540 (libc.so.6:wcslen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496ec10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x498a370 (libc.so.6:wcschr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d260 (libc.so.6:index) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d960 (libc.so.6:rindex) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e5a0 (libc.so.6:memmove) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+==302076== Preferring higher priority redirection:
+--302076--     old: 0x04a657c0 (__memcpy_avx_unalign) R-> (2018.0) 0x04850f90 __memcpy_avx_unaligned_erms
+--302076--     new: 0x04a657c0 (__memcpy_avx_unalign) R-> (2018.1) 0x04852880 memmove
+--302076-- REDIR: 0x498a3f0 (libc.so.6:wcscmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e9e0 (libc.so.6:stpncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x498a9b0 (libc.so.6:wmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d830 (libc.so.6:strncmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496ea70 (libc.so.6:strcasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d420 (libc.so.6:strcspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x498a470 (libc.so.6:wcscpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d1d0 (libc.so.6:strcat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496eb60 (libc.so.6:strncasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e480 (libc.so.6:bcmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x4976570 (libc.so.6:memrchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x4970010 (libc.so.6:strchrnul) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d390 (libc.so.6:strcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496eb10 (libc.so.6:strcasecmp_l) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d6a0 (libc.so.6:strlen) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d8d0 (libc.so.6:strncpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e950 (libc.so.6:stpcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e3f0 (libc.so.6:memchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496db00 (libc.so.6:strspn) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e7d0 (libc.so.6:mempcpy) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496eac0 (libc.so.6:strncasecmp) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496ff80 (libc.so.6:rawmemchr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496d7a0 (libc.so.6:strncat) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x49f9280 (libc.so.6:__memcpy_chk) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x496e310 (libc.so.6:strstr) redirected to 0x483f220 (_vgnU_ifunc_wrapper)
+--302076-- REDIR: 0x4a62610 (libc.so.6:__strrchr_avx2) redirected to 0x484e810 (rindex)
+--302076-- REDIR: 0x496a0a0 (libc.so.6:malloc) redirected to 0x4848820 (malloc)
+--302076-- REDIR: 0x4a627e0 (libc.so.6:__strlen_avx2) redirected to 0x484ed10 (strlen)
+--302076-- REDIR: 0x4a657c0 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852880 (memmove)
+--302076-- REDIR: 0x4a62400 (libc.so.6:__strchrnul_avx2) redirected to 0x4853330 (strchrnul)
+--302076-- REDIR: 0x490a150 (libc.so.6:setenv) redirected to 0x48542d0 (setenv)
+--302076-- REDIR: 0x4a62180 (libc.so.6:__strchr_avx2) redirected to 0x484e9f0 (index)
+--302076-- REDIR: 0x4a5dd80 (libc.so.6:__strncmp_avx2) redirected to 0x484f3e0 (strncmp)
+--302076-- REDIR: 0x496a740 (libc.so.6:realloc) redirected to 0x484dc50 (realloc)
+--302076-- REDIR: 0x4a65780 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4853440 (mempcpy)
+--302076-- REDIR: 0x4a5d940 (libc.so.6:__strcmp_avx2) redirected to 0x484fbd0 (strcmp)
+--302076-- REDIR: 0x496b520 (libc.so.6:calloc) redirected to 0x484d9d0 (calloc)
+--302076-- REDIR: 0x4a62960 (libc.so.6:__strnlen_avx2) redirected to 0x484ecb0 (strnlen)
+--302076-- REDIR: 0x496a3e0 (libc.so.6:free) redirected to 0x484b210 (free)
+--302076-- REDIR: 0x4a63cb0 (libc.so.6:__strcpy_avx2) redirected to 0x484ee60 (strcpy)
+--302076-- REDIR: 0x496dfc0 (libc.so.6:__GI_strstr) redirected to 0x4853ae0 (__strstr_sse2)
+--302076-- REDIR: 0x4a65790 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853940 (__memcpy_chk)
+--302076-- REDIR: 0x4a65f80 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852770 (memset)
+--302076-- REDIR: 0x4a64040 (libc.so.6:__strncpy_avx2) redirected to 0x484efe0 (strncpy)
+--302076-- REDIR: 0x4a5e2c0 (libc.so.6:__memchr_avx2) redirected to 0x484fd50 (memchr)
+--302076-- REDIR: 0x4a649a0 (libc.so.6:__stpcpy_avx2) redirected to 0x4852130 (stpcpy)
+--302076-- REDIR: 0x4a5f130 (libc.so.6:__strcasecmp_avx) redirected to 0x484f560 (strcasecmp)
+--302076-- REDIR: 0x4a607b0 (libc.so.6:__strncasecmp_avx) redirected to 0x484f640 (strncasecmp)
+--302076-- REDIR: 0x4a5ea80 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852010 (bcmp)
+==302076== Invalid free() / delete / delete[] / realloc()
+==302076==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10E7D5: free_pexe (exit_cleanup.c:76)
+==302076==    by 0x10E94B: clear_msh (exit_cleanup.c:114)
+==302076==    by 0x10EA72: exit_cleanup (exit_cleanup.c:155)
+==302076==    by 0x1096D9: minishell_running (minishell_correct.c:38)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076==  Address 0x4b61430 is 0 bytes inside a block of size 5 free'd
+==302076==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10E88C: free_parse (exit_cleanup.c:96)
+==302076==    by 0x10E932: clear_msh (exit_cleanup.c:112)
+==302076==    by 0x10EA72: exit_cleanup (exit_cleanup.c:155)
+==302076==    by 0x1096D9: minishell_running (minishell_correct.c:38)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076==  Block was alloc'd at
+==302076==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10B874: copy_text (parse_tokenize.c:30)
+==302076==    by 0x10BC1C: parse_tokenize (parse_tokenize.c:96)
+==302076==    by 0x10AC7F: parse_main (parse_main.c:116)
+==302076==    by 0x1096AB: minishell_running (minishell_correct.c:35)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076== 
+==302076== 
+==302076== HEAP SUMMARY:
+==302076==     in use at exit: 208,191 bytes in 222 blocks
+==302076==   total heap usage: 463 allocs, 243 frees, 229,422 bytes allocated
+==302076== 
+==302076== Searching for pointers to 222 not-freed blocks
+==302076== Checked 248,616 bytes
+==302076== 
+==302076== LEAK SUMMARY:
+==302076==    definitely lost: 0 bytes in 0 blocks
+==302076==    indirectly lost: 0 bytes in 0 blocks
+==302076==      possibly lost: 0 bytes in 0 blocks
+==302076==    still reachable: 0 bytes in 0 blocks
+==302076==         suppressed: 208,191 bytes in 222 blocks
+==302076== 
+==302076== ERROR SUMMARY: 2 errors from 1 contexts (suppressed: 0 from 0)
+==302076== 
+==302076== 2 errors in context 1 of 1:
+==302076== Invalid free() / delete / delete[] / realloc()
+==302076==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10E7D5: free_pexe (exit_cleanup.c:76)
+==302076==    by 0x10E94B: clear_msh (exit_cleanup.c:114)
+==302076==    by 0x10EA72: exit_cleanup (exit_cleanup.c:155)
+==302076==    by 0x1096D9: minishell_running (minishell_correct.c:38)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076==  Address 0x4b61430 is 0 bytes inside a block of size 5 free'd
+==302076==    at 0x484B27F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10E88C: free_parse (exit_cleanup.c:96)
+==302076==    by 0x10E932: clear_msh (exit_cleanup.c:112)
+==302076==    by 0x10EA72: exit_cleanup (exit_cleanup.c:155)
+==302076==    by 0x1096D9: minishell_running (minishell_correct.c:38)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076==  Block was alloc'd at
+==302076==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302076==    by 0x10B874: copy_text (parse_tokenize.c:30)
+==302076==    by 0x10BC1C: parse_tokenize (parse_tokenize.c:96)
+==302076==    by 0x10AC7F: parse_main (parse_main.c:116)
+==302076==    by 0x1096AB: minishell_running (minishell_correct.c:35)
+==302076==    by 0x1097B4: minishell_start (minishell_correct.c:61)
+==302076==    by 0x109830: main (minishell_correct.c:78)
+==302076== 
+--302076-- 
+--302076-- used_suppression:     62 leak readline ./OTHER/debugging/rl.supp:3 suppressed: 204,175 bytes in 221 blocks
+--302076-- used_suppression:      1 leak add_history ./OTHER/debugging/rl.supp:9 suppressed: 4,016 bytes in 1 blocks
+==302076== 
+==302076== ERROR SUMMARY: 2 errors from 1 contexts (suppressed: 0 from 0)

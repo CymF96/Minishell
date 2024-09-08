@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 11:00:21 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 17:22:07 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_pexe(t_msh *msh)
 	t_pexe	*current;
 	t_pexe	*next;
 
-	current = head(msh->pexe); // not having the correct head
+	current = head(msh->pexe);
 	while (current != NULL)
 	{
 		next = current->next;
@@ -72,6 +72,8 @@ void	free_pexe(t_msh *msh)
 		if (current->option != NULL)
 			free_mallocs(NULL, (void **)current->option);
 		current->prev = NULL;
+		if (current->temp != NULL)
+			free(current->temp);
 		free(current);
 		current = NULL;
 		current = next;
@@ -88,11 +90,14 @@ void	free_parse(t_msh *msh)
 		free_mallocs ((void *)msh->parse->modified, (void **)msh->parse->poi);
 		while (msh->parse->head != NULL)
 		{
-			temp = msh->parse->head->next;
-			free (msh->parse->head->token);
-			msh->parse->head->token = NULL;
-			free (msh->parse->head);
-			msh->parse->head = temp;
+			if (msh->parse->head != NULL)
+			{
+				temp = msh->parse->head->next;
+				free (msh->parse->head->token);
+				msh->parse->head->token = NULL;
+				free (msh->parse->head);
+				msh->parse->head = temp;
+			}
 		}
 		free(msh->parse);
 		msh->parse = NULL;

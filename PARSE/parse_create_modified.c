@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 15:52:12 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 12:14:28 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ void	expand_dollars(t_msh *msh, int *i)
 	{
 		temp = ft_itoa(msh->exit_error);
 		if (temp == NULL)
-			exit_cleanup("Malloc Failed", msh, errno, 2);
+			exit_cleanup("Malloc Failed\n", msh, errno, 2);
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free(temp);
 	}
 	else
 	{
-		temp = expand_env(msh, i);
+		temp = expand_env(msh, i, 0);
+		if (temp == NULL)
+			exit_cleanup("NO TEMP\n", msh, errno, 2);
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free (temp);
 	}
@@ -58,29 +60,52 @@ static void	handle_quote(t_msh *msh, int *i)
 					break ;
 				(*i)++;
 			}
-			copy_input_mod(msh, &msh->input[start], start, *i);
+			copy_input_mod(msh, &msh->input[start], start, (*i) + 1);
 			if (msh->input[*i] == '$')
 				expand_dollars(msh, i);
 		}
 	}
 	(*i)++;
 }
+// printf("The string in handle quote is %s\n\n %d\n %d\n\n", 
+//&msh->input[start], start, *i);
 
 // Checks for special characters and direct them to their own functions
-static void	check_character(t_msh *msh, t_parse *pars, int *i)
+static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 {
-	if (msh->input[*i] == '<' || msh->input[(*i)] == '>')
-		handle_redir(msh, pars, i);
-	else if (msh->input[*i] == '|' && msh->input[(*i) + 1] != '|')
-		handle_pipes(msh, pars, i);
-	else if (msh->input[*i] == '|' || msh->input[*i] == '&')
-		handle_logic(msh, pars, i);
-	else if (msh->input[*i] == '(' || msh->input[*i] == ')')
-		handle_paran(msh, pars, i);
-	else if (msh->input[*i] == '*')
+	if (type == HEREDOC || type == INFILE || type == APPEND || type == OUTFILE)
+		handle_redir(msh, pars, i, type);
+	else if (type == PIPE)
+		handle_pipes(msh, pars, type);
+	else if (type == AND || type == OR)
+		handle_logic(msh, pars, i, type);
+	else if (type == L_PAR || type == R_PAR)
+		handle_paran(msh, pars, type);
+	else if (type == WILDCARD)
 		handle_wild_character(msh, i);
 	(*i)++;
 }
+
+// static int	check_for_wild(t_msh *msh, char *str, int *i, int *flag)
+// {
+// 	int	k;
+
+// 	k = *i;
+// 	while ((str[*i] == ' ' || str[*i] == '\t') && str[*i] != '\0')
+// 		(*i)++;
+// 	copy_input_mod(msh, &msh->input[k], k, *i - 1);
+// 	k = *i;
+// 	while (str[k] != ' ' && str[k] != '\t' && str[k] != '\0')
+// 	{
+// 		if (check_special(str, &k) == WILDCARD)
+// 		{
+// 			*flag = 1;
+// 			return (1);
+// 		}
+// 		k++;
+// 	}
+// 	return (0);
+// }
 
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
 void	input_to_modified(t_msh *msh, t_parse *pars)
@@ -101,12 +126,13 @@ void	input_to_modified(t_msh *msh, t_parse *pars)
 		else if (type == REGULAR)
 		{
 			start = i;
-			while (check_special(msh->input, &i) == REGULAR && msh->input[i] != '\0')
+			while (msh->input[i] != '\0' && \
+					check_special(msh->input, &i) == REGULAR)
 				i++;
-			copy_input_mod(msh, &msh->input[start], start, i);
+			copy_input_mod(msh, &msh->input[start], start, i - 1);
 		}
 		else
-			check_character(msh, pars, &i);
+			check_character(msh, pars, &i, type);
 	}
 }
 
