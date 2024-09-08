@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 16:21:55 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 11:00:21 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,34 +40,43 @@ void	free_pipex(t_pipex **children)
 	int	i;
 
 	i = 0;
-	if (children[i] != NULL)
+	while (children[i] != NULL)
 	{
 		free(children[i]);
-		children[i++] = NULL;
+		children[i] = NULL;
+		i++;
 	}
-	if (children != NULL)
-		free(children);
-	children = NULL;
+}
+
+static t_pexe	*head(t_pexe *current)
+{
+	while (current->prev != NULL)
+		current = current->prev;
+	return (current);
 }
 
 void	free_pexe(t_msh *msh)
 {
-	t_pexe	*temp;
+	t_pexe	*current;
+	t_pexe	*next;
 
-	while (msh->pexe != NULL)
+	current = head(msh->pexe); // not having the correct head
+	while (current != NULL)
 	{
-		temp = msh->pexe->next;
-		free_mallocs((void *)msh->pexe->cmd, (void **)msh->pexe->option);
-		if (temp != NULL)
-			free (temp);
-		free(msh->pexe);
-		msh->pexe = temp;
+		next = current->next;
+		if (current->cmd != NULL)
+		{
+			free(current->cmd);
+			current->cmd = NULL;
+		}
+		if (current->option != NULL)
+			free_mallocs(NULL, (void **)current->option);
+		current->prev = NULL;
+		free(current);
+		current = NULL;
+		current = next;
 	}
-	// if (msh->pexe != NULL)
-	// {
-	// 	free(msh->pexe);
-	// 	msh->pexe = NULL;
-	// }
+	msh->pexe = NULL;
 }
 
 void	free_parse(t_msh *msh)
