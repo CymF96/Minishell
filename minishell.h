@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:12:48 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 15:34:36 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_token
 	char			*token;
 	int				start_pos;
 	int				end_pos;
-	int				type;
+	t_type			type;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -208,7 +208,7 @@ void	get_here_doc(t_msh *msh, char *delim, int flag);
 char	*remove_quotes(char *str, int len);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
-void	fill_pexe(t_pexe *pexe);
+void	fill_pexe(t_pexe *node);
 
 
 /*------- CLEANUP -------*/

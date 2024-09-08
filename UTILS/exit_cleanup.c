@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 18:10:23 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:21:55 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ void	free_pexe(t_msh *msh)
 	while (msh->pexe != NULL)
 	{
 		temp = msh->pexe->next;
-		free_mallocs(msh->pexe->cmd, (void **)msh->pexe->option);
+		free_mallocs((void *)msh->pexe->cmd, (void **)msh->pexe->option);
 		if (temp != NULL)
 			free (temp);
 		free(msh->pexe);
 		msh->pexe = temp;
 	}
-	if (msh->pexe != NULL)
-	{
-		free(msh->pexe);
-		msh->pexe = NULL;
-	}
+	// if (msh->pexe != NULL)
+	// {
+	// 	free(msh->pexe);
+	// 	msh->pexe = NULL;
+	// }
 }
 
 void	free_parse(t_msh *msh)

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 09:52:19 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:05:27 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 
 	i = tkn->start_pos;
 	j = 0;
-	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, tkn->end_pos - tkn->start_pos + 2 : %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
-	fflush(stdout);
+	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
 	tkn->token = malloc(sizeof(char) * (tkn->end_pos - tkn->start_pos + 2));
 	if (tkn->token == NULL)
 		exit_cleanup("Malloc failed", msh, errno, 2);
@@ -40,13 +39,13 @@ void	quote_token(char *temp, int *i)
 		if (temp[*i] == '\'')
 		{
 			(*i)++;
-			while (temp[*i] != '\'')
+			while (temp[*i] != '\'' && temp[*i] != '\0')
 				(*i)++;
 		}
 		else if (temp[*i] == '\"')
 		{
 			(*i)++;
-			while (temp[*i] != '\"')
+			while (temp[*i] != '\"' && temp[*i] != '\0')
 				(*i)++;
 		}
 		(*i)++;
@@ -67,7 +66,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 	temp = prs->modified;
 	while (temp[i] != '\0')
 	{
-		tkn = token_malloc(msh); // prs parameters
+		tkn = token_malloc(msh);
 		while (prs->modified[i] == ' ' || prs->modified[i] == '\t')
 			i++;
 		tkn->start_pos = i;
@@ -75,7 +74,6 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 		{
 			if (temp[i] == '\'' || temp[i] == '\"')
 				quote_token(prs->modified, &i);
-			//ft_printf("in parse token poi[i][j]: %d\n", prs->poi[j][1]);
 			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1])
 			{
 				i++;
@@ -88,12 +86,12 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 				j++;
 				break;
 			}
-			if (temp[i] == ' ' || temp[i] == '\t')
+			if (temp[i] == ' ' || temp[i] == '\t' || temp[i] == '\0')
 				break ;
 			i++;
 		}
 		tkn->end_pos = i - 1;
-		addnode((void *)tkn, (void**)&prs->head, offsetof(t_token, next), offsetof(t_token, prev));
 		copy_text(msh, prs, tkn);
+		addnode((void *)tkn, (void**)&prs->head, offsetof(t_token, next), offsetof(t_token, prev));
 	}
 }
