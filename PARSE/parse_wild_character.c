@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:10:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/02 17:40:57 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 12:50:16 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ static char	*find_exp(t_msh *msh, int *i)
 	int		z;
 	char	*str;
 
+	while (*i > -1 && msh->input[*i] != ' ' && msh->input[*i] != '\t')
+		(*i)--;
+	(*i)++;
 	z = *i;
-	while (msh->input[z] != ' ' && msh->input[z] != '\t' && z >= 0)
-		z--;
-	z++;
-	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && \
-		msh->input[*i] != '\0')
-		(*i)++;
-	str = malloc (sizeof(char) * (*i - z + 2));
+	while (msh->input[z] != ' ' && msh->input[z] != '\t' && \
+			msh->input[z] != '\0')
+		z++;
+	str = malloc (sizeof(char) * (z - *i + 1));
 	if (str == NULL)
-		exit_cleanup("Malloc failed", msh, errno, 2); //verify which exist is better
-	ft_strlcpy(str, &msh->input[z], *i - z + 2);
+		exit_cleanup("Malloc failed", msh, errno, 2);
+	ft_strlcpy(str, &msh->input[*i], z - *i + 1);
 	return (str);
 }
 
@@ -75,7 +75,7 @@ static int	find_matching(char *str, char *dname)
 	if (str[0] != '*')
 	{
 		if (special_nonzero(str, dname, arr, &y) == -1)
-			return (free_mallocs(NULL, (void **)arr), free(*arr), -1); // I don't know how to correct that
+			return (free_mallocs(NULL, (void **)arr), free(*arr), -1);
 	}
 	backup = NULL;
 	while (arr[y] != NULL)
@@ -97,11 +97,13 @@ void	handle_wild_character(t_msh *msh, int *i)
 	char			*str;
 	DIR				*dir;
 	struct dirent	*entry;
+	int				count;
 
+	count = 0;
 	str = find_exp(msh, i);
-	dir = opendir(".");
+	dir = opendir(get_current_dir_name());
 	if (dir == NULL)
-		exit_cleanup("Opendir", msh, errno, 2); //verify which exist is better
+		exit_cleanup("Opendir", msh, errno, 2);
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
@@ -109,9 +111,12 @@ void	handle_wild_character(t_msh *msh, int *i)
 		{
 			copy_input_mod(msh, entry->d_name, 0, ft_strlen(entry->d_name));
 			copy_input_mod(msh, " ", 0, 1);
+			count++;
 		}
 		entry = readdir(dir);
 	}
+	if (count == 0)
+		copy_input_mod(msh, str, 0, ft_strlen(str));
 	closedir(dir);
 	free(str);
 }

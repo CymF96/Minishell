@@ -55,4 +55,5 @@ void	execution(t_msh *msh)
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
 	check_type(msh);
+	// exit_cleanup(NULL, msh, 0, 3);
 }

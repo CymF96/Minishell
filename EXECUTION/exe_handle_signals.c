@@ -17,11 +17,11 @@ void	signals_handler(int sig, siginfo_t *info, void *context)
 	if (sig == SIGINT)
 	if (write(STDOUT_FILENO, "\n", 1) == -1)
 		return ;
-    rl_replace_line("", 0);  // Clear the current input line in readline
+	rl_replace_line("", 0);  // Clear the current input line in readline
 	if (msh->pexe != NULL)
-		exit_cleanup(NULL, msh, errno, 0);    
+		exit_cleanup(NULL, msh, errno, 0);
 	rl_on_new_line();  // Move to a new line
-    rl_redisplay();
+	rl_redisplay();
 }
 
 void	signal_handler_init(t_msh *msh)
@@ -33,7 +33,7 @@ void	signal_handler_init(t_msh *msh)
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);
-    sa.sa_handler = SIG_IGN;
-    if (sigaction(SIGQUIT, &sa, NULL) == -1)
-        exit_cleanup(NULL, msh, errno, 2);
+	sa.sa_handler = SIG_IGN;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		exit_cleanup(NULL, msh, errno, 2);
 }

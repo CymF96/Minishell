@@ -76,11 +76,11 @@ char	*set_var_name(char *cmd)
 	char *var_name;
 
 	i = 0;
-    while (cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
+	while (cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
 		i++;
 	var_name = malloc(sizeof(i + 2)); 
 	i = 0;
-    while (cmd[i] != '\0' && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
+	while (cmd[i] != '\0' && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
 	{
 		var_name[i] = cmd[i];
 		i++;
@@ -93,7 +93,7 @@ int	updating_var(char **env_struct, char *var_name, char *cmd)
 {
 	int	i;
 
-    i = 0;
+	i = 0;
 	while (env_struct[i] != NULL) //looping through evp to find the var_name 
 	{
 		if (!ft_strncmp(env_struct[i], var_name, ft_strlen(var_name)))
