@@ -5,95 +5,97 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/20 11:42:32 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/03 09:57:38 by mcoskune         ###   ########.fr       */
+/*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/09/03 18:03:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void handle_files(t_pexe *ite, int *prio)
+static void	pexe_upt_prio(t_msh *msh)
 {
+	int		prio;
 	t_pexe	*temp;
 
-	temp = ite;
+	prio = 0;
+	temp = msh->pexe;
+	if (temp == NULL)
+		return ;
 	while (temp != NULL)
 	{
-		if (temp->muk_note == INFILE || temp->muk_note == HEREDOC || \
-			temp->muk_note == OUTFILE || temp->muk_note == APPEND)
-		{
-			temp->type = temp->muk_note;
-			temp->cmd = temp->temp;
-			temp->p_index = *prio;
-			(*prio)++;
-		}
+		temp->p_index = prio;
+		prio++;
 		temp = temp->next;
 	}
 }
 
-void	fill_pexe(t_pexe *pexe) //t_token *token parameter
+static void	pexe_upt_group(t_msh *msh)
 {
-	int	prio;
-	int	group;
-	t_pexe	*ite;
-	int		flag;
+	int		group;
+	t_pexe	*temp;
 
-	prio = 0;
 	group = 0;
-	ite = pexe;
-	flag = 0;
-	handle_files(ite, &prio);
-	while (ite != NULL)
+	temp = msh->pexe;
+	if (temp == NULL)
+		return ;
+	while (temp != NULL)
 	{
-		if ((int)ite->type == -1 && (int)ite->muk_note == 0)
-		{
-			if (flag == 0)
-			{
-				ite->type = EXE;
-				ite->cmd = ite->temp;
-				ite->option[0] = ite->temp;
-				flag++;
-				ite->group_id = group;
-				
-			}
-			else if(flag == 1)
-			{
-				ite->type = STRING;
-				ite->cmd = ite->temp;
-				ite->group_id = group;
-				ite->p_index = prio++;
-			}
-		}
-		else if (ite->muk_note == PIPE)
-		{
+		if (temp->muk_note == PIPE)
 			group++;
-			ite->type = EXE;
-			ite->group_id = group;
-			ite->p_index = prio++;
-		}
-		ite = ite->next;
+		temp->group_id = group;
+		temp = temp->next;
 	}
 }
 
-// Iterates through the token list and creates the pexe structure
+void	fill_pexe(t_pexe *node)
+{
+	if (node->muk_note == HEREDOC || node->muk_note == INFILE || node->muk_note == APPEND || node->muk_note == OUTFILE)
+	{
+		node->type = node->muk_note;
+		node->cmd = node->temp;
+		node->p_index = 0;
+		node->temp = NULL;
+	}
+	else if (node->muk_note == STRING || node->muk_note == REGULAR)
+	{
+		if (node->prev == NULL || node->prev->type!= EXE)
+			node->type = EXE;
+		else
+			node->type = STRING;
+		node->cmd = node->temp;
+		node->temp = NULL;
+	}
+	else if (node->muk_note == PIPE)
+	{
+		node->type = EXE;
+		node->cmd = node->temp;
+		node->temp = NULL;
+	}
+	node->option = malloc (sizeof(char *) * 3);
+	node->option[0] = ft_strdup("echo");
+	node->option[1] = ft_strdup("Hello");
+	node->option[2] = NULL;
+}
+
 void	make_pexe(t_msh *msh, t_parse *pars)
 {
-	t_pexe	*temp;
-	t_token	*list;
-	int	z;
+	t_pexe	*node;
+	t_token	*tkn_i;
 
-	z = 0;
-	list = pars->head;
-	while (list != NULL)
+	tkn_i = pars->head;
+	while (tkn_i != NULL)
 	{
-		temp = pexe_malloc(msh); //pars parameter
-		temp->muk_note = check_special(list->token, &z); //temp parameter
-		if (temp->muk_note != REGULAR)
-			list = list->next;
-		temp->temp = list->token;
-		addnode((void *)temp, (void**)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
-		list = list->next;
-		temp->group_id=0;
+		node = pexe_malloc(msh);
+		if (tkn_i->type != REGULAR)
+		{
+			node->muk_note = tkn_i->type;
+			node->temp = tkn_i->token;
+			tkn_i = tkn_i->next;
+		}
+		fill_pexe(node);
+		addnode((void *)node, (void **)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
+		tkn_i = tkn_i->next;
 	}
-	fill_pexe(msh->pexe);
+	pexe_upt_group(msh);
+	pexe_upt_prio(msh);
 }
