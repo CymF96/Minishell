@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 17:37:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:52:29 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 		}
 		node->temp = tkn_i->token;
 		str = malloc(sizeof(char) * (ft_strlen(node->temp) + 1));
-		remove_quotes(node->temp, -1, str);
+		// remove_quotes(node->temp, -1, str);
+		ft_strlcpy(str, tkn_i->token, (ft_strlen(node->temp) + 1));
 		node->cmd = str;
 		addnode((void *)node, (void **)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
 		tkn_i = tkn_i->next;

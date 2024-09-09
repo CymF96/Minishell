@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 12:48:49 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:12:51 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	remove_quotes(char *str, int len, char *delim)
 	count = -1;
 	while ((str[i] != '\0' && i < len) || (str[i] != '\0' && len < 0))
 	{
-		if ((str[i] == '\'' || str[i] == '\"') && (flag == 0 || flag == 2))
+		if ((str[i] == '\'' || str[i] == '\"') && (flag == 0)) //|| flag == 2
 		{
 			count = check_quote_ending(str, i);
 			i++;
@@ -97,10 +97,13 @@ void	remove_quotes(char *str, int len, char *delim)
 		{
 			i++;
 			count = -1;
-			flag = 2;
+			flag = 0;
 			continue ;
 		}
-		delim[j++] = str[i++];
+		if ((flag == 0) && (str[i] == ' ' || str[i] == '\t'))
+			i++;
+		else
+			delim[j++] = str[i++];
 	}
 	delim[j] = '\0';
 }
