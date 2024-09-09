@@ -14,30 +14,13 @@
             "MIMode": "gdb",
             "setupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
+                  "description": "Enable signal handling",
+                  "text": "handle SIGINT stop"
                 }
-            ],
+              ],
         "preLaunchTask": "build", // Ensure your build task is configured
         "internalConsoleOptions": "openOnSessionStart",
         "miDebuggerPath": "/usr/bin/gdb" // Path to gdb executable
     },
-    {
-        "name": "Attach to Process",
-        "type": "cppdbg",
-        "request": "attach",
-        "program": "${workspaceFolder}/minishell",  // Optional: specify the path to your executable
-        "processId": "214453",
-        "MIMode": "gdb",                    // Or "lldb" depending on your setup
-        "miDebuggerPath": "/usr/bin/gdb",   // Path to GDB or LLDB
-        "setupCommands": [
-            {
-                "description": "Enable pretty-printing for gdb",
-                "text": "-enable-pretty-printing",
-                "ignoreFailures": true
-            }
-        ]
-    }
 ]
 }
