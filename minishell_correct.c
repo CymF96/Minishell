@@ -34,7 +34,6 @@ void	minishell_running(t_msh *msh)
 	check_if_exit(msh);
 	if (parse_main(msh) == 0)
 	{
-		printf("EXE WOULD BE HAPPENING HERE\n");
 		execution(msh);
 	}
 	exit_cleanup(NULL, msh, 0, 3);

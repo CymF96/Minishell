@@ -112,15 +112,15 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
-	printf("Modified string is: %s\n", msh->parse->modified);
+	// printf("Modified string is: %s\n", msh->parse->modified);
 	parse_tokenize(msh, msh->parse);
 	
 	t_token *tkn = msh->parse->head;
 	while (tkn != NULL)
 	{
-		printf("Token is: %s\n", tkn->token);
-		printf("Type of token is: %u\n\n", tkn->type);
-		ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
+		// printf("Token is: %s\n", tkn->token);
+		// printf("Type of token is: %u\n\n", tkn->type);
+		// ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
 		tkn = tkn->next;
 	}
 
