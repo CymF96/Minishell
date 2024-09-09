@@ -45,12 +45,12 @@ void	ft_pipex(t_msh *msh)
 	//	ft_printf("chds[3] is NULL\n");
 	chd1_fork(msh, chds[0]);
 	int g = msh->pexe->group_id;
-	while (msh->pexe != NULL)
-	{
-		if (msh->pexe->group_id == g + 1)
-			break ;
-		msh->pexe = msh->pexe->next;
-	}
+	// while (msh->pexe != NULL)
+	// {
+	// 	if (msh->pexe->group_id == g + 1)
+	// 		break ;
+	// 	msh->pexe = msh->pexe->next;
+	// }
 	i = 1;
 	while (chds[i + 1] != NULL)
 	{

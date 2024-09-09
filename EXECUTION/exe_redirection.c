@@ -44,6 +44,7 @@ void	red_left(t_msh *msh)
 	check_type(msh);
 	msh->fd[0] = save_stdin;
 	dup2(msh->fd[0], STDIN_FILENO);
+	// need to call function unlink() for heredoc
 }
 
 void	red_right(t_msh *msh)

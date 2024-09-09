@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 12:14:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:53:08 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	handle_quote(t_msh *msh, int *i)
 					break ;
 				(*i)++;
 			}
-			copy_input_mod(msh, &msh->input[start], start, (*i) + 1);
+			copy_input_mod(msh, &msh->input[start], start, (*i)); // + 1
 			if (msh->input[*i] == '$')
 				expand_dollars(msh, i);
 		}
