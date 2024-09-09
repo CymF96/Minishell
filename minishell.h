@@ -161,7 +161,7 @@ void	double_red_right(t_msh *msh);
 void	red_left(t_msh *msh);
 void	red_right(t_msh *msh);
 void	ft_pipex(t_msh *msh);
-void	signals_handler(int sig, siginfo_t *info, void *context);
+void	signals_handler(int sig);
 void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, t_pipex *chds);
 void	mdlchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds);
@@ -212,6 +212,7 @@ void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
 void	fill_pexe(t_msh *msh);
+void	sort_pexe(t_msh *msh);
 
 
 /*------- CLEANUP -------*/

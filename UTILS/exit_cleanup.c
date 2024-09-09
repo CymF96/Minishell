@@ -72,8 +72,8 @@ void	free_pexe(t_msh *msh)
 		if (current->option != NULL)
 			free_mallocs(NULL, (void **)current->option);
 		current->prev = NULL;
-		if (current->temp != NULL)
-			free(current->temp);
+		// if (current->temp != NULL)
+		// 	free(current->temp);
 		free(current);
 		current = NULL;
 		current = next;

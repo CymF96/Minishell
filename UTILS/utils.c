@@ -70,6 +70,52 @@
 // 	msh->local_var = temp_envp; //copying temp array ptr to envp on
 // }
 
+void	swap(t_pexe *node_a, t_pexe *node_b)
+{
+	t_pexe	temp;
+
+	temp.cmd = node_a->cmd;
+	temp.group_id = node_a->group_id;
+	temp.p_index = node_a->p_index;
+	temp.option = node_a->option;
+	temp.type = node_a->type;
+	node_a->cmd = node_b->cmd;
+	node_a->group_id = node_b->group_id;
+	node_a->p_index = node_b->p_index;
+	node_a->option = node_b->option;
+	node_a->type = node_b->type;
+	node_b->cmd = temp.cmd;
+	node_b->group_id = temp.group_id;
+	node_b->p_index = temp.p_index;
+	node_b->option = temp.option;
+	node_b->type = temp.type;
+}
+
+void	sort_pexe(t_msh *msh)
+{
+	t_pexe	*current;
+	t_pexe	*next;
+	int		loop;
+
+	loop = 1;
+	while (loop)
+	{
+		loop = 0;
+		current = msh->pexe;
+		while (current->next != NULL)
+		{
+			next = current->next;
+			if (current->group_id > next->group_id\
+				|| (current->group_id == next->group_id && current->p_index > next->p_index))
+			{	
+				swap(current, next);
+				loop = 1;
+			}
+			current = current->next;
+		}
+	}
+}
+
 char	*set_var_name(char *cmd)
 {
 	int	i;

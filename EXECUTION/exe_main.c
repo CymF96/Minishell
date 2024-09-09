@@ -6,6 +6,24 @@ void	check_exit_status_cmd(t_msh *msh, char *cmd)
 		ft_printf("%d\n", msh->exit_error);
 }
 
+void	check_if_builtin(t_msh *msh, char *cmd)
+{
+	if (ft_strlen(cmd) == 4 && !ft_strncmp("exit", cmd, 4))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 4 && !ft_strncmp("echo ", cmd, 4))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 2 && !ft_strncmp("cd", cmd, 2))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 3 && !ft_strncmp("pwd", cmd, 3))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 6 && !ft_strncmp("export", cmd, 6))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 5 && !ft_strncmp("unset", cmd, 5))
+		msh->pexe->type = BUILTIN;
+	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
+		msh->pexe->type = BUILTIN;
+}
+
 void	check_builtin_cmd(t_msh *msh, char *cmd)
 {
 	int g;
@@ -25,8 +43,7 @@ void	check_builtin_cmd(t_msh *msh, char *cmd)
 		cmd_unset(msh, g);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
 		cmd_env(msh, g);
-	if (msh->child)
-		exit(EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 void	check_type(t_msh *msh)
@@ -36,10 +53,14 @@ void	check_type(t_msh *msh)
 		msh->child = 1;
 		ft_pipex(msh);
 	}
-	else if (msh->pexe->type == BUILTIN)
-		check_builtin_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == EXE)
-		find_exe(msh, msh->pexe->cmd);
+	{
+		check_if_builtin(msh, msh->pexe->cmd);
+		if (msh->pexe->type == BUILTIN)
+			check_builtin_cmd(msh, msh->pexe->cmd);
+		else
+			find_exe(msh, msh->pexe->cmd);
+	}
 	else if (msh->pexe->type == EXIT_ERROR)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == INFILE || msh->pexe->type == HEREDOC)
@@ -54,7 +75,13 @@ void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
-	printf("STRING LENGTH FOR CMD %ld\n", ft_strlen(msh->pexe->cmd));
+	//TO REMOVE//
+	// t_pexe *current;
+	// current = msh->pexe;
+	// while (current->next != NULL)
+	// 	current = current->next;
+	// current->p_index = 0;
+	/*******************/
+	sort_pexe(msh);
 	check_type(msh);
-	// exit_cleanup(NULL, msh, 0, 3);
 }
