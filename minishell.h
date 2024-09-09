@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 12:12:31 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:32:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_parse
 	int		**poi;
 	int		here_fd;
 	char	*temp;
+	int		**wilds;
 	t_token	*head;
 }	t_parse;
 

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 17:22:07 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:54:56 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	free_pexe(t_msh *msh)
 		if (current->option != NULL)
 			free_mallocs(NULL, (void **)current->option);
 		current->prev = NULL;
-		if (current->temp != NULL)
-			free(current->temp);
+		// if (msh->parse->head != NULL && current->temp != NULL)
+		// 	free(current->temp);
 		free(current);
 		current = NULL;
 		current = next;
