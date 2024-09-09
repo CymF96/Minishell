@@ -51,7 +51,7 @@ void	ft_pipex(t_msh *msh)
 	// 		break ;
 	// 	msh->pexe = msh->pexe->next;
 	// }
-	i = 0;
+	i = 1;
 	while (chds[i + 1] != NULL)
 	{
 		while (msh->pexe != NULL)
@@ -64,6 +64,7 @@ void	ft_pipex(t_msh *msh)
 			msh->pexe = msh->pexe->next;
 		}
 		//ft_printf("*************************\n MIDDLECHILD: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
+		
 		mdlchd_fork(msh, chds[i - 1], chds[i]);
 		i++;
 	}
