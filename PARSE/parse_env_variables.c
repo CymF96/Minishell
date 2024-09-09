@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 12:14:58 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:26:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ char	*expand_env(t_msh *msh, int *i, int flag)
 	char	*temp;
 	char	*str;
 
-	printf("the passed string is %s\n", &msh->input[*i]);
 	temp = find_var(msh, i, flag);
+	printf("the passed string is %d\n", temp[*i]);
 	len = ft_strlen(temp);
 	k = 0;
+	// printf("ENVP IS %s\n", msh->envp[k]);
 	while (msh->envp != NULL && msh->envp[k] != NULL && msh->envp[k][0] != '\0')
 	{
 		str = ft_strnstr(msh->envp[k], temp, len);

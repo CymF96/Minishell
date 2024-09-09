@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 16:40:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:47:17 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
 	}
 	else if (type == HEREDOC)
 	{
-		copy_input_mod(msh, "<", 0, 2);
+		copy_input_mod(msh, "<", 0, 1);
 		input_to_poi(msh, pars, HEREDOC);
 		(*i) += 1;
 		handle_heredoc(msh, i);

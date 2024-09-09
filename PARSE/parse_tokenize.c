@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 17:02:49 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:50:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	copy_text(t_msh *msh, t_parse *pars, t_token *tkn)
 
 	i = tkn->start_pos;
 	j = 0;
-	// ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %i\n",tkn->start_pos, tkn->end_pos,tkn->end_pos - tkn->start_pos + 2 );
 	temp = malloc(sizeof(char) * (tkn->end_pos - tkn->start_pos + 2));
 	if (temp == NULL)
 		exit_cleanup("Malloc failed", msh, errno, 2);

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 16:50:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:26:54 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int	parse_main(t_msh *msh)
 	{
 		printf("Token is: %s\n", tkn->token);
 		printf("Type of token is: %u\n\n", tkn->type);
+		ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
 		tkn = tkn->next;
 	}
 

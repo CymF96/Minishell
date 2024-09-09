@@ -13,7 +13,7 @@ void	check_builtin_cmd(t_msh *msh, char *cmd)
 	g = msh->pexe->group_id;
 	if (ft_strlen(cmd) == 4 && !ft_strncmp("exit", cmd, 4))
 		cmd_exit(msh);
-	else if (ft_strlen(cmd) == 4 && !ft_strncmp("echo", cmd, 4))
+	else if (ft_strlen(cmd) == 4 && !ft_strncmp("echo ", cmd, 4))
 		cmd_echo(msh, g);
 	else if (ft_strlen(cmd) == 2 && !ft_strncmp("cd", cmd, 2))
 		cmd_cd(msh, g);
@@ -54,6 +54,7 @@ void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL)
 		exit_cleanup(NULL, msh, errno, 3);
+	printf("STRING LENGTH FOR CMD %ld\n", ft_strlen(msh->pexe->cmd));
 	check_type(msh);
 	// exit_cleanup(NULL, msh, 0, 3);
 }

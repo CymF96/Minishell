@@ -1,11 +1,11 @@
 #include "../minishell.h"
 
-void    cmd_exit(t_msh *msh)
+void	cmd_exit(t_msh *msh)
 {
 	exit_cleanup(NULL, msh, 0, 1);
 }
 
-void    cmd_echo(t_msh *msh, int g)
+void	cmd_echo(t_msh *msh, int g)
 {
 	int flag;
 
