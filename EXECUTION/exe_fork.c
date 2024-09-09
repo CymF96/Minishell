@@ -11,26 +11,29 @@ void	chd1_fork(t_msh *msh, t_pipex *chds)
 	}
 }
 
-void	mdlchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds)
+void	mdlchd_fork(t_msh *msh, t_pipex **chds)
 {
-	if ((chds->pid = fork()) == 0)
+	if ((chds[1]->pid = fork()) == 0)
 	{
-		dup2(prev_chds->fd[0], STDIN_FILENO);
-		close(prev_chds->fd[1]);
-		close(prev_chds->fd[0]);
-		dup2(chds->fd[1], STDOUT_FILENO);
-		close(chds->fd[1]);
+		close(chds[0]->fd[1]);
+		dup2(chds[0]->fd[0], STDIN_FILENO);
+		close(chds[0]->fd[0]);
+		close(chds[1]->fd[0]);
+		dup2(chds[1]->fd[1], STDOUT_FILENO);
+		close(chds[1]->fd[1]);
 		check_type(msh);// problem here for exit the process as the parent is waiting for it finish
 	}
 }
 
-void	lstchd_fork(t_msh *msh, t_pipex *prev_chds, t_pipex *chds)
+void	lstchd_fork(t_msh *msh, t_pipex **chds)
 {
-	if ((chds->pid = fork()) == 0)
+	if ((chds[2]->pid = fork()) == 0)
 	{
-		close(prev_chds->fd[1]);
-		dup2(prev_chds->fd[0], STDIN_FILENO);
-		close(prev_chds->fd[0]);
+		close(chds[0]->fd[0]);
+		close(chds[0]->fd[1]);
+		close(chds[1]->fd[1]);
+		dup2(chds[1]->fd[0], STDIN_FILENO);
+		close(chds[1]->fd[0]);
 		check_type(msh);
 	}
 }

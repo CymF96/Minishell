@@ -7,7 +7,7 @@ SRC_PATH = ./
 LIBFT_PATH = ./LIBFT
 LIBFT = $(LIBFT_PATH)/libft
 
-SRC =	minishell_correct.c\
+SRC =	minishell.c\
 		PARSE/parse_create_modified.c \
 		PARSE/parse_env_variables.c \
 		PARSE/parse_heredoc.c \
