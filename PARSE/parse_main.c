@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 15:04:04 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:21:56 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,19 +112,17 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
-	printf("MODIFIED STRING IS: %s\n\n", msh->parse->modified);
-
-
+	// printf("Modified string is: %s\n", msh->parse->modified);
 	parse_tokenize(msh, msh->parse);
 	
-	// t_token *tkn = msh->parse->head;
-	// while (tkn != NULL)
-	// {
-	// 	printf("Token is: %s\n", tkn->token);
-	// 	printf("Type of token is: %u\n", tkn->type);
-	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
-	// 	tkn = tkn->next;
-	// }
+	t_token *tkn = msh->parse->head;
+	while (tkn != NULL)
+	{
+		// printf("Token is: %s\n", tkn->token);
+		// printf("Type of token is: %u\n\n", tkn->type);
+		// ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
+		tkn = tkn->next;
+	}
 
 	make_pexe(msh, msh->parse);
 	t_pexe *temp = msh->pexe;

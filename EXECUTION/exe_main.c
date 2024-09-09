@@ -43,7 +43,8 @@ void	check_builtin_cmd(t_msh *msh, char *cmd)
 		cmd_unset(msh, g);
 	else if (ft_strlen(cmd) == 3 && !ft_strncmp("env", cmd, 3))
 		cmd_env(msh, g);
-	exit(EXIT_SUCCESS);
+	if (msh->child)
+		exit(EXIT_SUCCESS);
 }
 
 void	check_type(t_msh *msh)
