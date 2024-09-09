@@ -64,7 +64,7 @@ void	ft_pipex(t_msh *msh)
 			msh->pexe = msh->pexe->next;
 		}
 		//ft_printf("*************************\n MIDDLECHILD: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
-		mdlchd_fork(msh, chds[i - 1], chds[i]);
+		mdlchd_fork(msh, chds);
 		i++;
 	}
 	while (msh->pexe != NULL)
@@ -74,6 +74,6 @@ void	ft_pipex(t_msh *msh)
 		msh->pexe = msh->pexe->next;
 	}
 	//ft_printf("*************************\n LASTCHILD:chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
-	lstchd_fork(msh, chds[i - 1], chds[i]);// check if i -1 or i - 2
+	lstchd_fork(msh, chds);// check if i -1 or i - 2
 	closing(msh, chds); //parent wait the children and close everything + total cleanup
 }
