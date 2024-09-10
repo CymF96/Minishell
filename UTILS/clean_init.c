@@ -6,42 +6,67 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/15 11:43:06 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/08 11:28:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
+void	clean_init_chds(t_pipex *chds)
+{
+	chds->fd[0] = STDIN_FILENO;
+	chds->fd[1] = STDOUT_FILENO;
+	chds->pid = -1;
+}
+
+void	clean_init_pexe_node(t_pexe *pexe)
+{
+	pexe->type = TEMP;
+	pexe->cmd = NULL;
+	pexe->option = NULL;
+	pexe->group_id = -1;
+	pexe->p_index = -1;
+	pexe->muk_note = REGULAR;
+	pexe->temp = NULL;
+	pexe->prev = NULL;
+	pexe->next = NULL;
+}
 
 void	clean_init_token_node(t_token *tkn)
 {
+	tkn->token = NULL;
 	tkn->start_pos = -1;
 	tkn->end_pos = -1;
-	tkn->type = -1;
-	tkn->token = NULL;
+	tkn->type = REGULAR;
 	tkn->prev = NULL;
 	tkn->next = NULL;
 }
 
 void	clean_init_parse(t_parse *pars)
 {
-	pars->parsed_args = NULL;
+	
 	pars->head = NULL;
+	pars->modified = NULL;
+	pars->no_poi = 0;
+	pars->size_modified = 0;
+	pars->poi = NULL;
+	pars->here_fd = -1;
+	pars->l_count = 0;
+	pars->r_count = 0;
 }
 
-/*
------ CLEAN INITIALIZE -----
-Function to set variables to their safe state. I.e. if a number is expected
-to be positive, init to -1 otherwise to 0. If there is a pointer, all are
-initialized to NULL. This is done to prevent derefencing an uninitialized func.
-*/
-
-void	clean_initialize(t_msh *msh)
+void	clean_msh_init(t_msh *msh)
 {
-	if (msh == NULL)
-		exit_cleanup("Passed NULL to clean_init", NULL, errno);
-	
-	msh->input = NULL;
+	msh->input =  NULL;
+	msh->envp = NULL;
+	msh->fd[0] = dup(STDIN_FILENO);
+	msh->fd[1] = dup(STDOUT_FILENO);
+	msh->pipe_nb = 0;
+	msh->flag = -1;
 	msh->parse = NULL;
-	msh->parent_str = NULL;
+	msh->pipe_nb = 0;
+	msh->pexe = NULL; 
+	msh->child = 0;
+	msh->signal_flags = 0;
+	msh->text = NULL;
 }

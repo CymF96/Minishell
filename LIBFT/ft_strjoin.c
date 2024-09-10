@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 19:22:24 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/04/18 10:29:51 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/03 11:47:47 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (s1[i] != '\0')
+	while (s1[i] != '\0' && s1[i] != '\n')
 	{
 		p_mal[i] = s1[i];
 		i++;
 	}
-	while (s2[j] != '\0')
+	while (s2[j] != '\0' && s2[j] != '\n')
 	{
 		p_mal[i + j] = s2[j];
 		j++;
 	}
+	p_mal[i + j] = '\0';
 	return (p_mal);
 }

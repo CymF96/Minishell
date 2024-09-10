@@ -1,0 +1,3 @@
+valgrind --suppressions=debugging/rl.supp --leak-check=full --show-leak-kinds=all --log-file=OTHER/debugging/valgrind.txt ./minishell
+
+valgrind --suppressions=OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes --log-file=OTHER/debugging/valgrind.txt ./minishell

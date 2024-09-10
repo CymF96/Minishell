@@ -1,36 +1,83 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   minishell_correct.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/08/14 16:29:54 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:25:28 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int main(int ac, char **av, char **envp)
+void	check_if_exit(t_msh *msh)
 {
-	t_msh	msh;
+	char	*temp;
+
+	temp = malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
+	if (temp == NULL)
+		exit_cleanup("Malloc Failed", msh, errno, 2);
+	remove_quotes(msh->input, ft_strlen(msh->input), temp);
+	if (ft_strlen(temp) == 4 && !ft_strncmp("exit", temp, 4))
+	{
+		free(temp);
+		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+	}
+	free(temp);
+}
+
+void	minishell_running(t_msh *msh)
+{
+	add_history(msh->input);
+	check_if_exit(msh);
+	if (parse_main(msh) == 0)
+	{
+		execution(msh);
+	}
+	exit_cleanup(NULL, msh, 0, 3);
+	if (msh->input != NULL)
+	{
+		free(msh->input);
+		msh->input = NULL;
+	}
+}
+
+void	minishell_start(t_msh *msh, int ac, char **envp)
+{
+	int	loop;
+
+	loop = 1;
+	clean_msh_init(msh);
+	msh->exit_error = 0;
+	signal_handler_init(msh);
+	if (input_validate(ac, envp) != 0)
+		exit_cleanup("invalid input\n", msh, 0, 1);
+	while (loop)
+	{
+		msh->input = readline("Heart of Gold>> ");
+		if (msh->input == NULL)
+			sigeof(msh);
+		msh->envp = envp;
+		minishell_running(msh);
+		clean_msh_init(msh);
+	}
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_msh	*msh;
 
 	(void)av;
-	input_validate(ac, envp);
-	clean_initialize(&msh);
-	while (1)
+	msh = malloc(sizeof(t_msh));
+	if (msh == NULL)
 	{
-		msh.input = readline("Heart of Gold>> ");
-		if (msh.input == NULL)
-			exit_cleanup("Problem in user input", &msh, errno);
-		add_history(msh.input);
-		check_if_exit(msh);
-		// if (ft_strlen(msh.input) == 4 && !ft_strncmp("exit", msh.input, 4)) // need to check for exit code so parse this too?
-		// 	exit_cleanup("User says 'Be Gone Thot!'", &msh, 0);
-		parse_input(&msh);
-		free(msh.input);
-		msh.input = NULL;
+		perror("Error");
+		exit(EXIT_FAILURE);
 	}
-	exit_cleanup(NULL, NULL, 0);
+	minishell_start(msh, ac, envp);
+	if (msh != NULL)
+		free(msh);
+	return (0);
 }

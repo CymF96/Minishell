@@ -1,0 +1,102 @@
+==302827== Memcheck, a memory error detector
+==302827== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==302827== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==302827== Command: ./minishell
+==302827== Parent PID: 280932
+==302827== 
+==302885== 
+==302885== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==302885== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 39: /home/cofische/.config/Code/logs/20240910T092448/ptyhost.log
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==302885==    <inherited from parent>
+==302885== 
+==302885== 
+==302885== HEAP SUMMARY:
+==302885==     in use at exit: 208,240 bytes in 224 blocks
+==302885==   total heap usage: 477 allocs, 253 frees, 231,513 bytes allocated
+==302885== 
+==302885== 17 bytes in 1 blocks are definitely lost in loss record 10 of 65
+==302885==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302885==    by 0x110D11: ft_calloc (in /home/cofische/42_common_core/minishell/minishell)
+==302885==    by 0x11021F: ft_strjoin (in /home/cofische/42_common_core/minishell/minishell)
+==302885==    by 0x10D0C8: find_exe (exe_executable.c:54)
+==302885==    by 0x10DDF8: check_type (exe_main.c:63)
+==302885==    by 0x10DEE2: execution (exe_main.c:87)
+==302885==    by 0x10969B: minishell_running (minishell.c:37)
+==302885==    by 0x10979D: minishell_start (minishell.c:63)
+==302885==    by 0x10980D: main (minishell.c:79)
+==302885== 
+==302885== 32 bytes in 1 blocks are definitely lost in loss record 14 of 65
+==302885==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302885==    by 0x10ACBE: pexe_malloc (parse_mallocs.c:25)
+==302885==    by 0x10B0E2: make_pexe (parse_pexe.c:81)
+==302885==    by 0x10AC53: parse_main (parse_main.c:127)
+==302885==    by 0x10968B: minishell_running (minishell.c:35)
+==302885==    by 0x10979D: minishell_start (minishell.c:63)
+==302885==    by 0x10980D: main (minishell.c:79)
+==302885== 
+==302885== LEAK SUMMARY:
+==302885==    definitely lost: 49 bytes in 2 blocks
+==302885==    indirectly lost: 0 bytes in 0 blocks
+==302885==      possibly lost: 0 bytes in 0 blocks
+==302885==    still reachable: 0 bytes in 0 blocks
+==302885==         suppressed: 208,191 bytes in 222 blocks
+==302885== 
+==302885== For lists of detected and suppressed errors, rerun with: -s
+==302885== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==302827== 
+==302827== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==302827== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 39: /home/cofische/.config/Code/logs/20240910T092448/ptyhost.log
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==302827==    <inherited from parent>
+==302827== 
+==302827== 
+==302827== HEAP SUMMARY:
+==302827==     in use at exit: 208,240 bytes in 224 blocks
+==302827==   total heap usage: 475 allocs, 251 frees, 230,017 bytes allocated
+==302827== 
+==302827== 17 bytes in 1 blocks are definitely lost in loss record 10 of 65
+==302827==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302827==    by 0x110D11: ft_calloc (in /home/cofische/42_common_core/minishell/minishell)
+==302827==    by 0x11021F: ft_strjoin (in /home/cofische/42_common_core/minishell/minishell)
+==302827==    by 0x10D0C8: find_exe (exe_executable.c:54)
+==302827==    by 0x10DDF8: check_type (exe_main.c:63)
+==302827==    by 0x10DEE2: execution (exe_main.c:87)
+==302827==    by 0x10969B: minishell_running (minishell.c:37)
+==302827==    by 0x10979D: minishell_start (minishell.c:63)
+==302827==    by 0x10980D: main (minishell.c:79)
+==302827== 
+==302827== 32 bytes in 1 blocks are definitely lost in loss record 14 of 65
+==302827==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302827==    by 0x10ACBE: pexe_malloc (parse_mallocs.c:25)
+==302827==    by 0x10B0E2: make_pexe (parse_pexe.c:81)
+==302827==    by 0x10AC53: parse_main (parse_main.c:127)
+==302827==    by 0x10968B: minishell_running (minishell.c:35)
+==302827==    by 0x10979D: minishell_start (minishell.c:63)
+==302827==    by 0x10980D: main (minishell.c:79)
+==302827== 
+==302827== LEAK SUMMARY:
+==302827==    definitely lost: 49 bytes in 2 blocks
+==302827==    indirectly lost: 0 bytes in 0 blocks
+==302827==      possibly lost: 0 bytes in 0 blocks
+==302827==    still reachable: 0 bytes in 0 blocks
+==302827==         suppressed: 208,191 bytes in 222 blocks
+==302827== 
+==302827== For lists of detected and suppressed errors, rerun with: -s
+==302827== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
