@@ -15,18 +15,11 @@
 t_pexe	*pexe_malloc(t_msh *msh)
 {
 	t_pexe	*temp;
-	int		i;
 
-	i = 0;
 	temp = malloc(sizeof(t_pexe));
 	if (temp == NULL)
 		exit_cleanup("Malloc Failed", msh, errno, 2);
 	clean_init_pexe_node(temp);
-	temp->option = malloc(sizeof(char *) * 4);
-	if (temp->option == NULL)
-		exit_cleanup("Malloc failed", msh, errno, 2);
-	while (i < 4)
-		temp->option[i++] = NULL;
 	return (temp);
 }
 

@@ -118,15 +118,9 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 			msh->input = NULL;
 		}
 		if (msh->fd[0] != -1)
-		{
 			close(msh->fd[0]);
-			msh->fd[0] = -1;
-		}
 		if (msh->fd[1] != -1)
-		{
 			close(msh->fd[1]);
-			msh->fd[1] = -1;
-		}
 		if (check == 1 || check == 2)
 		{
 			rl_clear_history();
