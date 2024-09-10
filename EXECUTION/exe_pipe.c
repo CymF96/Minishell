@@ -1,16 +1,42 @@
 #include "../minishell.h"
 
+void	close_fd(t_pipex **chds, int i, int j, int nb_chds) // if all read or write has to be closed, replace by -1
+{
+	int k;
+
+	k = 0;
+	while (k < nb_chds) // close all pipes writing end except the current children one so i = i the child process
+	{
+		if (k != i)
+			close(chds[k]->fd[1]);
+		k++;
+	}
+	k = 0;
+	while (k < nb_chds) // close all pipes reading end except the previous one so j = i - 1 
+	{
+		if (k != j)
+			close(chds[k]->fd[0]);
+		k++;
+	}
+}
+
 void	ft_pipex(t_msh *msh)
 {
 	int		i;
 	t_pipex **chds; //check question of null term
+	int g;
+	int nb_chds;
 
 	i = 0;
+	
+	// msh->fd[0] = dup(STDIN_FILENO);
+	// msh->fd[1] = dup(STDOUT_FILENO);
 	chds = NULL;
 	chds = malloc(sizeof(t_pipex *) * (msh->pipe_nb + 2));
-	while (i < msh->pipe_nb + 2)
-		chds[i++] = NULL;
-	i = 0;
+	// while (i < msh->pipe_nb + 2)
+	// 	chds[i++] = NULL;
+	// i = 0;
+	nb_chds = msh->pipe_nb + 1;
 	while (msh->pipe_nb >= 0)
 	{
 		chds[i] = (t_pipex *)malloc(sizeof(t_pipex));
@@ -43,14 +69,8 @@ void	ft_pipex(t_msh *msh)
 	//ft_printf("AFTER PIPE: chds[2]--> fd[0]: %d, fd[1]: %d\n", chds[2]->fd[0], chds[2]->fd[1]);
 	//if (chds[3] == NULL)
 	//	ft_printf("chds[3] is NULL\n");
-	chd1_fork(msh, chds[0]);
-	int g = msh->pexe->group_id;
-	while (msh->pexe != NULL)
-	{
-		if (msh->pexe->group_id == g + 1)
-			break ;
-		msh->pexe = msh->pexe->next;
-	}
+	chd1_fork(msh, chds, nb_chds);
+	g = msh->pexe->group_id;
 	i = 1;
 	while (chds[i + 1] != NULL)
 	{
@@ -64,7 +84,7 @@ void	ft_pipex(t_msh *msh)
 			msh->pexe = msh->pexe->next;
 		}
 		//ft_printf("*************************\n MIDDLECHILD: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
-		mdlchd_fork(msh, chds);
+		mdlchd_fork(msh, chds, i, nb_chds);
 		i++;
 	}
 	while (msh->pexe != NULL)
@@ -73,7 +93,7 @@ void	ft_pipex(t_msh *msh)
 			break ;
 		msh->pexe = msh->pexe->next;
 	}
-	//ft_printf("*************************\n LASTCHILD:chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
-	lstchd_fork(msh, chds);// check if i -1 or i - 2
+	close_fd(chds, i, i-1, nb_chds);//ft_printf("*************************\n LASTCHILD:chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
+	last_fork(msh, chds, i, nb_chds);// check if i -1 or i - 2
 	closing(msh, chds); //parent wait the children and close everything + total cleanup
 }

@@ -1,136 +1,102 @@
-==227943== Memcheck, a memory error detector
-==227943== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==227943== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==227943== Command: /usr/bin/cat test.txt
-==227943== Parent PID: 227936
-==227943== 
-==227943== 
-==227943== FILE DESCRIPTORS: 7 open (1 std) at exit.
-==227943== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==227943==    <inherited from parent>
-==227943== 
-==227943== Open file descriptor 40: /dev/ptmx
-==227943==    <inherited from parent>
-==227943== 
-==227943== Open file descriptor 39: /home/cofische/.config/Code/logs/20240904T091113/ptyhost.log
-==227943==    <inherited from parent>
-==227943== 
-==227943== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
-==227943==    <inherited from parent>
-==227943== 
-==227943== Open file descriptor 4: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==227943==    <inherited from parent>
-==227943== 
-==227943== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==227943==    <inherited from parent>
-==227943== 
-==227943== 
-==227943== HEAP SUMMARY:
-==227943==     in use at exit: 0 bytes in 0 blocks
-==227943==   total heap usage: 3 allocs, 3 frees, 135,211 bytes allocated
-==227943== 
-==227943== All heap blocks were freed -- no leaks are possible
-==227943== 
-==227943== For lists of detected and suppressed errors, rerun with: -s
-==227943== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-ische/.config/Code/logs/20240904T091113/ptyhost.log
-==227944==    <inherited from parent>
-==227944== 
-==227944== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
-==227944==    <inherited from parent>
-==227944== 
-==227944== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==227944==    <inherited from parent>
-==227944== 
-==227944== 
-==227944== HEAP SUMMARY:
-==227944==     in use at exit: 88 bytes in 4 blocks
-==227944==   total heap usage: 15 allocs, 11 frees, 378 bytes allocated
-==227944== 
-==227944== 4 bytes in 1 blocks are still reachable in loss record 1 of 4
-==227944==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227944==    by 0x49C758E: strdup (strdup.c:42)
-==227944==    by 0x40137E: main (minishell.c:111)
-==227944== 
-==227944== 4 bytes in 1 blocks are still reachable in loss record 2 of 4
-==227944==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227944==    by 0x49C758E: strdup (strdup.c:42)
-==227944==    by 0x4013AC: main (minishell.c:115)
-==227944== 
-==227944== 16 bytes in 1 blocks are still reachable in loss record 3 of 4
-==227944==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227944==    by 0x40139B: main (minishell.c:114)
-==227944== 
-==227944== 64 bytes in 1 blocks are still reachable in loss record 4 of 4
-==227944==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227944==    by 0x401360: main (minishell.c:103)
-==227944== 
-==227944== LEAK SUMMARY:
-==227944==    definitely lost: 0 bytes in 0 blocks
-==227944==    indirectly lost: 0 bytes in 0 blocks
-==227944==      possibly lost: 0 bytes in 0 blocks
-==227944==    still reachable: 88 bytes in 4 blocks
-==227944==         suppressed: 0 bytes in 0 blocks
-==227944== 
-==227944== For lists of detected and suppressed errors, rerun with: -s
-==227944== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
-==227936== Conditional jump or move depends on uninitialised value(s)
-==227936==    at 0x404797: free_mallocs (exit_cleanup.c:27)
-==227936==    by 0x404797: free_pexe (exit_cleanup.c:66)
-==227936==    by 0x404797: clear_msh (exit_cleanup.c:102)
-==227936==    by 0x404867: exit_cleanup (exit_cleanup.c:143)
-==227936==    by 0x403B8B: closing (exe_fork.c:101)
-==227936==    by 0x4014AE: main (minishell.c:195)
-==227936==  Uninitialised value was created by a heap allocation
-==227936==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227936==    by 0x401454: main (minishell.c:157)
-==227936== 
-==227936== 
-==227936== FILE DESCRIPTORS: 8 open (3 std) at exit.
-==227936== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==227936==    <inherited from parent>
-==227936== 
-==227936== Open file descriptor 40: /dev/ptmx
-==227936==    <inherited from parent>
-==227936== 
-==227936== Open file descriptor 39: /home/cofische/.config/Code/logs/20240904T091113/ptyhost.log
-==227936==    <inherited from parent>
-==227936== 
-==227936== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
-==227936==    <inherited from parent>
-==227936== 
-==227936== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==227936==    <inherited from parent>
-==227936== 
-==227936== 
-==227936== HEAP SUMMARY:
-==227936==     in use at exit: 88 bytes in 4 blocks
-==227936==   total heap usage: 15 allocs, 11 frees, 378 bytes allocated
-==227936== 
-==227936== 4 bytes in 1 blocks are still reachable in loss record 1 of 4
-==227936==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227936==    by 0x49C758E: strdup (strdup.c:42)
-==227936==    by 0x40137E: main (minishell.c:111)
-==227936== 
-==227936== 4 bytes in 1 blocks are still reachable in loss record 2 of 4
-==227936==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227936==    by 0x49C758E: strdup (strdup.c:42)
-==227936==    by 0x4013AC: main (minishell.c:115)
-==227936== 
-==227936== 16 bytes in 1 blocks are still reachable in loss record 3 of 4
-==227936==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227936==    by 0x40139B: main (minishell.c:114)
-==227936== 
-==227936== 64 bytes in 1 blocks are still reachable in loss record 4 of 4
-==227936==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==227936==    by 0x401360: main (minishell.c:103)
-==227936== 
-==227936== LEAK SUMMARY:
-==227936==    definitely lost: 0 bytes in 0 blocks
-==227936==    indirectly lost: 0 bytes in 0 blocks
-==227936==      possibly lost: 0 bytes in 0 blocks
-==227936==    still reachable: 88 bytes in 4 blocks
-==227936==         suppressed: 0 bytes in 0 blocks
-==227936== 
-==227936== For lists of detected and suppressed errors, rerun with: -s
-==227936== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==302827== Memcheck, a memory error detector
+==302827== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==302827== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==302827== Command: ./minishell
+==302827== Parent PID: 280932
+==302827== 
+==302885== 
+==302885== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==302885== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 39: /home/cofische/.config/Code/logs/20240910T092448/ptyhost.log
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
+==302885==    <inherited from parent>
+==302885== 
+==302885== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==302885==    <inherited from parent>
+==302885== 
+==302885== 
+==302885== HEAP SUMMARY:
+==302885==     in use at exit: 208,240 bytes in 224 blocks
+==302885==   total heap usage: 477 allocs, 253 frees, 231,513 bytes allocated
+==302885== 
+==302885== 17 bytes in 1 blocks are definitely lost in loss record 10 of 65
+==302885==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302885==    by 0x110D11: ft_calloc (in /home/cofische/42_common_core/minishell/minishell)
+==302885==    by 0x11021F: ft_strjoin (in /home/cofische/42_common_core/minishell/minishell)
+==302885==    by 0x10D0C8: find_exe (exe_executable.c:54)
+==302885==    by 0x10DDF8: check_type (exe_main.c:63)
+==302885==    by 0x10DEE2: execution (exe_main.c:87)
+==302885==    by 0x10969B: minishell_running (minishell.c:37)
+==302885==    by 0x10979D: minishell_start (minishell.c:63)
+==302885==    by 0x10980D: main (minishell.c:79)
+==302885== 
+==302885== 32 bytes in 1 blocks are definitely lost in loss record 14 of 65
+==302885==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302885==    by 0x10ACBE: pexe_malloc (parse_mallocs.c:25)
+==302885==    by 0x10B0E2: make_pexe (parse_pexe.c:81)
+==302885==    by 0x10AC53: parse_main (parse_main.c:127)
+==302885==    by 0x10968B: minishell_running (minishell.c:35)
+==302885==    by 0x10979D: minishell_start (minishell.c:63)
+==302885==    by 0x10980D: main (minishell.c:79)
+==302885== 
+==302885== LEAK SUMMARY:
+==302885==    definitely lost: 49 bytes in 2 blocks
+==302885==    indirectly lost: 0 bytes in 0 blocks
+==302885==      possibly lost: 0 bytes in 0 blocks
+==302885==    still reachable: 0 bytes in 0 blocks
+==302885==         suppressed: 208,191 bytes in 222 blocks
+==302885== 
+==302885== For lists of detected and suppressed errors, rerun with: -s
+==302885== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==302827== 
+==302827== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==302827== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 39: /home/cofische/.config/Code/logs/20240910T092448/ptyhost.log
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
+==302827==    <inherited from parent>
+==302827== 
+==302827== Open file descriptor 3: /home/cofische/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==302827==    <inherited from parent>
+==302827== 
+==302827== 
+==302827== HEAP SUMMARY:
+==302827==     in use at exit: 208,240 bytes in 224 blocks
+==302827==   total heap usage: 475 allocs, 251 frees, 230,017 bytes allocated
+==302827== 
+==302827== 17 bytes in 1 blocks are definitely lost in loss record 10 of 65
+==302827==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302827==    by 0x110D11: ft_calloc (in /home/cofische/42_common_core/minishell/minishell)
+==302827==    by 0x11021F: ft_strjoin (in /home/cofische/42_common_core/minishell/minishell)
+==302827==    by 0x10D0C8: find_exe (exe_executable.c:54)
+==302827==    by 0x10DDF8: check_type (exe_main.c:63)
+==302827==    by 0x10DEE2: execution (exe_main.c:87)
+==302827==    by 0x10969B: minishell_running (minishell.c:37)
+==302827==    by 0x10979D: minishell_start (minishell.c:63)
+==302827==    by 0x10980D: main (minishell.c:79)
+==302827== 
+==302827== 32 bytes in 1 blocks are definitely lost in loss record 14 of 65
+==302827==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==302827==    by 0x10ACBE: pexe_malloc (parse_mallocs.c:25)
+==302827==    by 0x10B0E2: make_pexe (parse_pexe.c:81)
+==302827==    by 0x10AC53: parse_main (parse_main.c:127)
+==302827==    by 0x10968B: minishell_running (minishell.c:35)
+==302827==    by 0x10979D: minishell_start (minishell.c:63)
+==302827==    by 0x10980D: main (minishell.c:79)
+==302827== 
+==302827== LEAK SUMMARY:
+==302827==    definitely lost: 49 bytes in 2 blocks
+==302827==    indirectly lost: 0 bytes in 0 blocks
+==302827==      possibly lost: 0 bytes in 0 blocks
+==302827==    still reachable: 0 bytes in 0 blocks
+==302827==         suppressed: 208,191 bytes in 222 blocks
+==302827== 
+==302827== For lists of detected and suppressed errors, rerun with: -s
+==302827== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
