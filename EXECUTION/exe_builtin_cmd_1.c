@@ -11,7 +11,10 @@ void	cmd_echo(t_msh *msh, int g)
 
 	flag = 0;
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
+	{
+		flag = 1;
 		ft_printf("\n");
+	}
 	if (msh->pexe->next != NULL && ft_strlen(msh->pexe->next->cmd) == 2\
 			&& !ft_strncmp("-n", msh->pexe->next->cmd, 2))
 	{

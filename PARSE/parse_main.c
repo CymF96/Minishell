@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:21:56 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:38:14 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,23 +126,23 @@ int	parse_main(t_msh *msh)
 
 	make_pexe(msh, msh->parse);
 	// t_pexe *temp = msh->pexe;
-	// // int i = 0;
+	// int i = 0;
 	// int j;
 	// while (temp != NULL)
 	// {
 	// 	j = 0;
+	// 	printf("PEXE-TYPE: %d\n", temp->type);
+	// 	printf("PEXE-CMD: %s\n", temp->cmd);
+	// 	while (temp->option != NULL && temp->option[i] != NULL)
+	// 		printf("PEXE-OPTION: %s\n", temp->option[i++]);
+	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+	// 	printf("PEXE-PRIORITY: %d\n\n", temp->p_index);
 	// 	while (temp->cmd[j] != '\0')
 	// 	{
 	// 		if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
-	// 			temp->cmd[j] = '#';
+	// 			printf("####%d\n", j);
 	// 		j++;
 	// 	}
-	// 	printf("PEXE-TYPE: %d\n", temp->type);
-	// 	printf("PEXE-CMD: %s\n", temp->cmd);
-	// 	// while (temp->option != NULL && temp->option[i] != NULL)
-	// 	// 	printf("PEXE-OPTION: %s\n", temp->option[i++]);
-	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-	// 	printf("PEXE-PRIORITY: %d\n\n", temp->p_index);
 	// 	temp = temp->next;
 	// }
 

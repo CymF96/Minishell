@@ -1,39 +1,37 @@
 #include "../minishell.h"
 
-void	chd1_fork(t_msh *msh, t_pipex *chds)
+void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds)
 {
-	if ((chds->pid = fork()) == 0)
+	if ((chds[0]->pid = fork()) == 0)
 	{
-		close(chds->fd[0]);
-		dup2(chds->fd[1], STDOUT_FILENO);
-		close(chds->fd[1]);
+		close_fd(chds, 0, -1, nb_chds);
+		dup2(chds[0]->fd[1], STDOUT_FILENO);
+		close(chds[0]->fd[1]);
 		check_type(msh);
 	}
 }
 
-void	mdlchd_fork(t_msh *msh, t_pipex **chds)
+void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
 {
-	if ((chds[1]->pid = fork()) == 0)
+	(void)nb_chds;
+	if ((chds[i]->pid = fork()) == 0)
 	{
-		close(chds[0]->fd[1]);
-		dup2(chds[0]->fd[0], STDIN_FILENO);
-		close(chds[0]->fd[0]);
-		close(chds[1]->fd[0]);
-		dup2(chds[1]->fd[1], STDOUT_FILENO);
-		close(chds[1]->fd[1]);
-		check_type(msh);// problem here for exit the process as the parent is waiting for it finish
+		close_fd(chds, i, i - 1, nb_chds);
+		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
+		close(chds[i - 1]->fd[0]);
+		dup2(chds[i]->fd[1], STDOUT_FILENO);
+		close(chds[i]->fd[1]);
+		check_type(msh);
 	}
 }
 
-void	lstchd_fork(t_msh *msh, t_pipex **chds)
+void	last_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
 {
-	if ((chds[2]->pid = fork()) == 0)
+	if ((chds[i]->pid = fork()) == 0)
 	{
-		close(chds[0]->fd[0]);
-		close(chds[0]->fd[1]);
-		close(chds[1]->fd[1]);
-		dup2(chds[1]->fd[0], STDIN_FILENO);
-		close(chds[1]->fd[0]);
+		close_fd(chds, i, i - 1, nb_chds - 1);
+		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
+		close(chds[i - 1]->fd[0]);
 		check_type(msh);
 	}
 }
@@ -76,6 +74,8 @@ void	closing(t_msh *msh, t_pipex **chds)
 		close(chds[i]->fd[1]);
 		i++;
 	}
+	dup2(msh->fd[0], STDIN_FILENO);
+	dup2(msh->fd[1], STDOUT_FILENO);
 	i = 0;
 	while (chds[i] != NULL)
 	{
