@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 12:14:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/10 14:57:54 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,15 @@ void	expand_dollars(t_msh *msh, int *i)
 static void	handle_quote(t_msh *msh, int *i)
 {
 	int	start;
+	int	flag;
 
+	flag = 0;
 	start = (*i)++;
 	if (msh->input[(*i) - 1] == '\'')
 	{
 		while (msh->input[*i] != '\'' && msh->input[*i] != '\0')
 			(*i)++;
-		copy_input_mod(msh, &msh->input[start], start, *i);
+		copy_input_mod(msh, &msh->input[start], start, (*i));
 	}
 	if (msh->input[(*i) - 1] == '\"')
 	{
@@ -57,12 +59,21 @@ static void	handle_quote(t_msh *msh, int *i)
 			while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 			{
 				if (msh->input[*i] == '$')
+				{
+					copy_input_mod(msh, &msh->input[start], start, (*i) - 1);
+					flag = 1;
 					break ;
+				}
 				(*i)++;
 			}
-			copy_input_mod(msh, &msh->input[start], start, (*i) + 1);
-			if (msh->input[*i] == '$')
+			if (flag == 0)
+				copy_input_mod(msh, &msh->input[start], start, (*i));
+			if (msh->input[(*i)] == '$')
+			{
 				expand_dollars(msh, i);
+				flag = 0;
+			}
+			start = (*i);
 		}
 	}
 	(*i)++;

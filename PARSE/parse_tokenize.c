@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 10:50:57 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/10 13:33:47 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	quote_token(char *temp, int *i)
 			while (temp[*i] != '\"' && temp[*i] != '\0')
 				(*i)++;
 		}
-		(*i)++;
 	}
 	else
 		(*i)++;

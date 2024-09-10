@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 11:28:33 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/09 17:25:09 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	clean_msh_init(t_msh *msh)
 	msh->pipe_nb = 0;
 	msh->flag = -1;
 	msh->parse = NULL;
-	msh->pipe_nb = 0;
 	msh->pexe = NULL; 
 	msh->child = 0;
 	msh->signal_flags = 0;
