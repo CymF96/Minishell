@@ -46,7 +46,6 @@ void	red_left(t_msh *msh)
 	check_type(msh);
 	msh->fd[0] = save_stdin;
 	dup2(msh->fd[0], STDIN_FILENO);
-	// close(msh->fd[0]);
 }
 
 void	red_right(t_msh *msh)
@@ -70,7 +69,6 @@ void	red_right(t_msh *msh)
 	close(msh->fd[1]);
 	msh->fd[1] = save_sdtout;
 	dup2(msh->fd[1], STDOUT_FILENO);
-	// close(msh->fd[1]);
 }
 
 void	double_red_left(t_msh *msh)
