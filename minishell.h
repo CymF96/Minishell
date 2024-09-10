@@ -110,7 +110,8 @@ typedef struct s_msh //master structure 'minishell'
 	int			pipe_nb;
 	int			flag;
 	int			exit_error; // initialise only one time to keep track of exit error code
-	volatile sig_atomic_t signal_flags;
+	// volatile sig_atomic_t signal_flags;
+	// struct sigaction	sa;
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
 	int			child;
@@ -159,10 +160,11 @@ void	check_type(t_msh *msh);
 void	check_builtin_cmd(t_msh *msh, char *cmd);
 void	check_exit_status_cmd(t_msh *msh, char *cmd);
 void	double_red_right(t_msh *msh);
+void	double_red_left(t_msh *msh);
 void	red_left(t_msh *msh);
 void	red_right(t_msh *msh);
 void	ft_pipex(t_msh *msh);
-void	signals_handler(int sig);
+void signals_handler(int sig);
 void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds);
 void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds);

@@ -6,7 +6,28 @@ void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds)
 	{
 		close_fd(chds, 0, -1, nb_chds);
 		dup2(chds[0]->fd[1], STDOUT_FILENO);
+		// dup2(i, STDOUT_FILENO);
 		close(chds[0]->fd[1]);
+		// if (msh->pexe->type == HEREDOC || msh->pexe->type == INFILE)
+		// {
+		// 	chds[0]->fd[0] = open(msh->pexe->cmd, O_RDONLY);
+		// 	dup2(chds[0]->fd[0], STDIN_FILENO);
+		// 	close(chds[0]->fd[0]);
+		// }
+		// else if (msh->pexe->type == OUTFILE || msh->pexe->type == APPEND)
+		// {
+		// 	if (msh->pexe->type == OUTFILE)
+		// 		chds[0]->fd[1] = open(msh->pexe->cmd, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+		// 	else
+		// 		chds[0]->fd[1] = open(msh->pexe->cmd, O_WRONLY | O_CREAT | O_APPEND, 0664);
+		// 	dup2(chds[0]->fd[1], STDOUT_FILENO);
+		// 	close(chds[0]->fd[1]);
+		// }
+		// else
+		// {
+		// close(chds[0]->fd[1]);
+			
+		// close(i);
 		check_type(msh);
 	}
 }

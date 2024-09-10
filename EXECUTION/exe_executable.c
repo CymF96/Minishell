@@ -59,6 +59,7 @@ void	find_exe(t_msh *msh, char *cmd)
 		{
 			if (execve(path, current->option, NULL) == -1)
 				exit_cleanup(NULL, msh, errno, 0);
+			free(path);
 		}
 		exit(EXIT_SUCCESS);	
 	}
@@ -78,6 +79,7 @@ void	find_exe(t_msh *msh, char *cmd)
     	{
         	int status;
         	waitpid(pid, &status, 0);
+			free(path);
     	}
     	else
     	{

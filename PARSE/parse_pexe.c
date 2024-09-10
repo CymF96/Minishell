@@ -27,7 +27,7 @@ void	update_pexe(t_pexe **pxe, t_pexe *ite, int *group, int *prio)
 			(*pxe)->group_id = *group;
 		}
 		(*pxe)->group_id = *group;
-		if ((*pxe)->type != HEREDOC && (*pxe)->type != INFILE && (*pxe)->type != OUTFILE && (*pxe)->type != APPEND)
+		if ((*pxe)->type != OUTFILE && (*pxe)->type != APPEND) //(*pxe)->type != HEREDOC && (*pxe)->type != INFILE && 
 		{
 			// (*pxe)->cmd = (*pxe)->temp;
 			(*pxe)->p_index = (*prio)++;
@@ -57,9 +57,12 @@ void	fill_pexe(t_msh *msh)
 			if (ite->muk_note == HEREDOC || ite->muk_note == INFILE || ite->muk_note == OUTFILE || ite->muk_note == APPEND)
 			{
 				ite->type = ite->muk_note;
-				// ite->cmd = ite->temp;
 				ite->temp = NULL;
 				ite->group_id = group;
+				
+			}
+			if (ite->muk_note == OUTFILE || ite->muk_note == APPEND)
+			{
 				ite->p_index = prio;
 				prio++;
 			}

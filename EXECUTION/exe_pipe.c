@@ -28,9 +28,8 @@ void	ft_pipex(t_msh *msh)
 	int nb_chds;
 
 	i = 0;
-	
-	// msh->fd[0] = dup(STDIN_FILENO);
-	// msh->fd[1] = dup(STDOUT_FILENO);
+	msh->fd[0] = dup(STDIN_FILENO);
+	msh->fd[1] = dup(STDOUT_FILENO);
 	chds = NULL;
 	chds = malloc(sizeof(t_pipex *) * (msh->pipe_nb + 2));
 	// while (i < msh->pipe_nb + 2)
