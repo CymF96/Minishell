@@ -33,15 +33,8 @@ void	minishell_running(t_msh *msh)
 	add_history(msh->input);
 	check_if_exit(msh);
 	if (parse_main(msh) == 0)
-	{
 		execution(msh);
-	}
-	exit_cleanup(NULL, msh, 0, 3);
-	if (msh->input != NULL)
-	{
-		free(msh->input);
-		msh->input = NULL;
-	}
+	exit_cleanup(NULL, msh, 0, 0);
 }
 
 void	minishell_start(t_msh *msh, int ac, char **envp)

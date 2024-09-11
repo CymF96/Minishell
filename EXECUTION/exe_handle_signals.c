@@ -1,27 +1,38 @@
 #include "../minishell.h"
 
-static t_msh *global_msh;
+t_msh	*get_msh_instance(t_msh *new_msh) 
+{
+	static t_msh *msh_instance = NULL;
+	
+	if (new_msh != NULL)
+		msh_instance = new_msh;
+	return (msh_instance);
+}
 
 void	sigeof(t_msh *msh)
 {
-	if (msh->pexe != NULL)//prompt in work and pexe initialized
+	if (msh->pexe != NULL)
 		exit_cleanup(NULL, msh, errno, 0);
-	else// nothing in prompt
+	else
 		exit_cleanup(NULL, msh, errno, 1);
 
 }
 
-void	signals_handler(int sig)
-{	
+void signals_handler(int sig)
+{
+	t_msh *msh; 
+	
+	msh = get_msh_instance(NULL);
 	if (sig == SIGINT)
 	if (write(STDOUT_FILENO, "\n", 1) == -1)
 		return ;
-	if (global_msh->pexe != NULL)
-		exit_cleanup(NULL, global_msh, 0, 0);
+	if (msh->pexe != NULL)
+		exit_cleanup(NULL, msh, 0, 0);
 	else
 	{
-		rl_replace_line("", 0);  // Clear the current input line in readline
-		rl_on_new_line();  // Move to a new line
+		rl_clear_history();
+		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 }
@@ -29,9 +40,8 @@ void	signals_handler(int sig)
 void	signal_handler_init(t_msh *msh)
 {
 	struct sigaction	sa;
-
-
-	global_msh = msh;
+	
+	get_msh_instance(msh);
 	sa.sa_handler = signals_handler;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);

@@ -59,13 +59,12 @@ void	clean_msh_init(t_msh *msh)
 {
 	msh->input =  NULL;
 	msh->envp = NULL;
-	msh->fd[0] = dup(STDIN_FILENO);
-	msh->fd[1] = dup(STDOUT_FILENO);
+	msh->fd[0] = -1;
+	msh->fd[1] = -1;
 	msh->pipe_nb = 0;
 	msh->flag = -1;
 	msh->parse = NULL;
 	msh->pexe = NULL; 
 	msh->child = 0;
-	msh->signal_flags = 0;
 	msh->text = NULL;
 }

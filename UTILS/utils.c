@@ -114,6 +114,9 @@ void	sort_pexe(t_msh *msh)
 			current = current->next;
 		}
 	}
+	
+	for (current = msh->pexe; current != NULL; current= current->next)
+		ft_printf("msh->pexe->cmd: %s, msh->pexe->type: %d,msh->pexe->g: %d, msh->pexe->p: %d\n", current->cmd, current->type, current->group_id, current->p_index);
 }
 
 char	*set_var_name(char *cmd)
