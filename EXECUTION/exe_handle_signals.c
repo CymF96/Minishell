@@ -29,7 +29,8 @@ void	signals_handler(int sig)
 void	signal_handler_init(t_msh *msh)
 {
 	struct sigaction	sa;
-	
+
+
 	global_msh = msh;
 	sa.sa_handler = signals_handler;
 	sa.sa_flags = SA_RESTART;
