@@ -107,6 +107,7 @@ typedef struct s_msh //master structure 'minishell'
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			fd[2];
 	char		*text;
+	int			envp_flag;
 	int			pipe_nb;
 	int			flag;
 	int			exit_error; // initialise only one time to keep track of exit error code
@@ -148,11 +149,14 @@ void	clean_init_pexe_node(t_pexe *pexe);
 void	clean_msh_init(t_msh *msh);
 
 /*------- UTILS -------*/
+void	copy_envp(t_msh *msh, char **envp);
+char	*get_path(char **envp);
 void	adding_temp_var(t_msh *msh, char *new_var);
 char	*set_var_name(char *cmd);
 int		updating_var(char **env_struct, char *var_name, char *cmd);
 void	check_update_tempenv(t_msh *msh, char *cmd);
 void	check_remove_tempenv(t_msh *msh, char *cmd);
+char	*find_executable_path(t_msh *msh);
 
 /*------- EXECUTION -------*/
 void	execution(t_msh *msh);

@@ -16,14 +16,14 @@ void	adding_var(t_msh *msh, char *new_var) // 3lines too long
 	while (i < envp_len) //copying old array to new one
 	{
 		temp_envp[i] = ft_strdup(msh->envp[i]);
-		free(msh->envp[i++]);
+		if (temp_envp[i] == NULL)
+			exit_cleanup(NULL, msh, errno, 1);
+		i++;
 	}
     temp_envp[i] = ft_strdup(new_var);
-    if (temp_envp[i] == NULL)
+    if (temp_envp[i++] == NULL)
         exit_cleanup(NULL, msh, errno, 1);
-    temp_envp[envp_len + 1] = NULL;
-	if (msh->envp != NULL) //free old array pointer
-		free(msh->envp);
+    temp_envp[i] = NULL;
 	msh->envp = temp_envp; //copying temp array ptr to envp on
 }
 
@@ -90,12 +90,13 @@ void	cmd_unset(t_msh *msh, int g)
 			&& msh->pexe->next->cmd != NULL)
 	{
 		msh->pexe = msh->pexe->next;
+		if (!ft_strncmp(msh->pexe->cmd, "PATH", ft_strlen("PATH")))
+			msh->envp_flag = 1;
 		if (ft_strchr(msh->pexe->cmd, '=') ==  NULL)
 		{
 			var_name = set_var_name(msh->pexe->cmd);
 			if (remove_var(msh, var_name) == 1)
 				return ;
-				//check removal from the temporary envp
 		}
 		free(var_name);
 	}
