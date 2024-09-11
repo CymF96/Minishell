@@ -1,5 +1,30 @@
 #include "../minishell.h"
 
+void	copy_envp(t_msh *msh, char **envp) // 3lines too long
+{
+	int		i;
+	int		envp_len;
+	char	**temp_envp;
+
+	msh->envp = NULL;
+	envp_len = 0;
+	while (envp[envp_len] != NULL) // getting the number of line in envp 
+			envp_len++;
+	temp_envp = malloc(sizeof(char *) * (envp_len + 1)); // malloc new structure + 2 for new line to add and NULL
+	if (temp_envp == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	i = 0;
+	while (i < envp_len) //copying old array to new one
+	{
+		temp_envp[i] = ft_strdup(envp[i]);
+      	if (temp_envp[i] == NULL)
+			exit_cleanup(NULL, msh, errno, 1);
+		i++;
+	}
+	temp_envp[i] = NULL;
+	msh->envp = temp_envp; //copying temp array ptr to envp on
+}
+
 // void	check_update_localenvp(t_msh *msh, char *cmd) //function from export builtin command to export variable in temp
 // {
 // 	int		i;
@@ -115,8 +140,8 @@ void	sort_pexe(t_msh *msh)
 		}
 	}
 	
-	for (current = msh->pexe; current != NULL; current= current->next)
-		ft_printf("msh->pexe->cmd: %s, msh->pexe->type: %d,msh->pexe->g: %d, msh->pexe->p: %d\n", current->cmd, current->type, current->group_id, current->p_index);
+	// for (current = msh->pexe; current != NULL; current= current->next)
+	// 	ft_printf("msh->pexe->cmd: %s, msh->pexe->type: %d,msh->pexe->g: %d, msh->pexe->p: %d\n", current->cmd, current->type, current->group_id, current->p_index);
 }
 
 char	*set_var_name(char *cmd)
@@ -125,9 +150,9 @@ char	*set_var_name(char *cmd)
 	char *var_name;
 
 	i = 0;
-	while (cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
+	while (cmd[i] && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
 		i++;
-	var_name = malloc(sizeof(i + 2)); 
+	var_name = malloc(sizeof(i + 1)); 
 	i = 0;
 	while (cmd[i] != '\0' && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
 	{

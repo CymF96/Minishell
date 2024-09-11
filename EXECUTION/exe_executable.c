@@ -48,10 +48,10 @@ void	find_exe(t_msh *msh, char *cmd)
 	current = msh->pexe;
 	len_group = node_strlen(current);
 	if (!ft_strncmp("/bin/", current->cmd, 5)\
-		&& !ft_strncmp("/usr/bin/", current->cmd, 9)) // current->cmd[0] != '/',
-		path = cmd;
+		|| !ft_strncmp("/usr/bin/", current->cmd, 9)) // current->cmd[0] != '/',
+		path = ft_strdup(cmd);
 	else
-		path = ft_strjoin("/usr/bin/", cmd);
+		path = find_executable_path(msh);
 	append_args(msh, current, len_group);
 	if (msh->child)
 	{
@@ -65,27 +65,20 @@ void	find_exe(t_msh *msh, char *cmd)
 	}
 	else
 	{
-    	pid = fork();  // Fork a child process
-    	if (pid == 0)  // Child process
+    	if ((pid = fork()) < 0)
+			exit_cleanup(NULL, msh, errno, 0);
+    	if (pid == 0)
     	{
-        // Execute the command in the child process
-       	 if (execve(path, current->option, NULL) == -1)
-        	{
-            	perror("execve failed"); // Print error message if execve fails
-            	exit_cleanup(NULL, msh, errno, 0); // Handle cleanup on error
-        	}
-    	}
-    	else if (pid > 0)  // Parent process
+       		if (execve(path, current->option, NULL) == -1)
+            	exit_cleanup(NULL, msh, errno, 0);
+		}
+    	else if (pid > 0)
     	{
-        	int status;
-        	waitpid(pid, &status, 0);
-			free(path);
+        		int status;
+        		waitpid(pid, &status, 0);
+				free(path);
     	}
-    	else
-    	{
-        	perror("fork failed");
-        	exit_cleanup(NULL, msh, errno, 0);
-    	}
+		
 	}
 }
 

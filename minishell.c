@@ -43,6 +43,8 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 
 	loop = 1;
 	clean_msh_init(msh);
+	copy_envp(msh, envp);
+	msh->envp_flag = 0;
 	msh->exit_error = 0;
 	signal_handler_init(msh);
 	if (input_validate(ac, envp) != 0)
@@ -52,7 +54,6 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 		msh->input = readline("Heart of Gold>> ");
 		if (msh->input == NULL)
 			sigeof(msh);
-		msh->envp = envp;
 		minishell_running(msh);
 		clean_msh_init(msh);
 	}

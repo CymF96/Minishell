@@ -112,40 +112,40 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
-	printf("Modified string is: %s\n\n", msh->parse->modified);
+	// printf("Modified string is: %s\n\n", msh->parse->modified);
 	parse_tokenize(msh, msh->parse);
 	
-	t_token *tkn = msh->parse->head;
-	while (tkn != NULL)
-	{
-		printf("Token is: %s\n", tkn->token);
-		printf("Type of token is: %u\n", tkn->type);
-		ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
-		tkn = tkn->next;
-	}
+	// t_token *tkn = msh->parse->head;
+	// while (tkn != NULL)
+	// {
+	// 	printf("Token is: %s\n", tkn->token);
+	// 	printf("Type of token is: %u\n", tkn->type);
+	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
+	// 	tkn = tkn->next;
+	// }
 
 	make_pexe(msh, msh->parse);
-	t_pexe *temp = msh->pexe;
-	int i = 0;
-	int j;
-	while (temp != NULL)
-	{
-		j = 0;
-		while (temp->cmd[j] != '\0')
-		{
-			if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
-				temp->cmd[j] = '#';
-			j++;
-		}
-		printf("PEXE-TYPE: %d\n", temp->type);
-		printf("PEXE-CMD: %s\n", temp->cmd);
-		while (temp->option != NULL && temp->option[i] != NULL)
-			printf("PEXE-OPTION: %s\n", temp->option[i++]);
-		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n\n", temp->p_index);
+	// t_pexe *temp = msh->pexe;
+	// int i = 0;
+	// int j;
+	// while (temp != NULL)
+	// {
+	// 	j = 0;
+	// 	while (temp->cmd[j] != '\0')
+	// 	{
+	// 		if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
+	// 			temp->cmd[j] = '#';
+	// 		j++;
+	// 	}
+	// 	printf("PEXE-TYPE: %d\n", temp->type);
+	// 	printf("PEXE-CMD: %s\n", temp->cmd);
+	// 	while (temp->option != NULL && temp->option[i] != NULL)
+	// 		printf("PEXE-OPTION: %s\n", temp->option[i++]);
+	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+	// 	printf("PEXE-PRIORITY: %d\n\n", temp->p_index);
 
-		temp = temp->next;
-	}
+	// 	temp = temp->next;
+	// }
 
 
 	// exit_cleanup(NULL, msh, errno, 3);
