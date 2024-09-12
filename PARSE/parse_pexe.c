@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/12 12:34:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:56:48 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static void	move_init(t_pexe *init, t_pexe *ite, int *prio, int *zone)
 {
 	while (init != ite)
 	{
-		init->type = STRING;
+		if (init->type == TEMP)
+			init->type = STRING;
 		init->cmd = init->temp;
 		init->p_index = (*prio)++;
 		init = init->next;
@@ -85,7 +86,7 @@ static void	handle_docs(t_pexe *init, t_pexe *ite, int *prio)
 				ite->muk_note == OUTFILE || ite->muk_note == APPEND)
 			{
 				ite = ite->next;
-				ite->type = ite->prev->type;
+				ite->type = ite->prev->muk_note;
 				remove_node(ite->prev);
 				if (ite->type == OUTFILE || ite->type == APPEND)
 					ite->p_index = (*prio)++;
@@ -103,11 +104,9 @@ void	fill_pexe(t_msh *msh)
 	t_pexe	*init;
 	int		prio;
 	int		group;
-	int		flag;
 
 	prio = 0;
 	group = 0;
-	flag = 1;
 	ite = msh->pexe;
 	init = ite;
 	handle_groups(init, &group);
