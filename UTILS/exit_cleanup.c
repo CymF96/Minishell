@@ -64,11 +64,11 @@ void	free_pexe(t_msh *msh)
 	while (current != NULL)
 	{
 		next = current->next;
-		if (current->cmd != NULL)
-		{
-			free(current->cmd);
-			current->cmd = NULL;
-		}
+		// if (current->cmd != NULL)
+		// {
+		// 	free(current->cmd);
+		// 	current->cmd = NULL;
+		// }
 		if (current->option != NULL)
 			free_mallocs(NULL, (void **)current->option);
 		current->prev = NULL;

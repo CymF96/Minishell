@@ -24,16 +24,16 @@ void signals_handler(int sig)
 	
 	msh = get_msh_instance(NULL);
 	if (sig == SIGINT)
-	if (write(STDOUT_FILENO, "\n", 1) == -1)
-		return ;
-	if (msh->pexe != NULL)
-		exit_cleanup(NULL, msh, 0, 0);
-	else
 	{
-		rl_clear_history();
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		write(STDOUT_FILENO, "\n", 1);
+		if (msh->pexe != NULL)
+			exit_cleanup(NULL, msh, 0, 0);
+		else
+		{
+			rl_replace_line("", 0);
+			rl_on_new_line();
+			rl_redisplay();
+		}
 	}
 }
 
