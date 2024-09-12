@@ -141,6 +141,8 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 // exit due to failure, 3 for cleaning up the mallocs for next input
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
+	if (msg)
+		ft_printf("%s\n", msg);
 	if (check == 1 || check == 2)
 	{
 		clear_msh(msh, check, msg);
