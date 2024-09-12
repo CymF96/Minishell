@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/12 12:34:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:56:55 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,9 @@ void	fill_pexe(t_msh *msh)
 	t_pexe	*init;
 	int		prio;
 	int		group;
-	int		flag;
 
 	prio = 0;
 	group = 0;
-	flag = 1;
 	ite = msh->pexe;
 	init = ite;
 	handle_groups(init, &group);
