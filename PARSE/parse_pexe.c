@@ -6,70 +6,112 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 10:52:29 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/12 12:34:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	update_pexe(t_pexe **pxe, t_pexe *ite, int *group, int *prio)
+static void	remove_node(t_pexe *node)
 {
-	while (*pxe != NULL && *pxe != ite)
+	t_pexe	*temp;
+
+	free(node->cmd);
+	temp = node->prev;
+	temp->next = node->next;
+	temp = node->next;
+	temp->prev = node->prev;
+	free(node);
+}
+
+static void	handle_groups(t_pexe *init, int *group)
+{
+	t_pexe	*temp;
+
+	temp = init;
+	while (temp != NULL)
 	{
-		if ((*pxe)->prev == NULL && (*pxe)->type != HEREDOC && (*pxe)->type != INFILE && (*pxe)->type != OUTFILE && (*pxe)->type != APPEND)
-			(*pxe)->type = EXE;
-		else if ((*pxe)->prev->prev == NULL && ((*pxe)->prev->type == HEREDOC || (*pxe)->prev->type == INFILE))
-			(*pxe)->next->type = EXE;
-		if ((*pxe)->muk_note == PIPE)
-		{
+		if (temp->muk_note == PIPE)
 			(*group)++;
-			(*pxe)->type = EXE;
-			(*pxe)->group_id = *group;
-		}
-		(*pxe)->group_id = *group;
-		if ((*pxe)->type != OUTFILE && (*pxe)->type != APPEND) //(*pxe)->type != HEREDOC && (*pxe)->type != INFILE && 
+		temp->group_id = *group;
+		temp = temp->next;
+		if (temp != NULL && temp->prev->muk_note == PIPE)
+			remove_node(temp->prev);
+	}
+}
+
+static void	find_ex(t_pexe *init, t_pexe *ite, int *prio)
+{
+	t_pexe	*temp;
+
+	temp = init;
+	while (temp != ite)
+	{
+		if (temp->type == TEMP)
 		{
-			// (*pxe)->cmd = (*pxe)->temp;
-			(*pxe)->p_index = (*prio)++;
+			temp->type = EXE;
+			temp->cmd = temp->temp;
+			temp->p_index = (*prio)++;
+			return ;
 		}
-		if ((*pxe)->type == TEMP || (*pxe)->type == REGULAR)
-			(*pxe)->type = STRING;
-		*pxe = (*pxe)->next;
+	}
+}
+
+static void	move_init(t_pexe *init, t_pexe *ite, int *prio, int *zone)
+{
+	while (init != ite)
+	{
+		init->type = STRING;
+		init->cmd = init->temp;
+		init->p_index = (*prio)++;
+		init = init->next;
+	}
+	if (init == NULL)
+		*zone = -1;
+	else
+		(*zone)++;
+}
+
+static void	handle_docs(t_pexe *init, t_pexe *ite, int *prio)
+{
+	int	zone;
+
+	zone = 0;
+	while (zone != -1)
+	{
+		while (ite != NULL && ite->group_id == zone)
+		{
+			if (ite->muk_note == HEREDOC || ite->muk_note == INFILE || \
+				ite->muk_note == OUTFILE || ite->muk_note == APPEND)
+			{
+				ite = ite->next;
+				ite->type = ite->prev->type;
+				remove_node(ite->prev);
+				if (ite->type == OUTFILE || ite->type == APPEND)
+					ite->p_index = (*prio)++;
+			}
+			ite = ite->next;
+		}
+		find_ex(init, ite, prio);
+		move_init(init, ite, prio, &zone);
 	}
 }
 
 void	fill_pexe(t_msh *msh)
 {
-	t_pexe	*pxe;
 	t_pexe	*ite;
-	int		group;
+	t_pexe	*init;
 	int		prio;
+	int		group;
+	int		flag;
 
-	pxe = msh->pexe;
-	ite = pxe;
-	group = 0;
 	prio = 0;
-	while (pxe != NULL)
-	{
-		ite = pxe->next;
-		while (ite != NULL && ite->muk_note != PIPE)
-		{
-			if (ite->muk_note == HEREDOC || ite->muk_note == INFILE || ite->muk_note == OUTFILE || ite->muk_note == APPEND)
-			{
-				ite->type = ite->muk_note;
-				ite->temp = NULL;
-				ite->group_id = group;
-				
-			}
-			if (ite->muk_note == OUTFILE || ite->muk_note == APPEND)
-			{
-				ite->p_index = prio;
-				prio++;
-			}
-			ite = ite->next;
-		}
-		update_pexe(&pxe, ite, &group, &prio);
-	}
+	group = 0;
+	flag = 1;
+	ite = msh->pexe;
+	init = ite;
+	handle_groups(init, &group);
+	handle_docs(init, ite, &prio);
 }
 
 void	make_pexe(t_msh *msh, t_parse *pars)
@@ -82,17 +124,12 @@ void	make_pexe(t_msh *msh, t_parse *pars)
 	while (tkn_i != NULL)
 	{
 		node = pexe_malloc(msh);
-		if (tkn_i->type != REGULAR)
-		{
-			node->muk_note = tkn_i->type;
-			tkn_i = tkn_i->next;
-		}
+		node->muk_note = tkn_i->type;
 		node->temp = tkn_i->token;
-		str = malloc(sizeof(char) * (ft_strlen(node->temp) + 1));
-		// remove_quotes(node->temp, -1, str);
-		ft_strlcpy(str, tkn_i->token, (ft_strlen(node->temp) + 1));
+		str = ft_strdup(tkn_i->token);
 		node->cmd = str;
-		addnode((void *)node, (void **)&msh->pexe, offsetof(t_pexe, next), offsetof(t_pexe, prev));
+		addnode((void *)node, (void **)&msh->pexe, offsetof(t_pexe, next), \
+			offsetof(t_pexe, prev));
 		tkn_i = tkn_i->next;
 	}
 	fill_pexe(msh);
