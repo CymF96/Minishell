@@ -70,6 +70,11 @@ int	remove_var(t_msh *msh, char	*var_name)
 			{
 				msh->envp[j] = msh->envp[j + 1];
 				j++;
+				if (msh->envp[j + 1] == NULL)
+				{
+					free(msh->envp[j]);
+					msh->envp[j] = NULL;
+				}
 			}
 			return (0);
 		}

@@ -43,7 +43,7 @@ void	cmd_pwd(t_msh *msh)
 		ft_printf("\n");
 	}
 	else
-		exit_cleanup(NULL, msh, errno, 0);
+		exit_cleanup("Invalid path", msh, errno, 0);
 }
 
 void cmd_cd(t_msh *msh, int g)
@@ -54,16 +54,19 @@ void cmd_cd(t_msh *msh, int g)
 	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
 	{
 		if (directory != NULL && chdir(directory) == -1)
-			exit_cleanup(NULL, msh, errno, 1);
+		{
+			exit_cleanup("Directory invalid", msh, errno, 0);
+			return ;
+		}
 	}
 	else if (msh->pexe->next->cmd != NULL && msh->pexe->next->group_id == g)
 	{
 		directory = msh->pexe->next->cmd;
 		if (directory != NULL && (access(directory, F_OK) != 0
 			|| access(directory, X_OK) != 0))
-			exit_cleanup(NULL, msh, errno, 1);
-		if (chdir(directory) == -1)
-			exit_cleanup(NULL, msh, errno, 1);
+			exit_cleanup("Invalid directory", msh, errno, 0);
+		else if (chdir(directory) == -1)
+			exit_cleanup("Invalid directory", msh, errno, 0);
 	}
 }
 
@@ -73,7 +76,10 @@ void	cmd_env(t_msh *msh, int g) // to test
 
 	i = 0;
 	if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
+	{
 		exit_cleanup("invalid input with env command", msh, 0, 0);
+		return ;
+	}
 	while (msh->envp[i] != NULL)
 	{
 		ft_printf("%s", msh->envp[i++]);

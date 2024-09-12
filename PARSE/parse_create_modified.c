@@ -27,6 +27,8 @@ void	expand_dollars(t_msh *msh, int *i)
 			exit_cleanup("Malloc Failed\n", msh, errno, 2);
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free(temp);
+		(*i)++;
+
 	}
 	else
 	{
