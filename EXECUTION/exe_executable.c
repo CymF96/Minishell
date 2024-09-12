@@ -52,6 +52,11 @@ void	find_exe(t_msh *msh, char *cmd)
 		path = ft_strdup(cmd);
 	else
 		path = find_executable_path(msh);
+	if (!path)
+	{
+		exit_cleanup("Invalid path or command", msh, errno, 0);
+		return;
+	}
 	append_args(msh, current, len_group);
 	if (msh->child)
 	{
@@ -70,15 +75,26 @@ void	find_exe(t_msh *msh, char *cmd)
     	if (pid == 0)
     	{
        		if (execve(path, current->option, NULL) == -1)
-            	exit_cleanup(NULL, msh, errno, 0);
+			{
+            	exit_cleanup("execve failed to execute", msh, errno, 0);
+				return ;
+			}
 		}
     	else if (pid > 0)
     	{
-        		int status;
-        		waitpid(pid, &status, 0);
-				free(path);
-    	}
-		
+        	int status;
+        	waitpid(pid, &status, 0);
+			if (WIFSIGNALED(status))
+			{
+				int signal = WTERMSIG(status);
+				if (signal == SIGINT)
+				{
+					exit_cleanup(NULL, msh, errno, 0);
+					return ;
+				}
+    		}
+		}
+		free(path);
 	}
 }
 

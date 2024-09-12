@@ -172,7 +172,8 @@ int	updating_var(char **env_struct, char *var_name, char *cmd)
 	{
 		if (!ft_strncmp(env_struct[i], var_name, ft_strlen(var_name)))
 		{
-			ft_memmove(env_struct[i], cmd, ft_strlen(cmd));
+			free(env_struct[i]);
+			env_struct[i] = ft_strdup(cmd);
 			return (1);
 		}
 		i++;

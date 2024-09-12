@@ -60,26 +60,23 @@ void	last_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
 void	kill_children(t_pipex **chds) //t_msh *msh
 {
 	int	i;
+	int status;
 
 	i = 0;
 	while (chds[i] != NULL)
 	{
-		if (chds[i] != NULL && waitpid(chds[i]->pid, NULL, WNOHANG) == 0)
+		if (waitpid(chds[i]->pid, &status, WNOHANG) == 0)
 			kill(chds[i]->pid, SIGTERM);
 		i++;
 	}
 	i = 0;
 	while (chds[i] != NULL)
 	{
-		if (chds[i] != NULL)
-		{
-			if (waitpid(chds[i]->pid, NULL, 0) == -1)
-				perror("Error");
-        	i++;
-		}
+		if (waitpid(chds[i]->pid, &status, 0) == -1)
+			perror("Error");
+        i++;
 	}
 }
-
 
 void	closing(t_msh *msh, t_pipex **chds)
 {
@@ -87,9 +84,10 @@ void	closing(t_msh *msh, t_pipex **chds)
 	int	flag;
 	int status;
 
+	printf("Entering closing function...\n");
 	i = 0;
-	flag = 1;
-	while (chds[i+1] != NULL)
+	flag = 0;
+	while (chds[i] != NULL) //+1
 	{
 		close(chds[i]->fd[0]);
 		close(chds[i]->fd[1]);
@@ -98,18 +96,51 @@ void	closing(t_msh *msh, t_pipex **chds)
 	dup2(msh->fd[0], STDIN_FILENO);
 	dup2(msh->fd[1], STDOUT_FILENO);
 	i = 0;
-	while (chds[i] != NULL)
-	{
-		waitpid(chds[i]->pid, &status, 0);
-		if ((WIFSIGNALED(status)))
-			flag = 1;
-		i++;
-	}
-	if (!flag)
-		kill_children(chds);
-	free_pipex(chds);
-	if (chds != NULL)
-		free(chds);
-	chds = NULL;
-	exit_cleanup(NULL, msh, errno, 0);
+    while (chds[i] != NULL)
+    {
+        printf("Waiting for child %d\n", i);
+        if (waitpid(chds[i]->pid, &status, 0) == -1)
+        {
+            perror("Error in waitpid");
+        }
+        if (WIFSIGNALED(status))
+        {
+            flag = 1;
+            printf("Child %d terminated by signal\n", i);
+        }
+        i++;
+    }
+
+    // If any child was terminated by a signal, kill remaining children
+    if (flag)
+    {
+        printf("Killing remaining children...\n");
+        kill_children(chds);
+    }
+
+    // Clean up resources
+    printf("Freeing pipex and chds...\n");
+    free_pipex(chds);
+    free(chds);
+
+    // Perform exit cleanup
+    printf("Exiting...\n");
+    exit_cleanup(NULL, msh, errno, 0);
 }
+
+
+// 	while (chds[i] != NULL)
+// 	{
+// 		waitpid(chds[i]->pid, &status, 0);
+// 		if ((WIFSIGNALED(status)))
+// 			flag = 1;
+// 		i++;
+// 	}
+// 	if (flag)
+// 		kill_children(chds);
+// 	free_pipex(chds);
+// 	if (chds != NULL)
+// 		free(chds);
+// 	chds = NULL;
+// 	exit_cleanup(NULL, msh, errno, 0);
+// }
