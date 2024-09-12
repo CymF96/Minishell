@@ -17,9 +17,8 @@ void	copy_envp(t_msh *msh, char **envp) // 3lines too long
 	while (i < envp_len) //copying old array to new one
 	{
 		temp_envp[i] = ft_strdup(envp[i]);
-      	if (temp_envp[i] == NULL)
+		if (temp_envp[i++] == NULL)
 			exit_cleanup(NULL, msh, errno, 1);
-		i++;
 	}
 	temp_envp[i] = NULL;
 	msh->envp = temp_envp; //copying temp array ptr to envp on

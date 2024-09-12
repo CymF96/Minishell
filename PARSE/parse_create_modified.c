@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/10 14:57:54 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:28:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	handle_quote(t_msh *msh, int *i)
 			(*i)++;
 		copy_input_mod(msh, &msh->input[start], start, (*i));
 	}
-	if (msh->input[(*i) - 1] == '\"')
+	else if (msh->input[(*i) - 1] == '\"')
 	{
 		while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 		{
@@ -80,8 +80,6 @@ static void	handle_quote(t_msh *msh, int *i)
 	}
 	(*i)++;
 }
-// printf("The string in handle quote is %s\n\n %d\n %d\n\n", 
-//&msh->input[start], start, *i);
 
 // Checks for special characters and direct them to their own functions
 static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)

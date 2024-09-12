@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_correct.c                                :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 11:25:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:31:11 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void	minishell_running(t_msh *msh)
 	add_history(msh->input);
 	check_if_exit(msh);
 	if (parse_main(msh) == 0)
-		execution(msh);
+	{
+		printf("EXEC WOULD HAVE HAPPENED HERE\n\n");
+		// execution(msh);
+	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 
