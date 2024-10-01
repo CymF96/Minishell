@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/30 20:21:59 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 10:18:17 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,24 @@ static void	find_ex(t_msh *msh, t_pexe **front, t_pexe **back, int *prio)
 	temp = *back;
 	while(temp != NULL && temp != *front)
 	{
-		if (temp->type == INFILE || temp->type == OUTFILE || \
+		if (temp->type == INFILE || temp->type == OUTFILE ||
 		temp->type == HEREDOC || temp->type == APPEND || temp->type == DOLLAR)
 		{
 			temp = temp->next;
 		}
-		else if (temp->muk_note == REGULAR)
+		else if (temp->type == REGULAR || temp->type == TEMP)
 		{
 			temp->type = EXE;
 			temp->p_index = (*prio)++;
 			break ;
 		}
 	}
-	if (*back != *front)
+	while (*back != *front)
 	{
+		// printf("PRIO NUMBER IS %d\n", *prio);
+		// printf("BACK IS: %p\n", *back);
+		// printf("TEMP IS: %p\n", temp);
+		// printf("FRONT IS: %p\n", *front);
 		if ((*back)->p_index == -1)
 			(*back)->p_index = (*prio)++;
 		if ((*back)->type == TEMP)
@@ -127,7 +131,7 @@ static void	fill_pexe(t_msh *msh)
 		front->cmd = front->temp;
 		front = front->next;
 	}
-	while (front != back)
+	if (front != back)
 		fill_x_range(msh, &front, &back, &prio);
 	remove_nodes(msh);
 }
