@@ -53,8 +53,11 @@ void	find_exe(t_msh *msh, char *cmd)
 	else
 		path = find_executable_path(msh);
 	if (!path)
+		return;
+	if (current->next->type != 9 && !ft_strncmp("cat", current->cmd, 3)\
+			&& access(current->next->cmd, F_OK | X_OK) != 0)
 	{
-		exit_cleanup("Invalid path or command", msh, errno, 0);
+		exit_cleanup("Invalid file or permission", msh, errno, 0);
 		return;
 	}
 	append_args(msh, current, len_group);

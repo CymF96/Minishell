@@ -66,8 +66,8 @@ void	check_type(t_msh *msh)
 		check_exit_status_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == INFILE)
 		red_left(msh);
-	else if (msh->pexe->type == HEREDOC)
-		double_red_left(msh);
+	// else if (msh->pexe->type == HEREDOC)
+	// 	double_red_left(msh);
 	else if (msh->pexe->type == OUTFILE)
 		red_right(msh);
 	else if (msh->pexe->type == APPEND)
@@ -77,7 +77,10 @@ void	check_type(t_msh *msh)
 void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL)
-		exit_cleanup(NULL, msh, errno, 3);
+	{
+		exit_cleanup(NULL, msh, errno, 0);
+		return ;
+	}
 	sort_pexe(msh);
 	check_type(msh);
 }

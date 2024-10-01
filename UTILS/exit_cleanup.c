@@ -108,6 +108,12 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 {
 	if (msh != NULL)
 	{
+		if (msh->heredoc != NULL)
+		{
+			unlink(msh->heredoc);
+			free(msh->heredoc);
+			msh->heredoc = NULL;
+		}
 		if (msh->parse != NULL)
 			free_parse(msh);
 		if (msh->pexe != NULL)
@@ -167,6 +173,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 	else
 	{
 		clear_msh(msh, check, NULL);
-		msh->exit_error = flag;
+		if (msh->exit_error == 0)
+			msh->exit_error = flag;
 	}
 }

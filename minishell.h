@@ -107,6 +107,7 @@ typedef struct s_msh //master structure 'minishell'
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			fd[2];
 	char		*text;
+	char		*heredoc;
 	int			envp_flag;
 	int			pipe_nb;
 	int			flag;

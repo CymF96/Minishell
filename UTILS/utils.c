@@ -126,7 +126,7 @@ void	sort_pexe(t_msh *msh)
 	{
 		loop = 0;
 		current = msh->pexe;
-		while (current->next != NULL)
+		while (current != NULL && current->next != NULL)
 		{
 			next = current->next;
 			if (current->group_id > next->group_id\

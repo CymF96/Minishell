@@ -46,7 +46,6 @@ void	red_left(t_msh *msh)
 	check_type(msh);
 	msh->fd[0] = save_stdin;
 	dup2(msh->fd[0], STDIN_FILENO);
-	// need to call function unlink() for heredoc
 }
 
 void	red_right(t_msh *msh)
@@ -72,29 +71,29 @@ void	red_right(t_msh *msh)
 	dup2(msh->fd[1], STDOUT_FILENO);
 }
 
-void	double_red_left(t_msh *msh)
-{
-	int	g;
-	int	save_stdin;
-	char	*filename;
+// void	double_red_left(t_msh *msh)
+// {
+// 	int	g;
+// 	int	save_stdin;
+// 	char	*filename;
 	
-	filename = msh->pexe->cmd;
-	g = msh->pexe->group_id;
-	save_stdin = dup(STDIN_FILENO);
-	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
-	if (msh->fd[0] == -1)
-		exit_cleanup(NULL, msh, errno, 0);
-	if (dup2(msh->fd[0], STDIN_FILENO) < 0)
-	{
-		close(msh->fd[1]);
-		exit_cleanup(NULL, msh, errno, 0);
-	}
-	close(msh->fd[0]);
-	if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
-		msh->pexe = msh->pexe->next;
-	check_type(msh);
-	msh->fd[0] = save_stdin;
-	dup2(msh->fd[0], STDIN_FILENO);
-	close(msh->fd[0]);
-	unlink(filename);
-}
+// 	filename = msh->pexe->cmd;
+// 	g = msh->pexe->group_id;
+// 	save_stdin = dup(STDIN_FILENO);
+// 	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
+// 	if (msh->fd[0] == -1)
+// 		exit_cleanup(NULL, msh, errno, 0);
+// 	if (dup2(msh->fd[0], STDIN_FILENO) < 0)
+// 	{
+// 		close(msh->fd[1]);
+// 		exit_cleanup(NULL, msh, errno, 0);
+// 	}
+// 	close(msh->fd[0]);
+// 	if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
+// 		msh->pexe = msh->pexe->next;
+// 	check_type(msh);
+// 	msh->fd[0] = save_stdin;
+// 	dup2(msh->fd[0], STDIN_FILENO);
+// 	close(msh->fd[0]);
+// 	unlink(filename);
+// }

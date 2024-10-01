@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -53,6 +54,7 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	temp = ft_strjoin(gnl, ".tmp");
 	free(gnl);
 	copy_input_mod(msh, temp, 0, ft_strlen(temp));
+	msh->heredoc = ft_strdup(temp); // adding this line for unlink heredoc at the end of the writing
 	msh->parse->here_fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	free(temp);
 	if (msh->parse->here_fd == -1)
