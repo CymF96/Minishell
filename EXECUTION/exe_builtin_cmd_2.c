@@ -79,6 +79,7 @@ void	cmd_unset(t_msh *msh, int g)
 	int		p;
 
 	p = 0;
+	(void) p; //needs to be removed
 	var_name = NULL;
 	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
 			&& msh->pexe->next->cmd != NULL)
