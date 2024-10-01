@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 10:18:17 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:02:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static void	remove_nodes(t_msh *msh)
 				ite->next->prev = ite->prev;
 				temp = ite->next;
 				free(ite->cmd);
-				// free(ite->temp);
 				free(ite);
 				ite = temp;
 				temp = NULL;
@@ -48,14 +47,14 @@ static void	remove_nodes(t_msh *msh)
 	}
 }
 
-static void	find_ex(t_msh *msh, t_pexe **front, t_pexe **back, int *prio)
+static void	find_ex(t_pexe **front, t_pexe **back, int *prio)
 {
 	t_pexe	*temp;
 
 	temp = *back;
-	while(temp != NULL && temp != *front)
+	while (temp != NULL && temp != *front)
 	{
-		if (temp->type == INFILE || temp->type == OUTFILE ||
+		if (temp->type == INFILE || temp->type == OUTFILE || \
 		temp->type == HEREDOC || temp->type == APPEND || temp->type == DOLLAR)
 		{
 			temp = temp->next;
@@ -69,20 +68,15 @@ static void	find_ex(t_msh *msh, t_pexe **front, t_pexe **back, int *prio)
 	}
 	while (*back != *front)
 	{
-		// printf("PRIO NUMBER IS %d\n", *prio);
-		// printf("BACK IS: %p\n", *back);
-		// printf("TEMP IS: %p\n", temp);
-		// printf("FRONT IS: %p\n", *front);
 		if ((*back)->p_index == -1)
 			(*back)->p_index = (*prio)++;
 		if ((*back)->type == TEMP)
 			(*back)->type = STRING;
 		(*back) = (*back)->next;
 	}
-	(void)msh;
 }
 
-static void	fill_x_range(t_msh *msh, t_pexe **front, t_pexe **back, int *prio)
+static void	fill_x_range(t_pexe **front, t_pexe **back, int *prio)
 {
 	t_pexe	*temp;
 
@@ -108,7 +102,7 @@ static void	fill_x_range(t_msh *msh, t_pexe **front, t_pexe **back, int *prio)
 		}
 		temp = temp->next;
 	}
-	find_ex(msh, front, back, prio);
+	find_ex(front, back, prio);
 }
 
 static void	fill_pexe(t_msh *msh)
@@ -126,13 +120,14 @@ static void	fill_pexe(t_msh *msh)
 		{
 			front->type = DOLLAR;
 			front->p_index = -2;
-			fill_x_range(msh, &front, &back, &prio);
+			fill_x_range(&front, &back, &prio);
 		}
 		front->cmd = front->temp;
 		front = front->next;
 	}
 	if (front != back)
-		fill_x_range(msh, &front, &back, &prio);
+		fill_x_range(&front, &back, &prio);
+	remove_nodes(msh);
 	remove_nodes(msh);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/12 17:28:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:38:23 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	expand_dollars(t_msh *msh, int *i)
 	(*i)++;
 	if (msh->input[*i] == ' ' || msh->input[*i] == '\t')
 		copy_input_mod(msh, "$", 0, 1);
+	else if (msh->input[*i] == '$')
+	{
+		pid_t	j = getpid();
+		copy_input_mod(msh, ft_itoa(j), 0, ft_strlen(ft_itoa(j)));
+		(*i)++;
+	}
 	else if (msh->input[*i] == '?')
 	{
 		temp = ft_itoa(msh->exit_error);
@@ -28,7 +34,6 @@ void	expand_dollars(t_msh *msh, int *i)
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free(temp);
 		(*i)++;
-
 	}
 	else
 	{

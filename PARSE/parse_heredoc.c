@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 11:12:51 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:06:52 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	char		*gnl;
 	char		*temp;
 	static int	num = 0;
-	int	fd_temp = STDIN_FILENO;
-
+	int			fd_temp;
+	
+	fd_temp = STDIN_FILENO;
 	temp = ft_itoa(num);
 	gnl = ft_strjoin(".here_doc", temp);
 	free(temp);
@@ -86,7 +87,7 @@ void	remove_quotes(char *str, int len, char *delim)
 	count = -1;
 	while ((str[i] != '\0' && i < len) || (str[i] != '\0' && len < 0))
 	{
-		if ((str[i] == '\'' || str[i] == '\"') && (flag == 0)) //|| flag == 2
+		if ((str[i] == '\'' || str[i] == '\"') && (flag == 0))
 		{
 			count = check_quote_ending(str, i);
 			i++;
@@ -119,7 +120,10 @@ void	handle_heredoc(t_msh *msh, int *i)
 	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
 		(*i)++;
 	start = (*i);
-	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] != '\0' && (check_special(msh->input, i) == REGULAR || check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) == S_QT || check_special(msh->input, i) == D_QT))
+	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] \
+		!= '\0' && (check_special(msh->input, i) == REGULAR || \
+		check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) \
+		== S_QT || check_special(msh->input, i) == D_QT))
 	{
 		if (msh->input[*i] == '\'' || msh->input[*i] == '\"')
 		{
