@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 16:32:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/26 03:43:28 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	double_red_left(t_msh *msh);
 void	red_left(t_msh *msh);
 void	red_right(t_msh *msh);
 void	ft_pipex(t_msh *msh);
-void signals_handler(int sig);
+void	signals_handler(int sig);
 void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds);
 void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds);
@@ -182,8 +182,8 @@ void	append_args(t_msh *msh, t_pexe *current, int len_group);
 void	find_exe(t_msh *msh, char *cmd);
 void	sigint(t_msh *msh);
 void	sigeof(t_msh *msh);
-void    cmd_exit(t_msh *msh);
-void    cmd_echo(t_msh *msh, int g);
+void	cmd_exit(t_msh *msh);
+void	cmd_echo(t_msh *msh, int g);
 void	cmd_pwd(t_msh *msh);
 void	cmd_cd(t_msh *msh, int g);
 void	cmd_env(t_msh *msh, int g);
@@ -219,9 +219,8 @@ void	get_here_doc(t_msh *msh, char *delim, int flag);
 void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
-void	fill_pexe(t_msh *msh);
+// void	fill_pexe(t_msh *msh);
 void	sort_pexe(t_msh *msh);
-
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);

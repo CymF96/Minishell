@@ -6,15 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/12 17:32:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/09/30 20:09:45 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full 
-//--show-leak-kinds=all --track-origins=yes --verbose 
-//--log-file=valgrind-out.txt ./minishell
+// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
 
 static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 {
@@ -138,12 +136,11 @@ int	parse_main(t_msh *msh)
 	make_pexe(msh, msh->parse);
 	
 	t_pexe *temp = msh->pexe;
-	int i = 0;
 	int j;
 	while (temp != NULL)
 	{
 		j = 0;
-		while (temp->cmd[j] != '\0')
+		while (temp->cmd != NULL && temp->cmd[j] != '\0')
 		{
 			if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
 				temp->cmd[j] = '#';
@@ -152,7 +149,9 @@ int	parse_main(t_msh *msh)
 		printf("PEXE-TYPE: %d\n", temp->type);
 		printf("PEXE-CMD: %s\n", temp->cmd);
 		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n\n", temp->p_index);
+		printf("PEXE-PRIORITY: %d\n", temp->p_index);
+		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+		printf("PEXE-TEMP: %s\n\n", temp->temp);
 
 		temp = temp->next;
 	}

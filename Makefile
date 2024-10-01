@@ -1,5 +1,5 @@
 NAME = minishell
-CC = cc
+CC = gcc #made gcc to make it work in my compiler
 CFLAGS = -Wall -Wextra -Werror -g3 -O3 -O0
 LDFLAGS = -lreadline -lncurses
 
