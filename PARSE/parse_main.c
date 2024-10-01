@@ -6,13 +6,15 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/30 20:09:45 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:03:06 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
+// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-
+//leak-kinds=all --track-origins=yes --verbose 
+//--log-file=valgrind-out.txt ./minishell
 
 static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 {
@@ -70,7 +72,8 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 	while (msh->input[++i] != '\0')
 	{
 		tye = check_special(msh->input, &i);
-		if (tye == HEREDOC || tye == APPEND || tye == INFILE || tye == OUTFILE || tye == PIPE)
+		if (tye == HEREDOC || tye == APPEND || tye == INFILE || \
+			tye == OUTFILE || tye == PIPE)
 		{
 			if (check_something_exists(msh, &i, tye) != 0)
 				return (1);
@@ -110,13 +113,14 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
-	
-	printf("Modified string is: %s\n\n", msh->parse->modified);
-	
 	parse_tokenize(msh, msh->parse);
-	
+	make_pexe(msh, msh->parse);
+	return (0);
+}
+
+	// printf("Modified string is: %s\n\n", msh->parse->modified);
 	// t_token *tkn = msh->parse->head;
-	
+
 	// int k;
 	// while (tkn != NULL)
 	// {
@@ -129,40 +133,28 @@ int	parse_main(t_msh *msh)
 	// 	}
 	// 	printf("Token is: %s\n", tkn->token);
 	// 	printf("Type of token is: %u\n", tkn->type);
-	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
+	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",
+	//tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
 	// 	tkn = tkn->next;
 	// }
 
-	make_pexe(msh, msh->parse);
-	
-	t_pexe *temp = msh->pexe;
-	int j;
-	while (temp != NULL)
-	{
-		j = 0;
-		while (temp->cmd != NULL && temp->cmd[j] != '\0')
-		{
-			if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
-				temp->cmd[j] = '#';
-			j++;
-		}
-		printf("PEXE-TYPE: %d\n", temp->type);
-		printf("PEXE-CMD: %s\n", temp->cmd);
-		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n", temp->p_index);
-		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-		printf("PEXE-TEMP: %s\n\n", temp->temp);
+	// t_pexe *temp = msh->pexe;
+	// // int j;
+	// while (temp != NULL)
+	// {
+	// 	// j = 0;
+	// 	// while (temp->cmd != NULL && temp->cmd[j] != '\0')
+	// 	// {
+	// 	// 	if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
+	// 	// 		temp->cmd[j] = '#';
+	// 	// 	j++;
+	// 	// }
+	// 	printf("PEXE-TYPE: %d\n", temp->type);
+	// 	printf("PEXE-CMD: %s\n", temp->cmd);
+	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
+	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
 
-		temp = temp->next;
-	}
-
-
-	// exit_cleanup(NULL, msh, errno, 3);
-
-	return (0);
-}
-
-
-	// int	i = 0;
-	// while (msh->parse->poi[i] != NULL)
-	// 	printf("POI TYPE: %u\n\n", msh->parse->poi[i++][0]);
+	// 	temp = temp->next;
+	// }

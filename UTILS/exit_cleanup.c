@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/12 17:12:22 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:53:58 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_mallocs(void *s_ptr, void **d_ptr)
 {
-	int i;
+	int	i;
 
 	if (s_ptr != NULL)
 	{
@@ -64,11 +64,6 @@ void	free_pexe(t_msh *msh)
 	while (current != NULL)
 	{
 		next = current->next;
-		// if (current->cmd != NULL)
-		// {
-		// 	free(current->cmd);
-		// 	current->cmd = NULL;
-		// }
 		if (current->option != NULL)
 			free_mallocs(NULL, (void **)current->option);
 		current->prev = NULL;
@@ -152,7 +147,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 	if (check == 1 || check == 2)
 	{
 		clear_msh(msh, check, msg);
-		if (msh!= NULL)
+		if (msh != NULL)
 		{
 			int	i = 0;
 			if (msh->envp != NULL)
@@ -168,7 +163,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		if (check == 1)
 			exit(EXIT_SUCCESS);
 		else if (check == 2)
-			exit(EXIT_FAILURE);	
+			exit(EXIT_FAILURE);
 	}
 	else
 	{
