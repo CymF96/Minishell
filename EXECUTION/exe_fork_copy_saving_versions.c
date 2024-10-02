@@ -1,16 +1,14 @@
 /*part with fd in msh*/
 #include "../minishell.h"
-
 void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds)
 {
+	(void)nb_chds;
 	if ((chds[0]->pid = fork()) == 0)
 	{
 		close_fd(chds, 0, -1, nb_chds);
-		if (msh->pexe->next != NULL || msh->pexe->next->group_id == msh->pexe->group_id)
-		{
-			dup2(chds[0]->fd[1], STDOUT_FILENO);
-			close(chds[0]->fd[1]);
-		}
+		ft_printf("action 1\n");
+		dup2(chds[0]->fd[1], STDOUT_FILENO);
+		close(chds[0]->fd[1]);
 		check_type(msh);
 	}
 }
@@ -21,9 +19,9 @@ void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
 	if ((chds[i]->pid = fork()) == 0)
 	{
 		close_fd(chds, i, i - 1, nb_chds);
-		close(msh->fd[0]);
-		if (msh->pexe->next != NULL || msh->pexe->next->group_id == msh->pexe->group_id)
-			dup2(chds[i - 1]->fd[0], STDIN_FILENO);
+		// close(msh->fd[0]);
+		//if (msh->pexe->next != NULL || msh->pexe->next->group_id == msh->pexe->group_id)
+		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
 		close(chds[i - 1]->fd[0]);
 		dup2(chds[i]->fd[1], STDOUT_FILENO);
 		close(chds[i]->fd[1]);
@@ -36,9 +34,11 @@ void	last_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
 	if ((chds[i]->pid = fork()) == 0)
 	{
 		close_fd(chds, i, i - 1, nb_chds - 1);
-		close(msh->fd[0]);
-		if (msh->pexe->next != NULL || msh->pexe->next->group_id == msh->pexe->group_id)
-			dup2(chds[i - 1]->fd[0], STDIN_FILENO);
+		ft_printf("action 2\n");
+		//close(msh->fd[0]);
+	//	if (msh->pexe->next != NULL || msh->pexe->next->group_id == msh->pexe->group_id)
+		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
+			// dup2(msh->fd[0], STDIN_FILENO);
 		close(chds[i - 1]->fd[0]);
 		check_type(msh);
 	}
@@ -132,9 +132,6 @@ void	closing(t_msh *msh, t_pipex **chds)
 // 	chds = NULL;
 // 	exit_cleanup(NULL, msh, errno, 0);
 // }
-
-
-
 
 /*part without other fd in msh*/
 
