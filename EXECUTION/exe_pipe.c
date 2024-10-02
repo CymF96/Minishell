@@ -58,7 +58,7 @@ void	ft_pipex(t_msh *msh)
 		if (pipe(chds[i]->fd) == -1)
 		{
 			free_pipex(chds);
-			exit_cleanup(NULL, msh, errno, 0);
+			exit_cleanup(NULL, msh, errno, 0); 
 		}
 		//ft_printf("*****************************\nIN PIPE: chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
 		i++;

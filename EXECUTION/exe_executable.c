@@ -51,24 +51,37 @@ void	find_exe(t_msh *msh, char *cmd)
 		|| !ft_strncmp("/usr/bin/", current->cmd, 9)) // current->cmd[0] != '/',
 		path = ft_strdup(cmd);
 	else
+	{
 		path = find_executable_path(msh);
+		ft_printf("PATH: %s\n", path);
+	}
 	if (!path)
 		return;
-	if (current->next->type != 9 && !ft_strncmp("cat", current->cmd, 3)\
+	if (current->next != NULL && current->next->type == 1\
+			&& !ft_strncmp("cat", current->cmd, 3)\
 			&& access(current->next->cmd, F_OK | X_OK) != 0)
 	{
-		exit_cleanup("Invalid file or permission", msh, errno, 0);
-		return;
+		free(path);
+		perror("Invalid file or permission\n");
+		msh->exit_error = 2;
+		return ;
 	}
+	ft_printf("test4\n");
 	append_args(msh, current, len_group);
 	if (msh->child)
 	{
-		if (current->option[0] != NULL)
+		if (current->next->group_id != current->group_id)
 		{
-			if (execve(path, current->option, NULL) == -1)
-				exit_cleanup(NULL, msh, errno, 0);
-			free(path);
+			dup2(msh->fd[0], STDIN_FILENO);
+			close(msh->fd[0]);
 		}
+		if (execve(path, current->option, NULL) == -1)
+		{
+			ft_printf("test6\n");
+			exit_cleanup(NULL, msh, errno, 0);
+		}
+		ft_printf("test7\n");
+		free(path);
 		exit(EXIT_SUCCESS);	
 	}
 	else
