@@ -32,11 +32,10 @@ void	minishell_running(t_msh *msh)
 {
 	add_history(msh->input);
 	check_if_exit(msh);
+	if (!ft_strncmp("$$", msh->input, 2))
+		return ;
 	if (parse_main(msh) == 0)
-	{
-		printf("EXEC WOULD HAVE HAPPENED HERE\n\n");
 		execution(msh);
-	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 

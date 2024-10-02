@@ -24,7 +24,12 @@ void	cmd_echo(t_msh *msh, int g)
 	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
 	{
 		if (flag == 1)
-			ft_printf("%s", msh->pexe->next->cmd);
+		{
+			if (msh->pexe->next->next == NULL || msh->pexe->next->next->group_id != g)
+				ft_printf("%s", msh->pexe->next->cmd);
+			else
+				ft_printf("%s ", msh->pexe->next->cmd);
+		}
 		else 
 			ft_printf("%s ", msh->pexe->next->cmd);
 		msh->pexe = msh->pexe->next;

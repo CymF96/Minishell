@@ -168,7 +168,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 	else
 	{
 		clear_msh(msh, check, NULL);
-		if (msh->exit_error == 0)
+		if (flag != 0)
 			msh->exit_error = flag;
 	}
 }
