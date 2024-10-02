@@ -48,7 +48,7 @@ void	find_exe(t_msh *msh, char *cmd)
 	current = msh->pexe;
 	len_group = node_strlen(current);
 	if (!ft_strncmp("/bin/", current->cmd, 5)\
-		|| !ft_strncmp("/usr/bin/", current->cmd, 9)) // current->cmd[0] != '/',
+		|| !ft_strncmp("/usr/bin/", current->cmd, 9))
 		path = ft_strdup(cmd);
 	else
 	{
@@ -57,32 +57,19 @@ void	find_exe(t_msh *msh, char *cmd)
 	}
 	if (!path)
 		return;
-	if (current->next != NULL && current->next->type == 1\
-			&& !ft_strncmp("cat", current->cmd, 3)\
-			&& access(current->next->cmd, F_OK | X_OK) != 0)
+	if (current->next != NULL && current->next->group_id == current->group_id\
+			&& !ft_strncmp("cat", current->cmd, 3))
 	{
-		free(path);
-		perror("Invalid file or permission\n");
-		msh->exit_error = 2;
-		return ;
+		if (access(current->next->cmd, F_OK) != 0)
+			msh->exit_error = errno;
+		if (access(current->next->cmd, X_OK) != 0)
+			msh->exit_error = errno;
 	}
-	ft_printf("test4\n");
 	append_args(msh, current, len_group);
 	if (msh->child)
 	{
-		if (current->next->group_id != current->group_id)
-		{
-			dup2(msh->fd[0], STDIN_FILENO);
-			close(msh->fd[0]);
-		}
 		if (execve(path, current->option, NULL) == -1)
-		{
-			ft_printf("test6\n");
 			exit_cleanup(NULL, msh, errno, 0);
-		}
-		ft_printf("test7\n");
-		free(path);
-		exit(EXIT_SUCCESS);	
 	}
 	else
 	{
