@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 14:35:04 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 00:29:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 	}
 }
 
-static t_pexe	*head(t_pexe *current)
+t_pexe	*head(t_pexe *current)
 {
 	while (current->prev != NULL)
 		current = current->prev;

@@ -28,9 +28,6 @@
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
 
-# define SIGINT_FLAG 0x01	// 0001
-# define SIGQUIT_FLAG 0x02	// 0010
-
 typedef enum s_type
 {
 	BUILTIN,
@@ -101,39 +98,22 @@ typedef struct s_pexe
 	struct s_pexe	*next;
 }	t_pexe;
 
-typedef struct s_msh //master structure 'minishell'
+typedef struct s_msh
 {
 	char		*input;
-	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
+	char		**envp;
 	int			fd[2];
 	char		*text;
 	char		*heredoc; //not needed I think
 	int			envp_flag;
 	int			pipe_nb;
 	int			flag;
-	int			exit_error; // initialise only one time to keep track of exit error code
-	// volatile sig_atomic_t signal_flags;
-	// struct sigaction	sa;
-	t_parse		*parse;
-	t_pexe		*pexe; //args structure for execution
+	int			exit_error;
 	int			child;
+	t_parse		*parse;
+	t_pexe		*pexe;
 	t_pipex		**chds;
 }	t_msh;
-
-
-
-/***********ERROR_TYPE***********/
-/* 1. command not found			*/
-/* 2. SIGEOF					*/
-/* 3. syntax error?				*/
-/* 4. allocation error			*/
-/* 5. File/directory not found	*/
-/* 6. Signals error				*/
-/* 7. filename					*/
-/* 8. pipe						*/
-/* 9. signal					*/
-/* 10. */
-/********************************/
 
 /*------- MAIN/CONTROL FUNCTIONS -------*/
 void	minishell_start(t_msh *msh, int ac, char **envp);
@@ -141,7 +121,7 @@ void	minishell_running(t_msh *msh);
 void	check_if_exit(t_msh *msh);
 
 /*------- INPUT_VALIDATE -------*/
-int	input_validate(int ac, char **envp);
+int		input_validate(int ac, char **envp);
 
 /*------- INITIALIZE -------*/
 void	clean_init_chds(t_pipex *chds);
@@ -153,20 +133,19 @@ void	clean_msh_init(t_msh *msh);
 /*------- UTILS -------*/
 void	copy_envp(t_msh *msh, char **envp);
 char	*get_path(char **envp);
-void	adding_temp_var(t_msh *msh, char *new_var);
 char	*set_var_name(char *cmd);
 int		updating_var(char **env_struct, char *var_name, char *cmd);
-void	check_update_tempenv(t_msh *msh, char *cmd);
-void	check_remove_tempenv(t_msh *msh, char *cmd);
 char	*find_executable_path(t_msh *msh);
+void	move_group(t_msh *msh);
+int		move_node(t_msh *msh);
 
 /*------- EXECUTION -------*/
+void	command(t_msh *msh, char *cmd);
+void	exe(t_msh *msh);
 void	execution(t_msh *msh);
 void	check_type(t_msh *msh);
-void	check_builtin_cmd(t_msh *msh, char *cmd);
 void	check_exit_status_cmd(t_msh *msh, char *cmd);
 void	double_red_right(t_msh *msh);
-void	double_red_left(t_msh *msh);
 void	red_left(t_msh *msh);
 void	red_right(t_msh *msh);
 void	ft_pipex(t_msh *msh);
@@ -176,23 +155,19 @@ void	chd1_fork(t_msh *msh, int nb_chds);
 void	mdlchd_fork(t_msh *msh, int i, int nb_chds);
 void	last_fork(t_msh *msh, int i, int nb_chds);
 void	kill_children(t_msh *msh);
-void	closing(t_msh *msh);
+void	closing(t_msh *msh, int nb_chds);
 void	close_fds(t_msh *msh, int nb_chds, int current);
 int		node_strlen(t_pexe *node);
-int		struct_strlen(char **array);
 void	append_args(t_msh *msh, t_pexe *current, int len_group);
-void	find_exe(t_msh *msh, char *cmd);
-void	sigint(t_msh *msh);
 void	sigeof(t_msh *msh);
-void	cmd_exit(t_msh *msh);
-void	cmd_echo(t_msh *msh, int g);
+void	cmd_echo(t_msh *msh);
 void	cmd_pwd(t_msh *msh);
-void	cmd_cd(t_msh *msh, int g);
-void	cmd_env(t_msh *msh, int g);
+void	cmd_cd(t_msh *msh);
+void	cmd_env(t_msh *msh);
 void	adding_var(t_msh *msh, char *new_var);
-void	cmd_export(t_msh *msh, int g);
+void	cmd_export(t_msh *msh);
 int		remove_var(t_msh *msh, char	*var_name);
-void	cmd_unset(t_msh *msh, int g);
+void	cmd_unset(t_msh *msh);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
@@ -222,6 +197,7 @@ void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
 // void	fill_pexe(t_msh *msh);
+void	free_parse(t_msh *msh);
 void	sort_pexe(t_msh *msh);
 
 /*------- CLEANUP -------*/
@@ -231,5 +207,6 @@ void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);
 void	free_pipex(t_msh *msh);
 void	clear_msh(t_msh *msh, int check, char *msg);
+t_pexe	*head(t_pexe *current);
 
 #endif
