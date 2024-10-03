@@ -117,6 +117,7 @@ typedef struct s_msh //master structure 'minishell'
 	t_parse		*parse;
 	t_pexe		*pexe; //args structure for execution
 	int			child;
+	t_pipex		**chds;
 }	t_msh;
 
 
@@ -171,13 +172,12 @@ void	red_right(t_msh *msh);
 void	ft_pipex(t_msh *msh);
 void	signals_handler(int sig);
 void	signal_handler_init(t_msh *msh);
-void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds);
-void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds);
-void	last_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds);
-// void	close_fd(t_pipex **chds, int i, int j, int nb_chds);
-void close_fds(t_pipex **chds, int nb_chds, int current);
-void	kill_children(t_pipex **chds);
-void	closing(t_msh *msh, t_pipex **chds);
+void	chd1_fork(t_msh *msh, int nb_chds);
+void	mdlchd_fork(t_msh *msh, int i, int nb_chds);
+void	last_fork(t_msh *msh, int i, int nb_chds);
+void	kill_children(t_msh *msh);
+void	closing(t_msh *msh);
+void	close_fds(t_msh *msh, int nb_chds, int current);
 int		node_strlen(t_pexe *node);
 int		struct_strlen(char **array);
 void	append_args(t_msh *msh, t_pexe *current, int len_group);
@@ -229,7 +229,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);
 void	free_parse(t_msh *msh);
 void	free_pexe(t_msh *msh);
 void	free_mallocs(void *s_ptr, void **d_ptr);
-void	free_pipex(t_pipex **children);
+void	free_pipex(t_msh *msh);
 void	clear_msh(t_msh *msh, int check, char *msg);
 
 #endif
