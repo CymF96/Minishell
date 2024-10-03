@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 12:53:58 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 12:34:18 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,6 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 	}
 }
 
-void	free_pipex(t_pipex **children)
-{
-	int	i;
-
-	i = 0;
-	while (children[i] != NULL)
-	{
-		free(children[i]);
-		children[i] = NULL;
-		i++;
-	}
-}
-
 static t_pexe	*head(t_pexe *current)
 {
 	while (current->prev != NULL)
@@ -55,86 +42,46 @@ static t_pexe	*head(t_pexe *current)
 	return (current);
 }
 
-void	free_pexe(t_msh *msh)
+static void	handle_message(int check, char *msg)
 {
-	t_pexe	*current;
-	t_pexe	*next;
-
-	current = head(msh->pexe);
-	while (current != NULL)
+	if (check == 1 || check == 2)
 	{
-		next = current->next;
-		if (current->option != NULL)
-			free_mallocs(NULL, (void **)current->option);
-		current->prev = NULL;
-		if (current->temp != NULL)
-			free(current->temp);
-		free(current);
-		current = NULL;
-		current = next;
-	}
-	msh->pexe = NULL;
-}
-
-void	free_parse(t_msh *msh)
-{
-	t_token	*temp;
-
-	if (msh->parse != NULL)
-	{
-		free_mallocs ((void *)msh->parse->modified, (void **)msh->parse->poi);
-		while (msh->parse->head != NULL)
+		rl_clear_history();
+		if (msg != NULL && check == 1)
+			printf("Exit Success - %s\n", msg);
+		else if (check == 2)
 		{
-			if (msh->parse->head != NULL)
-			{
-				temp = msh->parse->head->next;
-				free (msh->parse->head->token);
-				msh->parse->head->token = NULL;
-				free (msh->parse->head);
-				msh->parse->head = temp;
-			}
+			perror("Error - ");
+			if (msg != NULL)
+				printf("Reason - %s\n", msg);
 		}
-		free(msh->parse);
-		msh->parse = NULL;
 	}
 }
 
 void	clear_msh(t_msh *msh, int check, char *msg)
 {
-	if (msh != NULL)
+	if (msh == NULL)
+		return ;
+	if (msh->heredoc != NULL)
 	{
-		if (msh->heredoc != NULL)
-		{
-			unlink(msh->heredoc);
-			free(msh->heredoc);
-			msh->heredoc = NULL;
-		}
-		if (msh->parse != NULL)
-			free_parse(msh);
-		if (msh->pexe != NULL)
-			free_pexe(msh);
-		if (msh->input != NULL)
-		{
-			free(msh->input);
-			msh->input = NULL;
-		}
-		if (msh->fd[0] != -1)
-			close(msh->fd[0]);
-		if (msh->fd[1] != -1)
-			close(msh->fd[1]);
-		if (check == 1 || check == 2)
-		{
-			rl_clear_history();
-			if (msg != NULL && check == 1)
-				printf("Exit Success - %s\n", msg);
-			else if (check == 2)
-			{
-				perror("Error - ");
-				if (msg != NULL)
-					printf("Reason - %s\n", msg);
-			}
-		}
+		unlink(msh->heredoc);
+		free(msh->heredoc);
+		msh->heredoc = NULL;
 	}
+	if (msh->parse != NULL)
+		free_parse(msh);
+	if (msh->pexe != NULL)
+		free_pexe(msh);
+	if (msh->input != NULL)
+	{
+		free(msh->input);
+		msh->input = NULL;
+	}
+	if (msh->fd[0] != -1)
+		close(msh->fd[0]);
+	if (msh->fd[1] != -1)
+		close(msh->fd[1]);
+	handle_message(check, msg);
 }
 
 // Main cleanup function. Takes optional message to output, main data struct,
@@ -142,6 +89,8 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 // exit due to failure, 3 for cleaning up the mallocs for next input
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
+	int	i;
+
 	if (msg)
 		ft_printf("%s\n", msg);
 	if (check == 1 || check == 2)
@@ -149,26 +98,20 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		clear_msh(msh, check, msg);
 		if (msh != NULL)
 		{
-			int	i = 0;
+			i = 0;
 			if (msh->envp != NULL)
 			{
-				while (msh->envp[i] != NULL) // Verify this cleanup
+				while (msh->envp[i] != NULL)
 					free(msh->envp[i++]);
-
 				free(msh->envp);
 			}
 			free(msh);
-			msh = NULL;
 		}
 		if (check == 1)
 			exit(EXIT_SUCCESS);
-		else if (check == 2)
-			exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
-	else
-	{
-		clear_msh(msh, check, NULL);
-		if (flag != 0)
-			msh->exit_error = flag;
-	}
+	clear_msh(msh, check, NULL);
+	if (flag != 0)
+		msh->exit_error = flag;
 }

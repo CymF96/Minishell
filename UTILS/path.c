@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/10/03 11:45:25 by mcoskune         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 char	*get_path(char **envp)
@@ -29,7 +41,7 @@ char	*find_executable_path(t_msh *msh)
 	char	*path;
 	int		i;
 
-	i = 0;
+	i = -1;
 	path = get_path(msh->envp);
 	if (path == NULL)
 		return (NULL);
@@ -37,18 +49,13 @@ char	*find_executable_path(t_msh *msh)
 	if (paths == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
 	free(path);
-	while (paths[i])
+	while (paths[++i])
 	{
 		path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(path, msh->pexe->cmd);
-
 		if (access(path, F_OK | X_OK) == 0)
-		{
-			free_mallocs(NULL, (void **)paths);
-			return (path);
-		}
+			return (free_mallocs(NULL, (void **)paths), path);
 		free(path);
-		i++;
 	}
 	free_mallocs(NULL, (void **)paths);
 	exit_cleanup("Invalid path or command", msh, errno, 0);

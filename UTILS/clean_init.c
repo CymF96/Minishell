@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 17:25:09 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 11:37:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	clean_init_token_node(t_token *tkn)
 
 void	clean_init_parse(t_parse *pars)
 {
-	
 	pars->head = NULL;
 	pars->modified = NULL;
 	pars->no_poi = 0;
@@ -57,13 +56,13 @@ void	clean_init_parse(t_parse *pars)
 
 void	clean_msh_init(t_msh *msh)
 {
-	msh->input =  NULL;
+	msh->input = NULL;
 	msh->fd[0] = -1;
 	msh->fd[1] = -1;
 	msh->pipe_nb = 0;
 	msh->flag = -1;
 	msh->parse = NULL;
-	msh->pexe = NULL; 
+	msh->pexe = NULL;
 	msh->child = 0;
 	msh->text = NULL;
 	msh->heredoc = NULL;
