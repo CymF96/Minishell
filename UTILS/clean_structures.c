@@ -12,15 +12,15 @@
 
 #include "../minishell.h"
 
-void	free_pipex(t_pipex **children)
+void	free_pipex(t_msh *msh)
 {
 	int	i;
 
 	i = 0;
-	while (children[i] != NULL)
+	while (msh->chds[i] != NULL)
 	{
-		free(children[i]);
-		children[i] = NULL;
+		free(msh->chds[i]);
+		msh->chds[i] = NULL;
 		i++;
 	}
 }

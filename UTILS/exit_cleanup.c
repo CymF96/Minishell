@@ -35,21 +35,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 	}
 }
 
-void	free_pipex(t_msh *msh)
-{
-	int	i;
-
-	i = 0;
-	while (msh->chds[i] != NULL)
-	{
-		free(msh->chds[i]);
-		msh->chds[i] = NULL;
-		i++;
-	}
-	free(msh->chds);
-}
-
-static t_pexe	*head(t_pexe *current)
+t_pexe	*head(t_pexe *current)
 {
 	while (current->prev != NULL)
 		current = current->prev;

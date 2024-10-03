@@ -27,7 +27,8 @@ SRC =	minishell.c\
 		EXECUTION/exe_pipe.c\
 		EXECUTION/exe_redirection.c\
 		UTILS/clean_init.c\
-		UTILS/path.c\
+		UTILS/clean_structures.c\
+		UTILS/envp_utils.c\
 		UTILS/exit_cleanup.c\
 		UTILS/input_validate.c\
 		UTILS/utils.c\
