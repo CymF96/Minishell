@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/26 10:42:56 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/02 10:45:53 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	minishell_running(t_msh *msh)
 	check_if_exit(msh);
 	if (parse_main(msh) == 0)
 	{
-		printf("EXEC WOULD HAVE HAPPENED HERE\n\n");
+		// printf("EXEC WOULD HAVE HAPPENED HERE\n\n");
 		execution(msh);
 	}
 	exit_cleanup(NULL, msh, 0, 0);
