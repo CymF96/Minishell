@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/03 11:45:44 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/10/03 11:51:52 by mcoskune         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void	copy_envp(t_msh *msh, char **envp) // 3lines too long
+void	copy_envp(t_msh *msh, char **envp)
 {
 	int		i;
 	int		envp_len;
@@ -8,20 +20,20 @@ void	copy_envp(t_msh *msh, char **envp) // 3lines too long
 
 	msh->envp = NULL;
 	envp_len = 0;
-	while (envp[envp_len] != NULL) // getting the number of line in envp 
-			envp_len++;
-	temp_envp = malloc(sizeof(char *) * (envp_len + 1)); // malloc new structure + 2 for new line to add and NULL
+	while (envp[envp_len] != NULL)
+		envp_len++;
+	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
 	if (temp_envp == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
 	i = 0;
-	while (i < envp_len) //copying old array to new one
+	while (i < envp_len)
 	{
 		temp_envp[i] = ft_strdup(envp[i]);
 		if (temp_envp[i++] == NULL)
 			exit_cleanup(NULL, msh, errno, 1);
 	}
 	temp_envp[i] = NULL;
-	msh->envp = temp_envp; //copying temp array ptr to envp on
+	msh->envp = temp_envp;
 }
 
 // void	check_update_localenvp(t_msh *msh, char *cmd) //function from export builtin command to export variable in temp
@@ -129,31 +141,33 @@ void	sort_pexe(t_msh *msh)
 		while (current != NULL && current->next != NULL)
 		{
 			next = current->next;
-			if (current->group_id > next->group_id\
-				|| (current->group_id == next->group_id && current->p_index > next->p_index))
-			{	
+			if (current->group_id > next->group_id || (current->group_id == \
+				next->group_id && current->p_index > next->p_index))
+			{
 				swap(current, next);
 				loop = 1;
 			}
 			current = current->next;
 		}
 	}
-	
-	// for (current = msh->pexe; current != NULL; current= current->next)
-	// 	ft_printf("msh->pexe->cmd: %s, msh->pexe->type: %d,msh->pexe->g: %d, msh->pexe->p: %d\n", current->cmd, current->type, current->group_id, current->p_index);
 }
+
+// for (current = msh->pexe; current != NULL; current= current->next)
+// 	ft_printf("msh->pexe->cmd: %s, msh->pexe->type: %d,msh->pexe->g: %d,
+//msh->pexe->p: %d\n", current->cmd, current->type, 
+//current->group_id, current->p_index);
 
 char	*set_var_name(char *cmd)
 {
-	int	i;
-	char *var_name;
+	int		i;
+	char	*var_name;
 
 	i = 0;
-	while (cmd[i] && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
+	while (cmd[i] && cmd[i] != '=')
 		i++;
-	var_name = malloc(sizeof(i + 1)); 
+	var_name = malloc(sizeof(i + 1));
 	i = 0;
-	while (cmd[i] != '\0' && cmd[i] != '=') // save the variable name to var_name str by cpy char until finding '='
+	while (cmd[i] != '\0' && cmd[i] != '=')
 	{
 		var_name[i] = cmd[i];
 		i++;
@@ -167,7 +181,7 @@ int	updating_var(char **env_struct, char *var_name, char *cmd)
 	int	i;
 
 	i = 0;
-	while (env_struct[i] != NULL) //looping through evp to find the var_name 
+	while (env_struct[i] != NULL)
 	{
 		if (!ft_strncmp(env_struct[i], var_name, ft_strlen(var_name)))
 		{
