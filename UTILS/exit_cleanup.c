@@ -35,17 +35,18 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 	}
 }
 
-void	free_pipex(t_pipex **children)
+void	free_pipex(t_msh *msh)
 {
 	int	i;
 
 	i = 0;
-	while (children[i] != NULL)
+	while (msh->chds[i] != NULL)
 	{
-		free(children[i]);
-		children[i] = NULL;
+		free(msh->chds[i]);
+		msh->chds[i] = NULL;
 		i++;
 	}
+	free(msh->chds);
 }
 
 static t_pexe	*head(t_pexe *current)
@@ -118,6 +119,8 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 			free(msh->input);
 			msh->input = NULL;
 		}
+		if (msh->chds != NULL)
+			free_pipex(msh);
 		if (msh->fd[0] != -1)
 			close(msh->fd[0]);
 		if (msh->fd[1] != -1)

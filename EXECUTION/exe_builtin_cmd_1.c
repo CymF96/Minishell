@@ -21,7 +21,8 @@ void	cmd_echo(t_msh *msh, int g)
 		flag = 1;
 		msh->pexe = msh->pexe->next;
 	}
-	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
+	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
+			&& msh->pexe->next->type != 9 && msh->pexe->next->type != 10)
 	{
 		if (flag == 1)
 		{

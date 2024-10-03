@@ -1,64 +1,64 @@
 #include "../minishell.h"
 
-void	chd1_fork(t_msh *msh, t_pipex **chds, int nb_chds)
+void	chd1_fork(t_msh *msh, int nb_chds)
 {
 	(void)nb_chds;
-	if ((chds[0]->pid = fork()) == 0)
+	if ((msh->chds[0]->pid = fork()) == 0)
 	{
-		dup2(chds[0]->fd[1], STDOUT_FILENO);
-		close(chds[0]->fd[1]);
-		close_fds(chds, nb_chds, 0);
+		dup2(msh->chds[0]->fd[1], STDOUT_FILENO);
+		close(msh->chds[0]->fd[1]);
+		close_fds(msh, nb_chds, 0);
 		check_type(msh);
 	}
 }
 
-void	mdlchd_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
+void	mdlchd_fork(t_msh *msh, int i, int nb_chds)
 {
 	(void)nb_chds;
-	if ((chds[i]->pid = fork()) == 0)
+	if ((msh->chds[i]->pid = fork()) == 0)
 	{
-		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
-		close(chds[i - 1]->fd[0]);
-		dup2(chds[i]->fd[1], STDOUT_FILENO);
-		close(chds[i]->fd[1]);
-		close_fds(chds, nb_chds, i);
+		dup2(msh->chds[i - 1]->fd[0], STDIN_FILENO);
+		close(msh->chds[i - 1]->fd[0]);
+		dup2(msh->chds[i]->fd[1], STDOUT_FILENO);
+		close(msh->chds[i]->fd[1]);
+		close_fds(msh, nb_chds, i);
 		check_type(msh);
 	}
 }
 
-void	last_fork(t_msh *msh, t_pipex **chds, int i, int nb_chds)
+void	last_fork(t_msh *msh, int i, int nb_chds)
 {
-	if ((chds[i]->pid = fork()) == 0)
+	if ((msh->chds[i]->pid = fork()) == 0)
 	{
-		dup2(chds[i - 1]->fd[0], STDIN_FILENO);
-		close(chds[i - 1]->fd[0]);
-		close_fds(chds, nb_chds, i);
+		dup2(msh->chds[i - 1]->fd[0], STDIN_FILENO);
+		close(msh->chds[i - 1]->fd[0]);
+		close_fds(msh, nb_chds, i);
 		check_type(msh);
 	}
 }
 
-void	kill_children(t_pipex **chds)
+void	kill_children(t_msh *msh)
 {
 	int	i;
 	int status;
 
 	i = 0;
-	while (chds[i] != NULL)
+	while (msh->chds[i] != NULL)
 	{
-		if (waitpid(chds[i]->pid, &status, WNOHANG) == 0)
-			kill(chds[i]->pid, SIGTERM);
+		if (waitpid(msh->chds[i]->pid, &status, WNOHANG) == 0)
+			kill(msh->chds[i]->pid, SIGTERM);
 		i++;
 	}
 	i = 0;
-	while (chds[i] != NULL)
+	while (msh->chds[i] != NULL)
 	{
-		if (waitpid(chds[i]->pid, &status, 0) == -1)
+		if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
 			perror("Error");
         i++;
 	}
 }
 
-void	closing(t_msh *msh, t_pipex **chds)
+void	closing(t_msh *msh)
 {
 	int	i;
 	int	flag;
@@ -67,19 +67,19 @@ void	closing(t_msh *msh, t_pipex **chds)
 	printf("Entering closing function...\n");
 	i = 0;
 	flag = 0;
-	while (chds[i] != NULL) //+1
+	while (msh->chds[i] != NULL) //+1
 	{
-		close(chds[i]->fd[0]);
-		close(chds[i]->fd[1]);
+		close(msh->chds[i]->fd[0]);
+		close(msh->chds[i]->fd[1]);
 		i++;
 	}
 	dup2(msh->fd[0], STDIN_FILENO);
 	dup2(msh->fd[1], STDOUT_FILENO);
 	i = 0;
-    while (chds[i] != NULL)
+    while (msh->chds[i] != NULL)
     {
         printf("Waiting for child %d\n", i);
-        if (waitpid(chds[i]->pid, &status, 0) == -1)
+        if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
         {
             perror("Error in waitpid");
         }
@@ -96,13 +96,11 @@ void	closing(t_msh *msh, t_pipex **chds)
     if (flag)
     {
         printf("Killing remaining children...\n");
-        kill_children(chds);
+        kill_children(msh);
     }
 
     // Clean up resources
     printf("Freeing pipex and chds...\n");
-    free_pipex(chds);
-    free(chds);
 
     // Perform exit cleanup
     printf("Exiting...\n");
