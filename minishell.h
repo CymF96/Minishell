@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/26 03:43:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:39:10 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ typedef struct s_msh //master structure 'minishell'
 	char		**envp; // keep the array in the structure to be sure to print all env var if env builtin function is called?
 	int			fd[2];
 	char		*text;
-	char		*heredoc;
+	char		*heredoc; //not needed I think
 	int			envp_flag;
 	int			pipe_nb;
 	int			flag;

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 12:59:08 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 16:00:42 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,28 @@ void	quote_token(char *temp, int *i)
 		(*i)++;
 }
 
+static void	token_end(t_parse *prs, int *i, int *j, t_token *tkn)
+{
+	char	*temp;
+
+	temp = prs->modified;
+	while (temp[*i] != '\0')
+	{
+		if (temp[*i] == '\'' || temp[*i] == '\"')
+			quote_token(prs->modified, i);
+		if (prs->poi[*j] != NULL && *i + 1 == prs->poi[*j][1] && (*i)++)
+			break ;
+		if (prs->poi[*j] != NULL && *i == prs->poi[*j][1] && (*i)++)
+		{
+			tkn->type = prs->poi[(*j)++][0];
+			break ;
+		}
+		if (temp[*i] == ' ' || temp[*i] == '\t' || temp[*i] == '\0')
+			break ;
+		(*i)++;
+	}
+}
+
 void	parse_tokenize(t_msh *msh, t_parse *prs)
 {
 	int		i;
@@ -70,21 +92,7 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 		while (prs->modified[i] == ' ' || prs->modified[i] == '\t')
 			i++;
 		tkn->start_pos = i;
-		while (temp[i] != '\0')
-		{
-			if (temp[i] == '\'' || temp[i] == '\"')
-				quote_token(prs->modified, &i);
-			if (prs->poi[j] != NULL && i + 1 == prs->poi[j][1] && i++)
-				break ;
-			if (prs->poi[j] != NULL && i == prs->poi[j][1] && i++)
-			{
-				tkn->type = prs->poi[j++][0];
-				break ;
-			}
-			if (temp[i] == ' ' || temp[i] == '\t' || temp[i] == '\0')
-				break ;
-			i++;
-		}
+		token_end(prs, &i, &j, tkn);
 		tkn->end_pos = i - 1;
 		copy_text(msh, prs, tkn);
 		addnode((void *)tkn, (void **)&prs->head, offsetof(t_token, next), \
