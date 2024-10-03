@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:53:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 11:55:39 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 14:34:40 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_pipex(t_msh *msh)
 		msh->chds[i] = NULL;
 		i++;
 	}
+	free(msh->chds);
 }
 
 void	free_pexe(t_msh *msh)

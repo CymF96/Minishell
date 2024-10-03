@@ -6,42 +6,34 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 12:38:23 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:29:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// Expanding $'s. Specifically checking if it is ? or a space/tab.
-void	expand_dollars(t_msh *msh, int *i)
+static void	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 {
-	char	*temp;
-
-	(*i)++;
-	if (msh->input[*i] == ' ' || msh->input[*i] == '\t')
-		copy_input_mod(msh, "$", 0, 1);
-	else if (msh->input[*i] == '$')
+	while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 	{
-		pid_t	j = getpid();
-		copy_input_mod(msh, ft_itoa(j), 0, ft_strlen(ft_itoa(j)));
-		(*i)++;
-	}
-	else if (msh->input[*i] == '?')
-	{
-		temp = ft_itoa(msh->exit_error);
-		if (temp == NULL)
-			exit_cleanup("Malloc Failed\n", msh, errno, 2);
-		copy_input_mod(msh, temp, 0, ft_strlen(temp));
-		free(temp);
-		(*i)++;
-	}
-	else
-	{
-		temp = expand_env(msh, i, 0);
-		if (temp == NULL)
-			exit_cleanup("NO TEMP\n", msh, errno, 2);
-		copy_input_mod(msh, temp, 0, ft_strlen(temp));
-		free (temp);
+		while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
+		{
+			if (msh->input[*i] == '$')
+			{
+				copy_input_mod(msh, &msh->input[*start], start, (*i) - 1);
+				flag = 1;
+				break ;
+			}
+			(*i)++;
+		}
+		if (flag == 0)
+			copy_input_mod(msh, &msh->input[*start], start, (*i));
+		if (msh->input[(*i)] == '$')
+		{
+			expand_dollars(msh, i);
+			flag = 0;
+		}
+		start = (*i);
 	}
 }
 
@@ -61,27 +53,7 @@ static void	handle_quote(t_msh *msh, int *i)
 	}
 	else if (msh->input[(*i) - 1] == '\"')
 	{
-		while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
-		{
-			while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
-			{
-				if (msh->input[*i] == '$')
-				{
-					copy_input_mod(msh, &msh->input[start], start, (*i) - 1);
-					flag = 1;
-					break ;
-				}
-				(*i)++;
-			}
-			if (flag == 0)
-				copy_input_mod(msh, &msh->input[start], start, (*i));
-			if (msh->input[(*i)] == '$')
-			{
-				expand_dollars(msh, i);
-				flag = 0;
-			}
-			start = (*i);
-		}
+		handle_dquote(msh, i, &start, &flag);
 	}
 	(*i)++;
 }

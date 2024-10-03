@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 13:03:06 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:17:37 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,6 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 				return (2);
 			i = check_quote_ending(msh->input, i);
 		}
-		else if (tye == L_PAR)
-			pars->l_count++;
-		else if (tye == R_PAR)
-			pars->r_count++;
 	}
 	return (0);
 }

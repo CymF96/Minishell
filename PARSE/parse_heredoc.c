@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/01 13:06:52 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:48:30 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +40,30 @@ void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
 		ft_putstr_fd(gnl, fd_temp);
 }
 
+static char	*heredoc_name(t_msh *msh, int *num)
+{
+	char	*num_str;
+	char	*temp_str;
+
+	num_str = ft_itoa(*num);
+	temp_str = ft_strjoin(".here_doc", num_str);
+	free(num_str);
+	num_str = ft_strjoin(temp_str, ".tmp");
+	free(temp_str);
+	copy_input_mod(msh, num_str, 0, ft_strlen(num_str));
+	(*num)++;
+	return (num_str);
+}
+
 void	get_here_doc(t_msh *msh, char *delim, int flag)
 {
 	char		*gnl;
 	char		*temp;
 	static int	num = 0;
 	int			fd_temp;
-	
+
 	fd_temp = STDIN_FILENO;
-	temp = ft_itoa(num);
-	gnl = ft_strjoin(".here_doc", temp);
-	free(temp);
-	temp = ft_strjoin(gnl, ".tmp");
-	free(gnl);
-	copy_input_mod(msh, temp, 0, ft_strlen(temp));
-	msh->heredoc = ft_strdup(temp); // adding this line for unlink heredoc at the end of the writing
+	temp = heredoc_name(msh, &num);
 	msh->parse->here_fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	free(temp);
 	if (msh->parse->here_fd == -1)
@@ -111,6 +119,23 @@ void	remove_quotes(char *str, int len, char *delim)
 	delim[j] = '\0';
 }
 
+static void	heredoc_specials(t_msh *msh, int *i, int *flag)
+{
+	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] \
+		!= '\0' && (check_special(msh->input, i) == REGULAR || \
+		check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) \
+		== S_QT || check_special(msh->input, i) == D_QT))
+	{
+		if (msh->input[*i] == '\'' || msh->input[*i] == '\"')
+		{
+			*flag = 2;
+			*i = check_quote_ending(msh->input, *i) + 1;
+			continue ;
+		}
+		(*i)++;
+	}
+}
+
 void	handle_heredoc(t_msh *msh, int *i)
 {
 	int		start;
@@ -122,19 +147,7 @@ void	handle_heredoc(t_msh *msh, int *i)
 	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
 		(*i)++;
 	start = (*i);
-	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] \
-		!= '\0' && (check_special(msh->input, i) == REGULAR || \
-		check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) \
-		== S_QT || check_special(msh->input, i) == D_QT))
-	{
-		if (msh->input[*i] == '\'' || msh->input[*i] == '\"')
-		{
-			flag = 2;
-			*i = check_quote_ending(msh->input, *i) + 1;
-			continue ;
-		}
-		(*i)++;
-	}
+	heredoc_specials(msh, i, &flag);
 	delim = malloc(sizeof(char) * (*i - start + 1));
 	remove_quotes(&msh->input[start], *i - start, delim);
 	get_here_doc(msh, delim, flag);
