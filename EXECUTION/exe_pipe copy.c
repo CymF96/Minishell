@@ -1,18 +1,29 @@
 #include "../minishell.h"
 
-void	close_fds(t_pipex **chds, int nb_chds, int current) 
+void	close_fd(t_pipex **chds, int i, int j, int nb_chds) // if all read or write has to be closed, replace by -1
 {
-	int	i;
+	int k;
 
-	i = 0;
-	while ( i < nb_chds - 1) 
+	k = 0;
+	ft_printf("i: %d, j: %d\n", i, j);
+	while (k < nb_chds) // close all pipes writing end except the current children one so i = i the child process
 	{
-		if (i != current) 
+		if (k != i)
 		{
-			close(chds[i]->fd[0]);  // Close read end of unrelated pipes
-			close(chds[i]->fd[1]);  // Close write end of unrelated pipes
+			ft_printf("chds[%d] closing fd[1]\n", k);
+			close(chds[k]->fd[1]);
 		}
-		i++;
+		k++;
+	}
+	k = 0;
+	while (k < nb_chds) // close all pipes reading end except the previous one so j = i - 1 
+	{
+		if (k != j)
+		{
+			ft_printf("chds[%d] closing fd[0]\n", k);
+			close(chds[k]->fd[0]);
+		}
+		k++;
 	}
 }
 
@@ -88,6 +99,7 @@ void	ft_pipex(t_msh *msh)
 			break ;
 		msh->pexe = msh->pexe->next;
 	}
+	close_fd(chds, i, i-1, nb_chds);//ft_printf("*************************\n LASTCHILD:chds[%i]--> fd[0]: %d, fd[1]: %d\n", i, chds[i]->fd[0], chds[i]->fd[1]);
 	last_fork(msh, chds, i, nb_chds);// check if i -1 or i - 2
 	closing(msh, chds); //parent wait the children and close everything + total cleanup
 }

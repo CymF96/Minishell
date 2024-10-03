@@ -76,7 +76,7 @@ void	check_type(t_msh *msh)
 
 void	execution(t_msh *msh)
 {
-	if (msh->pexe == NULL)
+	if (msh->pexe == NULL || (!ft_strncmp("", msh->pexe->cmd, 2)))
 	{
 		exit_cleanup(NULL, msh, errno, 0);
 		return ;
