@@ -11,17 +11,24 @@ t_msh	*get_msh_instance(t_msh *new_msh)
 
 void	sigeof(t_msh *msh)
 {
-	if (msh->pexe != NULL)
-		exit_cleanup(NULL, msh, errno, 0);
-	else
+	if (isatty(STDIN_FILENO))
 		exit_cleanup(NULL, msh, errno, 1);
+	else if (msh->pexe != NULL)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		exit_cleanup(NULL, msh, errno, 0);
+	}
+	else
+		return ;
 
 }
 
 void signals_handler(int sig)
 {
-	t_msh *msh; 
+	t_msh *msh;
+	int		i;
 	
+	i = 0;
 	msh = get_msh_instance(NULL);
 	if (sig == SIGINT)
 	{
@@ -33,6 +40,18 @@ void signals_handler(int sig)
 			rl_replace_line("", 0);
 			rl_on_new_line();
 			rl_redisplay();
+		}
+	}
+	if (sig == SIGQUIT)
+	{
+		if (isatty(STDIN_FILENO))
+			return ;
+		else
+		{
+			write(STDOUT_FILENO, "\n^\\Quit", 7);
+			while (msh->chds[i])
+				kill(msh->chds[i++]->pid, SIGQUIT);
+			exit_cleanup(NULL, msh, 0, 0);		
 		}
 	}
 }
@@ -47,7 +66,10 @@ void	signal_handler_init(t_msh *msh)
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);
-	sa.sa_handler = SIG_IGN;
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		exit_cleanup(NULL, msh, errno, 2);
+    if (isatty(STDIN_FILENO))
+        sa.sa_handler = SIG_IGN;
+    else
+        sa.sa_handler = signals_handler;
+    if (sigaction(SIGQUIT, &sa, NULL) == -1)
+        exit_cleanup(NULL, msh, errno, 2);
 }

@@ -66,4 +66,5 @@ void	clean_msh_init(t_msh *msh)
 	msh->child = 0;
 	msh->text = NULL;
 	msh->heredoc = NULL;
+	msh->chds = NULL;
 }

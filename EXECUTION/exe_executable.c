@@ -43,7 +43,6 @@ void	find_exe(t_msh *msh, char *cmd)
 	char	*path;
 	int 	len_group;
 	t_pexe	*current;
-	pid_t	pid; 
 
 	current = msh->pexe;
 	len_group = node_strlen(current);
@@ -73,9 +72,11 @@ void	find_exe(t_msh *msh, char *cmd)
 	}
 	else
 	{
-    	if ((pid = fork()) < 0)
+		msh->chds = malloc(sizeof(t_pipex));
+		msh->chds[0] = (t_pipex *)malloc(sizeof(t_pipex));
+    	if ((msh->chds[0]->pid = fork()) < 0)
 			exit_cleanup(NULL, msh, errno, 0);
-    	if (pid == 0)
+    	if (msh->chds[0]->pid == 0)
     	{
        		if (execve(path, current->option, NULL) == -1)
 			{
@@ -83,10 +84,10 @@ void	find_exe(t_msh *msh, char *cmd)
 				return ;
 			}
 		}
-    	else if (pid > 0)
+    	else if (msh->chds[0]->pid  > 0)
     	{
         	int status;
-        	waitpid(pid, &status, 0);
+        	waitpid(msh->chds[0]->pid, &status, 0);
 			if (WIFSIGNALED(status))
 			{
 				int signal = WTERMSIG(status);
