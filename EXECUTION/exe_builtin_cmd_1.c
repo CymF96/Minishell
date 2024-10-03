@@ -1,39 +1,42 @@
 #include "../minishell.h"
 
-void	cmd_exit(t_msh *msh)
+void	print_echo(t_msh *msh, int flag)
 {
-	exit_cleanup(NULL, msh, 0, 1);
+	t_pexe	*next;
+	t_pexe	*current;
+
+	current = msh->pexe;
+	next = msh->pexe->next;
+	if (flag == 1)
+	{
+		if (next == NULL \
+			|| next->group_id != current->group_id)
+			ft_printf("%s", current->cmd);
+		else
+			ft_printf("%s ", current->cmd);
+	}
+	else
+		ft_printf("%s ", current->cmd);
 }
 
-void	cmd_echo(t_msh *msh, int g)
+void	cmd_echo(t_msh *msh)
 {
-	int flag;
+	int	flag;
 
 	flag = 0;
-	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
+	if (!move_node(msh))
 	{
 		flag = 1;
 		ft_printf("\n");
 	}
-	if (msh->pexe->next != NULL && ft_strlen(msh->pexe->next->cmd) == 2\
-			&& !ft_strncmp("-n", msh->pexe->next->cmd, 2))
-	{
+	if (msh->pexe!= NULL \
+			&& ft_strlen(msh->pexe->cmd) == 2 \
+			&& !ft_strncmp("-n", msh->pexe->cmd, 2))
 		flag = 1;
-		msh->pexe = msh->pexe->next;
-	}
-	while (msh->pexe->next != NULL && msh->pexe->next->group_id == g\
-			&& msh->pexe->next->type != 9 && msh->pexe->next->type != 10)
+	while (move_node(msh))
 	{
-		if (flag == 1)
-		{
-			if (msh->pexe->next->next == NULL || msh->pexe->next->next->group_id != g)
-				ft_printf("%s", msh->pexe->next->cmd);
-			else
-				ft_printf("%s ", msh->pexe->next->cmd);
-		}
-		else 
-			ft_printf("%s ", msh->pexe->next->cmd);
-		msh->pexe = msh->pexe->next;
+		if (msh->pexe->type != 9 && msh->pexe->type != 10)
+			print_echo(msh, flag);
 	}
 	if (flag == 0)
 		ft_printf("\n");
@@ -52,12 +55,21 @@ void	cmd_pwd(t_msh *msh)
 		exit_cleanup("Invalid path", msh, errno, 0);
 }
 
-void cmd_cd(t_msh *msh, int g)
+void	cmd_cd(t_msh *msh)
 {
 	char	*directory;
 
 	directory = getenv("HOME");
-	if (msh->pexe->next == NULL || msh->pexe->next->group_id != g)
+	if (move_node(msh))
+	{
+		directory = msh->pexe->cmd;
+		if (directory != NULL && (access(directory, F_OK) != 0 \
+				|| access(directory, X_OK) != 0))
+			exit_cleanup("Invalid directory", msh, errno, 0);
+		else if (chdir(directory) == -1)
+			exit_cleanup("Invalid directory", msh, errno, 0);
+	}
+	else
 	{
 		if (directory != NULL && chdir(directory) == -1)
 		{
@@ -65,23 +77,14 @@ void cmd_cd(t_msh *msh, int g)
 			return ;
 		}
 	}
-	else if (msh->pexe->next->cmd != NULL && msh->pexe->next->group_id == g)
-	{
-		directory = msh->pexe->next->cmd;
-		if (directory != NULL && (access(directory, F_OK) != 0
-			|| access(directory, X_OK) != 0))
-			exit_cleanup("Invalid directory", msh, errno, 0);
-		else if (chdir(directory) == -1)
-			exit_cleanup("Invalid directory", msh, errno, 0);
-	}
 }
 
-void	cmd_env(t_msh *msh, int g) // to test
+void	cmd_env(t_msh *msh)
 {
 	int	i;
 
 	i = 0;
-	if (msh->pexe->next != NULL && msh->pexe->next->group_id == g)
+	if (move_node(msh))
 	{
 		exit_cleanup("invalid input with env command", msh, 0, 0);
 		return ;

@@ -61,3 +61,22 @@ char	*find_executable_path(t_msh *msh)
 	exit_cleanup("Invalid path or command", msh, errno, 0);
 	return (NULL);
 }
+
+char	*set_var_name(char *cmd)
+{
+	int		i;
+	char	*var_name;
+
+	i = 0;
+	while (cmd[i] && cmd[i] != '=')
+		i++;
+	var_name = malloc(sizeof(i + 1));
+	i = 0;
+	while (cmd[i] != '\0' && cmd[i] != '=')
+	{
+		var_name[i] = cmd[i];
+		i++;
+	}
+	var_name[i] = '\0';
+	return (var_name);
+}
