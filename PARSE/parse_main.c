@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:28:09 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:12:01 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,18 +113,18 @@ int	parse_main(t_msh *msh)
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
 
-	t_pexe *temp = msh->pexe;
-	while (temp != NULL)
-	{
-		printf("PEXE-TYPE: %d\n", temp->type);
-		printf("PEXE-CMD: %s\n", temp->cmd);
-		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n", temp->p_index);
-		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-		printf("PEXE-TEMP: %s\n\n", temp->temp);
+	// t_pexe *temp = msh->pexe;
+	// while (temp != NULL)
+	// {
+	// 	printf("PEXE-TYPE: %d\n", temp->type);
+	// 	printf("PEXE-CMD: %s\n", temp->cmd);
+	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
+	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
 
-		temp = temp->next;
-	}
+	// 	temp = temp->next;
+	// }
 
 
 	return (0);
