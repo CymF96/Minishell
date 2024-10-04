@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 18:17:37 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:28:09 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 	t_type	tye;
 
 	i = -1;
+	(void)pars;
 	while (msh->input[++i] != '\0')
 	{
 		tye = check_special(msh->input, &i);
@@ -111,6 +112,21 @@ int	parse_main(t_msh *msh)
 	create_modified(msh, msh->parse);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
+
+	t_pexe *temp = msh->pexe;
+	while (temp != NULL)
+	{
+		printf("PEXE-TYPE: %d\n", temp->type);
+		printf("PEXE-CMD: %s\n", temp->cmd);
+		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+		printf("PEXE-PRIORITY: %d\n", temp->p_index);
+		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+		printf("PEXE-TEMP: %s\n\n", temp->temp);
+
+		temp = temp->next;
+	}
+
+
 	return (0);
 }
 
@@ -132,25 +148,4 @@ int	parse_main(t_msh *msh)
 	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",
 	//tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
 	// 	tkn = tkn->next;
-	// }
-
-	// t_pexe *temp = msh->pexe;
-	// // int j;
-	// while (temp != NULL)
-	// {
-	// 	// j = 0;
-	// 	// while (temp->cmd != NULL && temp->cmd[j] != '\0')
-	// 	// {
-	// 	// 	if(temp->cmd[j] == ' ' || temp->cmd[j] == '\t')
-	// 	// 		temp->cmd[j] = '#';
-	// 	// 	j++;
-	// 	// }
-	// 	printf("PEXE-TYPE: %d\n", temp->type);
-	// 	printf("PEXE-CMD: %s\n", temp->cmd);
-	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
-	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
-
-	// 	temp = temp->next;
 	// }

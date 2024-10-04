@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 15:29:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:24:29 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ static void	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 		{
 			if (msh->input[*i] == '$')
 			{
-				copy_input_mod(msh, &msh->input[*start], start, (*i) - 1);
-				flag = 1;
+				copy_input_mod(msh, &msh->input[*start], *start, (*i) - 1);
+				*flag = 1;
 				break ;
 			}
 			(*i)++;
 		}
-		if (flag == 0)
-			copy_input_mod(msh, &msh->input[*start], start, (*i));
+		if (*flag == 0)
+			copy_input_mod(msh, &msh->input[*start], *start, (*i));
 		if (msh->input[(*i)] == '$')
 		{
 			expand_dollars(msh, i);
-			flag = 0;
+			*flag = 0;
 		}
-		start = (*i);
+		*start = (*i);
 	}
 }
 
