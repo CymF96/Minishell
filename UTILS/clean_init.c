@@ -57,6 +57,7 @@ void	clean_init_parse(t_parse *pars)
 void	clean_msh_init(t_msh *msh)
 {
 	msh->input = NULL;
+	msh->path = NULL;
 	msh->fd[0] = -1;
 	msh->fd[1] = -1;
 	msh->pipe_nb = 0;

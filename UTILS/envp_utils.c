@@ -39,28 +39,66 @@ char	*find_executable_path(t_msh *msh)
 {
 	char	**paths;
 	char	*path;
+	char	*cmd_path;
 	int		i;
 
-	i = -1;
 	path = get_path(msh->envp);
 	if (path == NULL)
 		return (NULL);
 	paths = ft_split(path, ':');
+	free(path);
+	path = NULL;
 	if (paths == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
-	free(path);
+	i = -1;
 	while (paths[++i])
 	{
-		path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(path, msh->pexe->cmd);
+		cmd_path = ft_strjoin(paths[i], "/");
+		if (cmd_path == NULL)
+			free_mallocs(NULL, (void **)paths);
+		path = ft_strjoin(cmd_path, msh->pexe->cmd);
+		free(cmd_path);
+		if (path == NULL)
+			free_mallocs(NULL, (void **)paths);
 		if (access(path, F_OK | X_OK) == 0)
-			return (free_mallocs(NULL, (void **)paths), path);
+		{
+			free_mallocs(NULL, (void **)paths);
+			return (path);
+		}
 		free(path);
 	}
 	free_mallocs(NULL, (void **)paths);
 	exit_cleanup("Invalid path or command", msh, errno, 0);
 	return (NULL);
 }
+
+
+// char	*find_executable_path(t_msh *msh)
+// {
+// 	char	**paths;
+// 	char	*path;
+// 	int		i;
+
+// 	i = -1;
+// 	path = get_path(msh->envp);
+// 	if (path == NULL)
+// 		return (NULL);
+// 	paths = ft_split(path, ':');
+// 	if (paths == NULL)
+// 		exit_cleanup(NULL, msh, errno, 1);
+// 	free(path);
+// 	while (paths[++i])
+// 	{
+// 		path = ft_strjoin(paths[i], "/");
+// 		path = ft_strjoin(path, msh->pexe->cmd);
+// 		if (access(path, F_OK | X_OK) == 0)
+// 			return (free_mallocs(NULL, (void **)paths), path);
+// 		free(path);
+// 	}
+// 	free_mallocs(NULL, (void **)paths);
+// 	exit_cleanup("Invalid path or command", msh, errno, 0);
+// 	return (NULL);
+// }
 
 char	*set_var_name(char *cmd)
 {

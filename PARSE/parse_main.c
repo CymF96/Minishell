@@ -112,40 +112,5 @@ int	parse_main(t_msh *msh)
 	create_modified(msh, msh->parse);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
-
-	t_pexe *temp = msh->pexe;
-	while (temp != NULL)
-	{
-		printf("PEXE-TYPE: %d\n", temp->type);
-		printf("PEXE-CMD: %s\n", temp->cmd);
-		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n", temp->p_index);
-		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-		printf("PEXE-TEMP: %s\n\n", temp->temp);
-
-		temp = temp->next;
-	}
-
-
 	return (0);
 }
-
-	// printf("Modified string is: %s\n\n", msh->parse->modified);
-	// t_token *tkn = msh->parse->head;
-
-	// int k;
-	// while (tkn != NULL)
-	// {
-	// 	k = 0;
-	// 	while (tkn->token[k] != '\0')
-	// 	{
-	// 		if(tkn->token[k] == ' ' || tkn->token[k] == '\t')
-	// 			tkn->token[k] = '#';
-	// 		k++;
-	// 	}
-	// 	printf("Token is: %s\n", tkn->token);
-	// 	printf("Type of token is: %u\n", tkn->type);
-	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",
-	//tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
-	// 	tkn = tkn->next;
-	// }
