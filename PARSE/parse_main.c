@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 15:26:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:23:08 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,23 +129,3 @@ int	parse_main(t_msh *msh)
 
 	return (0);
 }
-
-	// printf("Modified string is: %s\n\n", msh->parse->modified);
-	// t_token *tkn = msh->parse->head;
-
-	// int k;
-	// while (tkn != NULL)
-	// {
-	// 	k = 0;
-	// 	while (tkn->token[k] != '\0')
-	// 	{
-	// 		if(tkn->token[k] == ' ' || tkn->token[k] == '\t')
-	// 			tkn->token[k] = '#';
-	// 		k++;
-	// 	}
-	// 	printf("Token is: %s\n", tkn->token);
-	// 	printf("Type of token is: %u\n", tkn->type);
-	// 	ft_printf("tkn->start_pos: %i, tkn->end_pos: %i, len : %d\n\n",
-	//tkn->start_pos, tkn->end_pos,ft_strlen(tkn->token));
-	// 	tkn = tkn->next;
-	// }

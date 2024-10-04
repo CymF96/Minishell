@@ -101,6 +101,7 @@ typedef struct s_pexe
 typedef struct s_msh
 {
 	char		*input;
+	char		*path;
 	char		**envp;
 	int			fd[2];
 	char		*text;
@@ -207,5 +208,6 @@ void	free_mallocs(void *s_ptr, void **d_ptr);
 void	free_pipex(t_msh *msh);
 void	clear_msh(t_msh *msh, int check, char *msg);
 t_pexe	*head(t_pexe *current);
+void	handle_message(int check, char *msg);
 
 #endif

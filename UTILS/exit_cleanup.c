@@ -35,14 +35,7 @@ void	free_mallocs(void *s_ptr, void **d_ptr)
 	}
 }
 
-t_pexe	*head(t_pexe *current)
-{
-	while (current->prev != NULL)
-		current = current->prev;
-	return (current);
-}
-
-static void	handle_message(int check, char *msg)
+void	handle_message(int check, char *msg)
 {
 	if (check == 1 || check == 2)
 	{
@@ -58,35 +51,6 @@ static void	handle_message(int check, char *msg)
 	}
 }
 
-void	clear_msh(t_msh *msh, int check, char *msg)
-{
-	if (msh == NULL)
-		return ;
-	if (msh->heredoc != NULL)
-	{
-		unlink(msh->heredoc);
-		free(msh->heredoc);
-		msh->heredoc = NULL;
-	}
-	if (msh->parse != NULL)
-		free_parse(msh);
-	if (msh->pexe != NULL)
-		free_pexe(msh);
-	if (msh->input != NULL)
-	{
-		free(msh->input);
-		msh->input = NULL;
-	}
-	if (msh->fd[0] != -1)
-		close(msh->fd[0]);
-	if (msh->fd[1] != -1)
-		close(msh->fd[1]);
-	handle_message(check, msg);
-}
-
-// Main cleanup function. Takes optional message to output, main data struct,
-// errno for flag, and check is for programmers. 1 is for exit success, 2 for
-// exit due to failure, 3 for cleaning up the mallocs for next input
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
 	int	i;
