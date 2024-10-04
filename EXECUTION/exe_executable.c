@@ -36,15 +36,18 @@ void	append_args(t_msh *msh, t_pexe *head, int len_group)
 	head->option = temp_option;
 }
 
-char	*create_path(t_msh *msh, char *exe_cmd, char *path)
+void	create_path(t_msh *msh, char *exe_cmd)
 {
 	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
 		|| !ft_strncmp("/usr/bin/", msh->pexe->cmd, 9))
-		path = ft_strdup(exe_cmd);
+		msh->path = ft_strdup(exe_cmd);
 	else
-		path = find_executable_path(msh);
-	if (!path)
-		return (NULL);
+		msh->path = find_executable_path(msh);
+	if (!msh->path)
+	{
+		msh->path = NULL;
+		return ;
+	}
 	if (move_node(msh) && !ft_strncmp("cat", exe_cmd, 3))
 	{
 		if (access(msh->pexe->cmd, F_OK) != 0)
@@ -52,19 +55,20 @@ char	*create_path(t_msh *msh, char *exe_cmd, char *path)
 		if (access(msh->pexe->cmd, X_OK) != 0)
 			msh->exit_error = errno;
 	}
-	return (path);
 }
 
-void	pipe_exe(t_msh *msh, t_pexe *head, char *path)
+void	pipe_exe(t_msh *msh, t_pexe *head)
 {
 	int	status;
 
+	msh->chds[0] = (t_pipex *)malloc(sizeof(t_pipex));
+	clean_init_chds(msh->chds[0]);
 	msh->chds[0]->pid = fork();
 	if (msh->chds[0]->pid < 0)
 		exit_cleanup(NULL, msh, errno, 0);
 	if (msh->chds[0]->pid == 0)
 	{
-		if (execve(path, head->option, NULL) == -1)
+		if (execve(msh->path, head->option, NULL) == -1)
 		{
 			exit_cleanup("execve failed to execute", msh, errno, 0);
 			return ;
@@ -77,7 +81,6 @@ void	pipe_exe(t_msh *msh, t_pexe *head, char *path)
 		{
 			if (waitpid(msh->chds[0]->pid, &status, WNOHANG) == 0)
 				kill(msh->chds[0]->pid, SIGTERM);
-			free(path);
 			exit_cleanup(NULL, msh, errno, 0);
 		}
 	}
@@ -85,26 +88,27 @@ void	pipe_exe(t_msh *msh, t_pexe *head, char *path)
 
 void	exe(t_msh *msh)
 {
-	char	*path;
 	int		len_group;
 	t_pexe	*head;
 
-	path = NULL;
 	head = msh->pexe;
 	len_group = node_strlen(msh->pexe);
-	path = create_path(msh, head->cmd, path);
-	append_args(msh, head, len_group);
-	if (msh->child)
+	create_path(msh, head->cmd);
+	msh->chds = malloc(sizeof(t_pipex));
+	if (msh->path != NULL)
 	{
-		if (execve(path, head->option, NULL) == -1)
-			exit_cleanup(NULL, msh, errno, 0);
+		append_args(msh, head, len_group);
+		if (msh->child)
+		{
+			if (execve(msh->path, head->option, NULL) == -1)
+				exit_cleanup(NULL, msh, errno, 0);
+		}
+		else
+			pipe_exe(msh, head);
+		free(msh->chds[0]);
+		msh->chds[0] = NULL;
+		free(msh->chds);
+		msh->chds = NULL;
+		exit_cleanup(NULL, msh, 0, 0);
 	}
-	else
-	{
-		msh->chds = malloc(sizeof(t_pipex));
-		msh->chds[0] = (t_pipex *)malloc(sizeof(t_pipex));
-		pipe_exe(msh, head, path);
-	}
-	free(path);
-	exit_cleanup(NULL, msh, 0, 0);
 }

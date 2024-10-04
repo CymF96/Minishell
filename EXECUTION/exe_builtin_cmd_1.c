@@ -35,7 +35,8 @@ void	cmd_echo(t_msh *msh)
 			&& ft_strlen(msh->pexe->cmd) == 2 \
 			&& !ft_strncmp("-n", msh->pexe->cmd, 2))
 		flag = 1;
-	msh->pexe = head;
+	else
+		msh->pexe = head;
 	while (move_node(msh))
 	{
 		if (msh->pexe->type != 9 && msh->pexe->type != 10)
