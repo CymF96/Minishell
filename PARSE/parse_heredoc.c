@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 18:48:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/04 11:22:02 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,25 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	num++;
 }
 
+static bool	remove_quote_helper(int *count, int *i, int *flag, char *str)
+{
+	if ((str[*i] == '\'' || str[*i] == '\"') && (*flag == 0))
+	{
+		*count = check_quote_ending(str, *i);
+		(*i)++;
+		*flag = 1;
+		return (true);
+	}
+	if (*i == *count)
+	{
+		(*i)++;
+		*count = -1;
+		*flag = 0;
+		return (true);
+	}
+	return (false);
+}
+
 void	remove_quotes(char *str, int len, char *delim)
 {
 	int		i;
@@ -97,20 +116,8 @@ void	remove_quotes(char *str, int len, char *delim)
 	count = -1;
 	while ((str[i] != '\0' && i < len) || (str[i] != '\0' && len < 0))
 	{
-		if ((str[i] == '\'' || str[i] == '\"') && (flag == 0))
-		{
-			count = check_quote_ending(str, i);
-			i++;
-			flag = 1;
+		if (remove_quote_helper(&count, &i, &flag, str))
 			continue ;
-		}
-		if (i == count)
-		{
-			i++;
-			count = -1;
-			flag = 0;
-			continue ;
-		}
 		if ((flag == 0) && (str[i] == ' ' || str[i] == '\t'))
 			i++;
 		else
