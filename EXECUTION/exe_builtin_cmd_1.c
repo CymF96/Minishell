@@ -21,18 +21,21 @@ void	print_echo(t_msh *msh, int flag)
 
 void	cmd_echo(t_msh *msh)
 {
-	int	flag;
+	int		flag;
+	t_pexe	*head;
 
+	head = msh->pexe;
 	flag = 0;
 	if (!move_node(msh))
 	{
 		flag = 1;
 		ft_printf("\n");
 	}
-	if (msh->pexe!= NULL \
+	if (msh->pexe != NULL \
 			&& ft_strlen(msh->pexe->cmd) == 2 \
 			&& !ft_strncmp("-n", msh->pexe->cmd, 2))
 		flag = 1;
+	msh->pexe = head;
 	while (move_node(msh))
 	{
 		if (msh->pexe->type != 9 && msh->pexe->type != 10)
