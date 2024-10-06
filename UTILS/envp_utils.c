@@ -11,23 +11,21 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
 char	*get_path(char **envp)
 {
 	char	*path;
 	int		i;
-	int		j;
+	char	*equal_sign;
 
 	i = 0;
-	j = 0;
 	path = NULL;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "PATH", ft_strlen("PATH")))
+		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
-			while (envp[i][j] && envp[i][j - 1] != '=')
-				j++;
-			path = ft_strdup(envp[i] + j);
+			equal_sign = ft_strchr(envp[i], '=');
+			if (equal_sign)
+				path = ft_strdup(equal_sign + 1);
 			break ;
 		}
 		i++;

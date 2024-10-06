@@ -94,6 +94,8 @@ void	exe(t_msh *msh)
 	head = msh->pexe;
 	len_group = node_strlen(msh->pexe);
 	create_path(msh, head->cmd);
+	if (msh->path == NULL)
+		return ;
 	msh->chds = malloc(sizeof(t_pipex));
 	if (msh->path != NULL)
 	{
