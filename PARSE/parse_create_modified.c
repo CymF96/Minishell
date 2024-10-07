@@ -108,13 +108,16 @@ int	input_to_modified(t_msh *msh, t_parse *pars)
 
 	start = 0;
 	i = 0;
-	while (msh->input[i] != '\0')
+	while (msh->input && msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
-		if (dollar_expansion(msh, type))
+		if (dollar_expansion(msh, &i, type))
 			return (1);
 		else if (type == S_QT || type == D_QT)
-			handle_quote(msh, &i);
+		{
+			if (handle_quote(msh, &i) == 1)
+				return (1);
+		}
 		else if (type == REGULAR)
 		{
 			start = i;
