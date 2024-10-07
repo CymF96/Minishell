@@ -42,6 +42,7 @@ void	adding_var(t_msh *msh, char *new_var)
 	if (temp_envp[i++] == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
 	temp_envp[i] = NULL;
+	free_envp(msh);
 	msh->envp = temp_envp;
 }
 
@@ -71,7 +72,7 @@ int	remove_var(t_msh *msh, char	*var_name)
 	j = 0;
 	while (msh->envp[j] != NULL)
 	{
-		if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name)))
+		if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name))) //memory leak to check
 		{
 			free(msh->envp[j]);
 			while (msh->envp[j] != NULL)

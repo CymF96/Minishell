@@ -11,6 +11,44 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	free_envp(t_msh *msh)
+{
+	int	i;
+
+	i = 0;
+	if (msh->envp != NULL)
+	{
+		while (msh->envp[i] != NULL)
+			free(msh->envp[i++]);
+		free(msh->envp);
+	}
+}
+
+void	copy_envp(t_msh *msh, char **envp)
+{
+	int		i;
+	int		envp_len;
+	char	**temp_envp;
+
+	msh->envp = NULL;
+	envp_len = 0;
+	while (envp[envp_len] != NULL)
+		envp_len++;
+	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
+	if (temp_envp == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	i = 0;
+	while (i < envp_len)
+	{
+		temp_envp[i] = ft_strdup(envp[i]);
+		if (temp_envp[i++] == NULL)
+			exit_cleanup(NULL, msh, errno, 1);
+	}
+	temp_envp[i] = NULL;
+	msh->envp = temp_envp;
+}
+
 char	*get_path(char **envp)
 {
 	char	*path;
@@ -70,34 +108,6 @@ char	*find_executable_path(t_msh *msh)
 	return (NULL);
 }
 
-
-// char	*find_executable_path(t_msh *msh)
-// {
-// 	char	**paths;
-// 	char	*path;
-// 	int		i;
-
-// 	i = -1;
-// 	path = get_path(msh->envp);
-// 	if (path == NULL)
-// 		return (NULL);
-// 	paths = ft_split(path, ':');
-// 	if (paths == NULL)
-// 		exit_cleanup(NULL, msh, errno, 1);
-// 	free(path);
-// 	while (paths[++i])
-// 	{
-// 		path = ft_strjoin(paths[i], "/");
-// 		path = ft_strjoin(path, msh->pexe->cmd);
-// 		if (access(path, F_OK | X_OK) == 0)
-// 			return (free_mallocs(NULL, (void **)paths), path);
-// 		free(path);
-// 	}
-// 	free_mallocs(NULL, (void **)paths);
-// 	exit_cleanup("Invalid path or command", msh, errno, 0);
-// 	return (NULL);
-// }
-
 char	*set_var_name(char *cmd)
 {
 	int		i;
@@ -113,6 +123,6 @@ char	*set_var_name(char *cmd)
 		var_name[i] = cmd[i];
 		i++;
 	}
-	var_name[i] = '\0';
+	var_name[i] = '\0'; //memory leak to check
 	return (var_name);
 }

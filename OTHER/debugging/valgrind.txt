@@ -1,58 +1,78 @@
-==264959== Memcheck, a memory error detector
-==264959== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==264959== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==264959== Command: ./minishell
-==264959== Parent PID: 263260
-==264959== 
-==264959== Invalid read of size 1
-==264959==    at 0x109CE3: input_to_modified (parse_create_modified.c:111)
-==264959==    by 0x109E79: create_modified (parse_create_modified.c:160)
-==264959==    by 0x10AF0A: parse_main (parse_main.c:112)
-==264959==    by 0x10968D: minishell_running (minishell.c:37)
-==264959==    by 0x10978D: minishell_start (minishell.c:62)
-==264959==    by 0x1097FD: main (minishell.c:78)
-==264959==  Address 0x4b4fcfb is 0 bytes after a block of size 11 alloc'd
-==264959==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==264959==    by 0x48A80EC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==264959==    by 0x4884E37: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==264959==    by 0x488F8EA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==264959==    by 0x109762: minishell_start (minishell.c:59)
-==264959==    by 0x1097FD: main (minishell.c:78)
-==264959== 
-==264959== 
-==264959== FILE DESCRIPTORS: 10 open (3 std) at exit.
-==264959== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open file descriptor 42: /dev/ptmx
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open file descriptor 40: /dev/ptmx
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open AF_UNIX socket 39: <unknown>
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open file descriptor 38: /home/coline/.config/Code/logs/20241007T153149/ptyhost.log
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open file descriptor 37: /usr/share/code/resources/app/node_modules.asar
-==264959==    <inherited from parent>
-==264959== 
-==264959== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==264959==    <inherited from parent>
-==264959== 
-==264959== 
-==264959== HEAP SUMMARY:
-==264959==     in use at exit: 232,823 bytes in 234 blocks
-==264959==   total heap usage: 550 allocs, 316 frees, 258,983 bytes allocated
-==264959== 
-==264959== LEAK SUMMARY:
-==264959==    definitely lost: 0 bytes in 0 blocks
-==264959==    indirectly lost: 0 bytes in 0 blocks
-==264959==      possibly lost: 0 bytes in 0 blocks
-==264959==    still reachable: 0 bytes in 0 blocks
-==264959==         suppressed: 232,823 bytes in 234 blocks
-==264959== 
-==264959== For lists of detected and suppressed errors, rerun with: -s
-==264959== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==291609== Memcheck, a memory error detector
+==291609== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==291609== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==291609== Command: ./minishell
+==291609== Parent PID: 288052
+==291609== 
+==291609== Invalid write of size 1
+==291609==    at 0x10F38B: set_var_name (envp_utils.c:126)
+==291609==    by 0x10CEAA: cmd_unset (exe_builtin_cmd_2.c:100)
+==291609==    by 0x10E09F: command (exe_main.c:14)
+==291609==    by 0x10E165: check_type (exe_main.c:31)
+==291609==    by 0x10E298: execution (exe_main.c:54)
+==291609==    by 0x1096BD: minishell_running (minishell.c:40)
+==291609==    by 0x1097AD: minishell_start (minishell.c:62)
+==291609==    by 0x10981D: main (minishell.c:78)
+==291609==  Address 0x4b51414 is 0 bytes after a block of size 4 alloc'd
+==291609==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==291609==    by 0x10F325: set_var_name (envp_utils.c:119)
+==291609==    by 0x10CEAA: cmd_unset (exe_builtin_cmd_2.c:100)
+==291609==    by 0x10E09F: command (exe_main.c:14)
+==291609==    by 0x10E165: check_type (exe_main.c:31)
+==291609==    by 0x10E298: execution (exe_main.c:54)
+==291609==    by 0x1096BD: minishell_running (minishell.c:40)
+==291609==    by 0x1097AD: minishell_start (minishell.c:62)
+==291609==    by 0x10981D: main (minishell.c:78)
+==291609== 
+==291609== Invalid read of size 1
+==291609==    at 0x110B59: ft_strlen (in /home/coline/42_common_core/minishell/minishell)
+==291609==    by 0x10CD65: remove_var (exe_builtin_cmd_2.c:75)
+==291609==    by 0x10CEC1: cmd_unset (exe_builtin_cmd_2.c:101)
+==291609==    by 0x10E09F: command (exe_main.c:14)
+==291609==    by 0x10E165: check_type (exe_main.c:31)
+==291609==    by 0x10E298: execution (exe_main.c:54)
+==291609==    by 0x1096BD: minishell_running (minishell.c:40)
+==291609==    by 0x1097AD: minishell_start (minishell.c:62)
+==291609==    by 0x10981D: main (minishell.c:78)
+==291609==  Address 0x4b51414 is 0 bytes after a block of size 4 alloc'd
+==291609==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==291609==    by 0x10F325: set_var_name (envp_utils.c:119)
+==291609==    by 0x10CEAA: cmd_unset (exe_builtin_cmd_2.c:100)
+==291609==    by 0x10E09F: command (exe_main.c:14)
+==291609==    by 0x10E165: check_type (exe_main.c:31)
+==291609==    by 0x10E298: execution (exe_main.c:54)
+==291609==    by 0x1096BD: minishell_running (minishell.c:40)
+==291609==    by 0x1097AD: minishell_start (minishell.c:62)
+==291609==    by 0x10981D: main (minishell.c:78)
+==291609== 
+==291609== 
+==291609== FILE DESCRIPTORS: 8 open (3 std) at exit.
+==291609== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==291609==    <inherited from parent>
+==291609== 
+==291609== Open file descriptor 43: /dev/ptmx
+==291609==    <inherited from parent>
+==291609== 
+==291609== Open file descriptor 39: /home/coline/.config/Code/logs/20241007T180141/ptyhost.log
+==291609==    <inherited from parent>
+==291609== 
+==291609== Open file descriptor 38: /usr/share/code/resources/app/node_modules.asar
+==291609==    <inherited from parent>
+==291609== 
+==291609== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==291609==    <inherited from parent>
+==291609== 
+==291609== 
+==291609== HEAP SUMMARY:
+==291609==     in use at exit: 232,823 bytes in 234 blocks
+==291609==   total heap usage: 553 allocs, 319 frees, 259,037 bytes allocated
+==291609== 
+==291609== LEAK SUMMARY:
+==291609==    definitely lost: 0 bytes in 0 blocks
+==291609==    indirectly lost: 0 bytes in 0 blocks
+==291609==      possibly lost: 0 bytes in 0 blocks
+==291609==    still reachable: 0 bytes in 0 blocks
+==291609==         suppressed: 232,823 bytes in 234 blocks
+==291609== 
+==291609== For lists of detected and suppressed errors, rerun with: -s
+==291609== ERROR SUMMARY: 36 errors from 2 contexts (suppressed: 0 from 0)
