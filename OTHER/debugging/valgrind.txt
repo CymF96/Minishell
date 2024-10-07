@@ -1,40 +1,58 @@
-==259469== Memcheck, a memory error detector
-==259469== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==259469== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==259469== Command: ./minishell
-==259469== Parent PID: 257304
-==259469== 
-==258524== 
-==258524== FILE DESCRIPTORS: 9 open (3 std) at exit.
-==258524== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==258524==    <inherited from parent>
-==258524== 
-==258524== Open file descriptor 40: /dev/ptmx
-==258524==    <inherited from parent>
-==258524== 
-==258524== Open AF_UNIX socket 39: <unknown>
-==258524==    <inherited from parent>
-==258524== 
-==258524== Open file descriptor 38: /home/coline/.config/Code/logs/20241007T153149/ptyhost.log
-==258524==    <inherited from parent>
-==258524== 
-==258524== Open file descriptor 37: /usr/share/code/resources/app/node_modules.asar
-==258524==    <inherited from parent>
-==258524== 
-==258524== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==258524==    <inherited from parent>
-==258524== 
-==258524== 
-==258524== HEAP SUMMARY:
-==258524==     in use at exit: 232,823 bytes in 234 blocks
-==258524==   total heap usage: 754 allocs, 520 frees, 263,564 bytes allocated
-==258524== 
-==258524== LEAK SUMMARY:
-==258524==    definitely lost: 0 bytes in 0 blocks
-==258524==    indirectly lost: 0 bytes in 0 blocks
-==258524==      possibly lost: 0 bytes in 0 blocks
-==258524==    still reachable: 0 bytes in 0 blocks
-==258524==         suppressed: 232,823 bytes in 234 blocks
-==258524== 
-==258524== For lists of detected and suppressed errors, rerun with: -s
-==258524== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==264959== Memcheck, a memory error detector
+==264959== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==264959== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==264959== Command: ./minishell
+==264959== Parent PID: 263260
+==264959== 
+==264959== Invalid read of size 1
+==264959==    at 0x109CE3: input_to_modified (parse_create_modified.c:111)
+==264959==    by 0x109E79: create_modified (parse_create_modified.c:160)
+==264959==    by 0x10AF0A: parse_main (parse_main.c:112)
+==264959==    by 0x10968D: minishell_running (minishell.c:37)
+==264959==    by 0x10978D: minishell_start (minishell.c:62)
+==264959==    by 0x1097FD: main (minishell.c:78)
+==264959==  Address 0x4b4fcfb is 0 bytes after a block of size 11 alloc'd
+==264959==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==264959==    by 0x48A80EC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==264959==    by 0x4884E37: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==264959==    by 0x488F8EA: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==264959==    by 0x109762: minishell_start (minishell.c:59)
+==264959==    by 0x1097FD: main (minishell.c:78)
+==264959== 
+==264959== 
+==264959== FILE DESCRIPTORS: 10 open (3 std) at exit.
+==264959== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open file descriptor 42: /dev/ptmx
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open file descriptor 40: /dev/ptmx
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open AF_UNIX socket 39: <unknown>
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open file descriptor 38: /home/coline/.config/Code/logs/20241007T153149/ptyhost.log
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open file descriptor 37: /usr/share/code/resources/app/node_modules.asar
+==264959==    <inherited from parent>
+==264959== 
+==264959== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==264959==    <inherited from parent>
+==264959== 
+==264959== 
+==264959== HEAP SUMMARY:
+==264959==     in use at exit: 232,823 bytes in 234 blocks
+==264959==   total heap usage: 550 allocs, 316 frees, 258,983 bytes allocated
+==264959== 
+==264959== LEAK SUMMARY:
+==264959==    definitely lost: 0 bytes in 0 blocks
+==264959==    indirectly lost: 0 bytes in 0 blocks
+==264959==      possibly lost: 0 bytes in 0 blocks
+==264959==    still reachable: 0 bytes in 0 blocks
+==264959==         suppressed: 232,823 bytes in 234 blocks
+==264959== 
+==264959== For lists of detected and suppressed errors, rerun with: -s
+==264959== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

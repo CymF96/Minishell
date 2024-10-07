@@ -3,7 +3,10 @@
 int	dollar_expansion(t_msh *msh, int *i, t_type type)
 {
 	if (type == DOLLAR)
-		expand_dollars(msh, i);
+	{
+		if (expand_dollars(msh, i) == 0)
+			return (0);
+	}
 	else
 		return (0);
 	return (1);

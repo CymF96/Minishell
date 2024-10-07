@@ -98,7 +98,6 @@ char	*expand_env(t_msh *msh, int *i, int flag)
 	char	*str;
 
 	temp = find_var(msh, i, flag);
-	ft_printf("%s\n", temp);
 	len = ft_strlen(temp);
 	k = 0;
 	while (msh->envp != NULL && msh->envp[k] != NULL && msh->envp[k][0] != '\0')
