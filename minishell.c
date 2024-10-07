@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/02 10:45:53 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:40:19 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	minishell_running(t_msh *msh)
 	if (!ft_strncmp("$$", msh->input, 2))
 		return ;
 	if (parse_main(msh) == 0)
-		execution(msh);
+	{
+		printf("Exec Would ve Happened\n");
+		// execution(msh);
+	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 

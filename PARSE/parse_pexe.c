@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 17:06:09 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:37:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static void	remove_helper(t_msh *msh, t_pexe **ite, t_pexe **temp)
 		*temp = (*ite)->next;
 		free((*ite)->cmd);
 		free(*ite);
-		ite = temp;
-		temp = NULL;
+		*ite = *temp;
+		*temp = NULL;
 	}
 	*ite = (*ite)->next;
 }

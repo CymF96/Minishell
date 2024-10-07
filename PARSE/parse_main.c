@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 16:23:08 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:50:41 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,21 +110,41 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	create_modified(msh, msh->parse);
+
+	// printf("Modified String is: %s\n", msh->parse->modified);
+	int	i = 0;
+
+	while (msh->parse->poi[i] != NULL)
+	{
+		printf("POI at %i is: %i\n", i, msh->parse->poi[i][0]);
+		i++;
+	}
+
 	parse_tokenize(msh, msh->parse);
-	make_pexe(msh, msh->parse);
 
-	// t_pexe *temp = msh->pexe;
-	// while (temp != NULL)
-	// {
-	// 	printf("PEXE-TYPE: %d\n", temp->type);
-	// 	printf("PEXE-CMD: %s\n", temp->cmd);
-	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
-	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
+	t_token	*token = msh->parse->head;
+	while (token != NULL)
+	{
+		printf("Token is: %s\n", token->token);
+		printf("Token type is: %d\n", token->type);
+		token = token->next;
+	}
 
-	// 	temp = temp->next;
-	// }
+
+	// make_pexe(msh, msh->parse);
+
+	t_pexe *temp = msh->pexe;
+	while (temp != NULL)
+	{
+		printf("PEXE-TYPE: %d\n", temp->type);
+		printf("PEXE-CMD: %s\n", temp->cmd);
+		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+		printf("PEXE-PRIORITY: %d\n", temp->p_index);
+		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+		printf("PEXE-TEMP: %s\n\n", temp->temp);
+
+		temp = temp->next;
+	}
 
 
 	return (0);
