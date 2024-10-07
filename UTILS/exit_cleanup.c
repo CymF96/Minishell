@@ -41,7 +41,7 @@ void	handle_message(int check, char *msg)
 	{
 		rl_clear_history();
 		if (msg != NULL && check == 1)
-			printf("Exit Success - %s\n", msg);
+			printf("Exit Success\n");
 		else if (check == 2)
 		{
 			perror("Error - ");
@@ -53,22 +53,16 @@ void	handle_message(int check, char *msg)
 
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
-	int	i;
-
-	if (msg)
+	if (flag)
+		ft_printf("%d: ", flag);
+	if (msg != NULL)
 		ft_printf("%s\n", msg);
 	if (check == 1 || check == 2)
 	{
 		clear_msh(msh, check, msg);
 		if (msh != NULL)
 		{
-			i = 0;
-			if (msh->envp != NULL)
-			{
-				while (msh->envp[i] != NULL)
-					free(msh->envp[i++]);
-				free(msh->envp);
-			}
+			free_envp(msh);
 			free(msh);
 		}
 		if (check == 1)

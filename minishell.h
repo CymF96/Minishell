@@ -214,5 +214,6 @@ void	free_pipex(t_msh *msh);
 void	clear_msh(t_msh *msh, int check, char *msg);
 t_pexe	*head(t_pexe *current);
 void	handle_message(int check, char *msg);
+void	free_envp(t_msh *msh);
 
 #endif
