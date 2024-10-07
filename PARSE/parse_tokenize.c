@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 15:49:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:02:05 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,11 @@ void	parse_tokenize(t_msh *msh, t_parse *prs)
 	temp = prs->modified;
 	while (temp[i] != '\0')
 	{
-		tkn = token_malloc(msh);
 		while (prs->modified[i] == ' ' || prs->modified[i] == '\t')
 			i++;
+		if (prs->modified[i] == '\0')
+			return ;
+		tkn = token_malloc(msh);
 		tkn->start_pos = i;
 		token_end(prs, &i, &j, tkn);
 		tkn->end_pos = i - 1;
