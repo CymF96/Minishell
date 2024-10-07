@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 16:10:55 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:43:37 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ int	expand_dollars(t_msh *msh, int *i)
 	char	*temp;
 
 	(*i)++;
-	if (msh->input[*i] == ' ' || msh->input[*i] == '\t')
-		copy_input_mod(msh, "$", 0, 1);
+	if (msh->input[*i] == ' ' || msh->input[*i] == '\t' || msh->input[*i] == '\0')
+		copy_input_mod(msh, "$ ", 0, 1);
 	else if (msh->input[*i] == '?')
 	{
 		if (dollar_error(msh, i) == 1)
@@ -54,7 +54,7 @@ int	expand_dollars(t_msh *msh, int *i)
 	{
 		temp = expand_env(msh, i, 0);
 		if (temp == NULL)
-				exit_cleanup("NO TEMP\n", msh, errno, 2);
+			return (0); //exit_cleanup("NO TEMP\n", msh, errno, 2);
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free (temp);
 	}

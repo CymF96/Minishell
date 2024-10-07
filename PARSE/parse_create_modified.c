@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:24:29 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:35:06 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	input_to_modified(t_msh *msh, t_parse *pars)
 
 	start = 0;
 	i = 0;
-	while (msh->input && msh->input[i] != '\0')
+	while (msh->input != NULL && i < (int)ft_strlen(msh->input) && msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
 		if (dollar_expansion(msh, &i, type))
