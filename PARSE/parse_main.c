@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 15:45:09 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:50:54 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,28 +110,8 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	if (create_modified(msh, msh->parse) == 1)
-		return (1);
-	printf("Modified string is: %s\n", msh->parse->modified);
-
-	int	i = 0;
-	while (msh->parse->poi[i] != NULL)
-	{
-		printf("POI[%d][0] is: %d\n", i, msh->parse->poi[i][0]);
-		printf("POI[%d][1] is: %d\n\n", i, msh->parse->poi[i][1]);
-		i++;
-	}
-	
+		return (1);	
 	parse_tokenize(msh, msh->parse);
-
-	// t_token	*token = msh->parse->head;
-	// while (token != NULL)
-	// {
-	// 	printf("Token is: %s\n", token->token);
-	// 	printf("Token type is: %d\n\n", token->type);
-	// 	token = token->next;
-	// }
-
-
 	make_pexe(msh, msh->parse);
 
 	// t_pexe *temp = msh->pexe;
@@ -146,7 +126,6 @@ int	parse_main(t_msh *msh)
 
 	// 	temp = temp->next;
 	// }
-
 
 	return (0);
 }
