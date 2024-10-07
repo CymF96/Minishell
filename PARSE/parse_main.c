@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:28:09 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:00:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,31 @@ int	parse_main(t_msh *msh)
 	if (create_modified(msh, msh->parse) == 1)
 		return (1);
 	parse_tokenize(msh, msh->parse);
-	make_pexe(msh, msh->parse);
+
+	t_token	*token = msh->parse->head;
+	while (token != NULL)
+	{
+		printf("Token is: %s\n", token->token);
+		printf("Token type is: %d\n", token->type);
+		token = token->next;
+	}
+
+
+	// make_pexe(msh, msh->parse);
+
+	t_pexe *temp = msh->pexe;
+	while (temp != NULL)
+	{
+		printf("PEXE-TYPE: %d\n", temp->type);
+		printf("PEXE-CMD: %s\n", temp->cmd);
+		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+		printf("PEXE-PRIORITY: %d\n", temp->p_index);
+		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+		printf("PEXE-TEMP: %s\n\n", temp->temp);
+
+		temp = temp->next;
+	}
+
+
 	return (0);
 }

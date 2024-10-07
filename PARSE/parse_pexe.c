@@ -6,33 +6,33 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 13:24:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:25:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:37:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	remove_helper(t_msh *msh, t_pexe *ite, t_pexe *temp)
+static void	remove_helper(t_msh *msh, t_pexe **ite, t_pexe **temp)
 {
-	if (ite == msh->pexe)
+	if (*ite == msh->pexe)
 	{
-		ite = ite->next;
-		ite->prev = NULL;
+		*ite = (*ite)->next;
+		(*ite)->prev = NULL;
 		msh->pexe->next = NULL;
 		free_pexe(msh);
-		msh->pexe = ite;
+		msh->pexe = *ite;
 	}
 	else
 	{
-		ite->prev->next = ite->next;
-		ite->next->prev = ite->prev;
-		temp = ite->next;
-		free(ite->cmd);
-		free(ite);
-		ite = temp;
-		temp = NULL;
+		(*ite)->prev->next = (*ite)->next;
+		(*ite)->next->prev = (*ite)->prev;
+		*temp = (*ite)->next;
+		free((*ite)->cmd);
+		free(*ite);
+		*ite = *temp;
+		*temp = NULL;
 	}
-	ite = ite->next;
+	*ite = (*ite)->next;
 }
 
 static void	remove_nodes(t_msh *msh)
@@ -45,7 +45,7 @@ static void	remove_nodes(t_msh *msh)
 	while (ite != NULL)
 	{
 		if (ite->p_index == -2)
-			remove_helper(msh, ite, temp);
+			remove_helper(msh, &ite, &temp);
 		else
 			ite = ite->next;
 	}
