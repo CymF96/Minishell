@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static void	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
+static int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 {
 	while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 	{
@@ -30,15 +30,17 @@ static void	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 			copy_input_mod(msh, &msh->input[*start], *start, (*i));
 		if (msh->input[(*i)] == '$')
 		{
-			expand_dollars(msh, i);
+			if (expand_dollars(msh, i) == 1)
+				return (1);
 			*flag = 0;
 		}
 		*start = (*i);
 	}
+	return (0);
 }
 
 // If single quote, prints all as char. In double quote checks for $ and expands
-static void	handle_quote(t_msh *msh, int *i)
+int	handle_quote(t_msh *msh, int *i)
 {
 	int	start;
 	int	flag;
@@ -53,9 +55,11 @@ static void	handle_quote(t_msh *msh, int *i)
 	}
 	else if (msh->input[(*i) - 1] == '\"')
 	{
-		handle_dquote(msh, i, &start, &flag);
+		if (handle_dquote(msh, i, &start, &flag) == 1)
+			return (1);
 	}
 	(*i)++;
+	return (0);
 }
 
 // Checks for special characters and direct them to their own functions
@@ -96,7 +100,7 @@ static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 // }
 
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
-void	input_to_modified(t_msh *msh, t_parse *pars)
+int	input_to_modified(t_msh *msh, t_parse *pars)
 {
 	int		start;
 	int		i;
@@ -107,10 +111,8 @@ void	input_to_modified(t_msh *msh, t_parse *pars)
 	while (msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
-		if (type == DOLLAR)
-			expand_dollars(msh, &i);
-		else if (type == S_QT || type == D_QT)
-			handle_quote(msh, &i);
+		if (dollar_expansion(msh, type))
+			return (1);
 		else if (type == REGULAR)
 		{
 			start = i;
@@ -122,10 +124,11 @@ void	input_to_modified(t_msh *msh, t_parse *pars)
 		else
 			check_character(msh, pars, &i, type);
 	}
+	return (0);
 }
 
 // Main function to create the modified string
-void	create_modified(t_msh *msh, t_parse *pars)
+int	create_modified(t_msh *msh, t_parse *pars)
 {
 	int	i;
 	int	j;
@@ -149,5 +152,7 @@ void	create_modified(t_msh *msh, t_parse *pars)
 	if (pars->modified == NULL)
 		exit_cleanup ("Malloc Failed", msh, errno, 2);
 	pars->modified[pars->size_modified] = '\0';
-	input_to_modified(msh, pars);
+	if (input_to_modified(msh, pars) == 1)
+		return (1);
+	return (0);
 }

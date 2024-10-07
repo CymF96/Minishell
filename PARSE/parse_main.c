@@ -109,7 +109,8 @@ int	parse_main(t_msh *msh)
 		request_more_input(msh, msh->parse);
 		flag = analyse_input(msh, msh->parse);
 	}
-	create_modified(msh, msh->parse);
+	if (create_modified(msh, msh->parse) == 1)
+		return (1);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
 	return (0);

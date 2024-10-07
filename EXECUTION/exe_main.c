@@ -1,14 +1,8 @@
 #include "../minishell.h"
 
-void	check_exit_status_cmd(t_msh *msh, char *cmd)
-{
-	if (ft_strlen(cmd) == 2 && !ft_strncmp("$?", cmd, 2))
-		ft_printf("%d\n", msh->exit_error);
-}
-
 void	command(t_msh *msh, char *cmd)
 {
-	if (ft_strlen(cmd) == 4 && !ft_strncmp("echo ", cmd, 4))
+	if (ft_strlen(cmd) == 4 && !ft_strncmp("echo", cmd, 4))
 		cmd_echo(msh);
 	else if (ft_strlen(cmd) == 2 && !ft_strncmp("cd", cmd, 2))
 		cmd_cd(msh);
@@ -35,8 +29,6 @@ void	check_type(t_msh *msh)
 	}
 	else if (msh->pexe->type == EXE)
 		command(msh, msh->pexe->cmd);
-	else if (msh->pexe->type == EXIT_ERROR)
-		check_exit_status_cmd(msh, msh->pexe->cmd);
 	else if (msh->pexe->type == INFILE)
 		red_left(msh);
 	else if (msh->pexe->type == OUTFILE)

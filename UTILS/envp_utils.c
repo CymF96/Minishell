@@ -66,7 +66,7 @@ char	*find_executable_path(t_msh *msh)
 		free(path);
 	}
 	free_mallocs(NULL, (void **)paths);
-	exit_cleanup("Invalid path or command", msh, errno, 0);
+	exit_cleanup("Path or Command not found", msh, 127, 0);
 	return (NULL);
 }
 
