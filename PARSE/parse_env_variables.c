@@ -17,7 +17,10 @@ int	dollar_error(t_msh *msh, int *i)
 	char	*temp;
 
 	if (ft_strrchr(msh->input, '+'))
+	{
 		exit_error_addition(msh);
+		return (1);
+	}
 	else if (*i == 1)
 		check_exit_status_cmd(msh, 1);
 	else
@@ -51,7 +54,7 @@ int	expand_dollars(t_msh *msh, int *i)
 	{
 		temp = expand_env(msh, i, 0);
 		if (temp == NULL)
-			exit_cleanup("NO TEMP\n", msh, errno, 2);
+				exit_cleanup("NO TEMP\n", msh, errno, 2);
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free (temp);
 	}

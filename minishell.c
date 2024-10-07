@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 15:56:37 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:13:58 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	minishell_running(t_msh *msh)
 		return ;
 	if (parse_main(msh) == 0)
 	{
-		// printf("Exec Would ve Happened\n");
-		execution(msh);
+		//printf("Exec Would ve Happened\n");
+			execution(msh);
 	}
 	exit_cleanup(NULL, msh, 0, 0);
 }

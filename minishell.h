@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:36:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:39:10 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ int		check_quote_ending(char *input, int i);
 int		create_modified(t_msh *msh, t_parse *pars);
 int		input_to_modified(t_msh *msh, t_parse *pars);
 void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end);
-int		dollar_expansion(t_msh *msh, t_type type);
+int		dollar_expansion(t_msh *msh, int *i, t_type type);
 int		handle_quote(t_msh *msh, int *i);
 int		expand_dollars(t_msh *msh, int *i);
 char	*expand_env(t_msh *msh, int *i, int flag);
@@ -201,6 +201,7 @@ void	get_here_doc(t_msh *msh, char *delim, int flag);
 void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
+// void	fill_pexe(t_msh *msh);
 void	free_parse(t_msh *msh);
 void	sort_pexe(t_msh *msh);
 
