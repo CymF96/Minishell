@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 10:47:17 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 14:34:38 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,34 @@ static void	input_to_poi(t_msh *msh, t_parse *pars, t_type symbol)
 	if (pars->poi[i] == NULL)
 		exit_cleanup ("Malloc failed", msh, errno, 2);
 	pars->poi[i][0] = symbol;
-	pars->poi[i][1] = ft_strlen(pars->modified) - 1;
+	if (ft_strlen(pars->modified) == 0)
+		pars->poi[i][1] = 0;
+	else
+		pars->poi[i][1] = ft_strlen(pars->modified) - 1;
 }
 
 void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
 {
 	if (type == INFILE)
 	{
-		copy_input_mod(msh, "<", 0, 1);
+		copy_input_mod(msh, "<", 0, 0);
 		input_to_poi(msh, pars, INFILE);
 	}
 	else if (type == HEREDOC)
 	{
-		copy_input_mod(msh, "<", 0, 1);
+		copy_input_mod(msh, "<", 0, 0);
 		input_to_poi(msh, pars, HEREDOC);
 		(*i) += 1;
 		handle_heredoc(msh, i);
 	}
 	else if (type == OUTFILE)
 	{
-		copy_input_mod(msh, ">", 0, 1);
+		copy_input_mod(msh, ">", 0, 0);
 		input_to_poi(msh, pars, OUTFILE);
 	}
 	else if (type == APPEND)
 	{
-		copy_input_mod(msh, ">", 0, 1);
+		copy_input_mod(msh, ">", 0, 0);
 		input_to_poi(msh, pars, APPEND);
 		(*i) += 1;
 	}
