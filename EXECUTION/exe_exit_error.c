@@ -7,8 +7,6 @@ int	dollar_expansion(t_msh *msh, t_type type)
 	i = 0;
 	if (type == DOLLAR)
 		expand_dollars(msh, &i);
-	else if (type == S_QT || type == D_QT)
-		handle_quote(msh, &i);
 	else
 		return (0);
 	return (1);
