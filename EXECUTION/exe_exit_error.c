@@ -1,12 +1,9 @@
 # include "../minishell.h"
 
-int	dollar_expansion(t_msh *msh, t_type type)
+int	dollar_expansion(t_msh *msh, int *i, t_type type)
 {
-	int		i;
-
-	i = 0;
 	if (type == DOLLAR)
-		expand_dollars(msh, &i);
+		expand_dollars(msh, i);
 	else
 		return (0);
 	return (1);
