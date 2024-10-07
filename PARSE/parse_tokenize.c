@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 18:17:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 15:46:20 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:49:25 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ static void	token_end(t_parse *prs, int *i, int *j, t_token *tkn)
 	{
 		if (temp[*i] == '\'' || temp[*i] == '\"')
 			quote_token(prs->modified, i);
-		if (prs->poi[*j] != NULL && *i + 1 == prs->poi[*j][1] && (*i)++)
+		if (prs->poi[*j] != NULL && *i + 1 == prs->poi[*j][1])
+		{
+			(*i)++;
 			break ;
+		}
 		if (prs->poi[*j] != NULL && *i == prs->poi[*j][1])
 		{
 			(*i)++;
