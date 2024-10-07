@@ -23,6 +23,7 @@ SRC =	minishell.c\
 		EXECUTION/exe_executable.c\
 		EXECUTION/exe_fork.c\
 		EXECUTION/exe_handle_signals.c\
+		EXECUTION/exe_exit_error.c\
 		EXECUTION/exe_main.c\
 		EXECUTION/exe_pipe.c\
 		EXECUTION/exe_redirection.c\

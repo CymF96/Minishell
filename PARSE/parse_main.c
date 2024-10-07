@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 12:50:41 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:00:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,8 @@ int	parse_main(t_msh *msh)
 		request_more_input(msh, msh->parse);
 		flag = analyse_input(msh, msh->parse);
 	}
-	create_modified(msh, msh->parse);
-
-	// printf("Modified String is: %s\n", msh->parse->modified);
-	int	i = 0;
-
-	while (msh->parse->poi[i] != NULL)
-	{
-		printf("POI at %i is: %i\n", i, msh->parse->poi[i][0]);
-		i++;
-	}
-
+	if (create_modified(msh, msh->parse) == 1)
+		return (1);
 	parse_tokenize(msh, msh->parse);
 
 	t_token	*token = msh->parse->head;

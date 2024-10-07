@@ -12,8 +12,29 @@
 
 #include "../minishell.h"
 
+int	dollar_error(t_msh *msh, int *i)
+{
+	char	*temp;
+
+	if (ft_strrchr(msh->input, '+'))
+		exit_error_addition(msh);
+	else if (*i == 1)
+		check_exit_status_cmd(msh, 1);
+	else
+	{
+		temp = ft_itoa(msh->exit_error);
+		if (temp == NULL)
+			exit_cleanup("NO TEMP\n", msh, errno, 2);
+		copy_input_mod(msh, temp, 0, ft_strlen(temp));
+		free(temp);
+		(*i)++;
+		return (0);
+	}
+	return (1);
+}
+
 // Expanding $'s. Specifically checking if it is ? or a space/tab.
-void	expand_dollars(t_msh *msh, int *i)
+int	expand_dollars(t_msh *msh, int *i)
 {
 	char	*temp;
 
@@ -22,11 +43,8 @@ void	expand_dollars(t_msh *msh, int *i)
 		copy_input_mod(msh, "$", 0, 1);
 	else if (msh->input[*i] == '?')
 	{
-		temp = ft_itoa(msh->exit_error);
-		if (temp == NULL)
-			exit_cleanup("Malloc Failed\n", msh, errno, 2);
-		copy_input_mod(msh, temp, 0, ft_strlen(temp));
-		free(temp);
+		if (dollar_error(msh, i) == 1)
+			return (1);
 		(*i)++;
 	}
 	else
@@ -37,6 +55,7 @@ void	expand_dollars(t_msh *msh, int *i)
 		copy_input_mod(msh, temp, 0, ft_strlen(temp));
 		free (temp);
 	}
+	return (0);
 }
 
 // finds what the variable is after $ until it sees space, tab or null
