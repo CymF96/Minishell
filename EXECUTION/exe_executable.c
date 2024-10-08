@@ -92,7 +92,10 @@ void	exe(t_msh *msh)
 	len_group = node_strlen(msh->pexe);
 	create_path(msh, head->cmd);
 	if (msh->path == NULL)
+	{
+		exit_cleanup("Command not found", msh, 127, 0);
 		return ;
+	}
 	msh->chds = malloc(sizeof(t_pipex));
 	if (msh->path != NULL)
 	{
