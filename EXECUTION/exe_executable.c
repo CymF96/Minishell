@@ -44,10 +44,7 @@ void	create_path(t_msh *msh, char *exe_cmd)
 	else
 		msh->path = find_executable_path(msh);
 	if (!msh->path)
-	{
-		msh->path = NULL;
 		return ;
-	}
 	if (move_node(msh) && !ft_strncmp("cat", exe_cmd, 3))
 	{
 		if (access(msh->pexe->cmd, F_OK) != 0)

@@ -133,25 +133,25 @@ int	parse_main(t_msh *msh)
 
 	make_pexe(msh, msh->parse);
 
-	t_pexe *temp = msh->pexe;
-	while (temp != NULL)
-	{
-		int	i = 0;
-		while (temp->cmd[i] != '\0')
-		{
-			if (temp->cmd[i] == ' ')
-				temp->cmd[i] = '#';
-			i++;
-		}
-		printf("PEXE-TYPE: %d\n", temp->type);
-		printf("PEXE-CMD: %s\n", temp->cmd);
-		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-		printf("PEXE-PRIORITY: %d\n", temp->p_index);
-		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-		printf("PEXE-TEMP: %s\n\n", temp->temp);
+	// t_pexe *temp = msh->pexe;
+	// while (temp != NULL)
+	// {
+	// 	int	i = 0;
+	// 	while (temp->cmd[i] != '\0')
+	// 	{
+	// 		if (temp->cmd[i] == ' ')
+	// 			temp->cmd[i] = '#';
+	// 		i++;
+	// 	}
+	// 	printf("PEXE-TYPE: %d\n", temp->type);
+	// 	printf("PEXE-CMD: %s\n", temp->cmd);
+	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
+	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
 
-		temp = temp->next;
-	}
+	// 	temp = temp->next;
+	// }
 
 	return (0);
 }
