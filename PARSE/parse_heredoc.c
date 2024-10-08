@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/04 11:22:02 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:35:38 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
 				i++;
 				msh->parse->temp = gnl;
 				temp = expand_env(msh, &i, 1);
+				i--;
 				ft_putstr_fd(temp, fd_temp);
-				ft_putchar_fd('\n', fd_temp);
 				free(temp);
 			}
 			i++;
@@ -70,6 +70,7 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 		exit_cleanup("fd problem", msh, errno, 2);
 	while (1)
 	{
+		write(1, ">", 1);
 		gnl = get_next_line(fd_temp);
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
@@ -81,7 +82,6 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	if (gnl != NULL)
 		free(gnl);
 	close(msh->parse->here_fd);
-	num++;
 }
 
 static bool	remove_quote_helper(int *count, int *i, int *flag, char *str)
