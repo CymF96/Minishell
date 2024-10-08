@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 16:43:37 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 21:59:04 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	expand_dollars(t_msh *msh, int *i)
 
 	(*i)++;
 	if (msh->input[*i] == ' ' || msh->input[*i] == '\t' || msh->input[*i] == '\0')
-		copy_input_mod(msh, "$ ", 0, 1);
+		copy_input_mod(msh, "$ ", 0, 0);
 	else if (msh->input[*i] == '?')
 	{
 		if (dollar_error(msh, i) == 1)
@@ -65,21 +65,16 @@ int	expand_dollars(t_msh *msh, int *i)
 static char	*find_var(t_msh *msh, int *i, int flag)
 {
 	int		k;
-	int		len;
 	char	*temp;
 	char	*text;
 
 	k = *i;
-	len = 0;
 	text = msh->input;
 	if (flag != 0)
 		text = msh->parse->temp;
 	while (text[*i] != ' ' && text[*i] != '\n' && text[*i] != '\t' && \
 			text[*i] != '\0' && check_special(text, i) == REGULAR)
-	{
 		(*i)++;
-		len++;
-	}
 	temp = malloc(sizeof(char) * (*i - k + 2));
 	if (temp == NULL)
 		exit_cleanup("Malloc failed", msh, errno, 2);

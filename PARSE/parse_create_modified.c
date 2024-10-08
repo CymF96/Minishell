@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 16:35:06 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/07 22:42:30 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 {
 	while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 	{
-		while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
+		while (msh->input[(*i)] != '\"' && msh->input[(*i)] != '\0')
 		{
 			if (msh->input[*i] == '$')
 			{
@@ -32,6 +32,8 @@ static int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 		{
 			if (expand_dollars(msh, i) == 1)
 				return (1);
+			if (msh->input[*i] == '\"')
+				copy_input_mod(msh, "\"", 0, 1);
 			*flag = 0;
 		}
 		*start = (*i);
@@ -75,7 +77,8 @@ static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 		handle_paran(msh, pars, type);
 	else if (type == WILDCARD)
 		handle_wild_character(msh, i);
-	(*i)++;
+	if(type != DOLLAR)
+		(*i)++;
 }
 
 // static int	check_for_wild(t_msh *msh, char *str, int *i, int *flag)

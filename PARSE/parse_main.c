@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 16:18:59 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/08 01:22:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,22 +110,48 @@ int	parse_main(t_msh *msh)
 		flag = analyse_input(msh, msh->parse);
 	}
 	if (create_modified(msh, msh->parse) == 1)
-		return (1);	
+		return (1);
+	// printf("Modified string is: %s\n", msh->parse->modified);
+	
 	parse_tokenize(msh, msh->parse);
+
+	
+	// t_token	*tkn = msh->parse->head;
+	// while (tkn)
+	// {
+	// 	int	j = 0;
+	// 	while (tkn->token[j] != '\0')
+	// 	{
+	// 		if (tkn->token[j] == ' ')
+	// 			tkn->token[j] = '#';
+	// 		j++;
+	// 	}
+	// 	printf("Token is: %s\n", tkn->token);
+	// 	tkn = tkn->next;
+	// }
+
+
 	make_pexe(msh, msh->parse);
 
-	// t_pexe *temp = msh->pexe;
-	// while (temp != NULL)
-	// {
-	// 	printf("PEXE-TYPE: %d\n", temp->type);
-	// 	printf("PEXE-CMD: %s\n", temp->cmd);
-	// 	printf("PEXE-GROUP_ID: %d\n", temp->group_id);
-	// 	printf("PEXE-PRIORITY: %d\n", temp->p_index);
-	// 	printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
-	// 	printf("PEXE-TEMP: %s\n\n", temp->temp);
+	t_pexe *temp = msh->pexe;
+	while (temp != NULL)
+	{
+		int	i = 0;
+		while (temp->cmd[i] != '\0')
+		{
+			if (temp->cmd[i] == ' ')
+				temp->cmd[i] = '#';
+			i++;
+		}
+		printf("PEXE-TYPE: %d\n", temp->type);
+		printf("PEXE-CMD: %s\n", temp->cmd);
+		printf("PEXE-GROUP_ID: %d\n", temp->group_id);
+		printf("PEXE-PRIORITY: %d\n", temp->p_index);
+		printf("PEXE-MUK_NOTE: %d\n", temp->muk_note);
+		printf("PEXE-TEMP: %s\n\n", temp->temp);
 
-	// 	temp = temp->next;
-	// }
+		temp = temp->next;
+	}
 
 	return (0);
 }
