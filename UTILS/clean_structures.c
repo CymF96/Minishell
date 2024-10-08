@@ -28,21 +28,21 @@ void	free_pipex(t_msh *msh)
 
 void	free_pexe(t_msh *msh)
 {
-	t_pexe	*current;
 	t_pexe	*next;
 
-	current = head(msh->pexe);
-	while (current != NULL)
+	msh->pexe = head(msh->pexe);
+	while (msh->pexe != NULL)
 	{
-		next = current->next;
-		if (current->option != NULL)
-			free_mallocs(NULL, (void **)current->option);
-		current->prev = NULL;
-		if (current->temp != NULL)
-			free(current->temp);
-		free(current);
-		current = NULL;
-		current = next;
+		next = msh->pexe->next;
+		if (msh->pexe->type == HEREDOC)
+			unlink(msh->pexe->cmd);
+		if (msh->pexe->option != NULL)
+			free_mallocs(NULL, (void **)msh->pexe->option);
+		if (msh->pexe->cmd != NULL)
+			free(msh->pexe->cmd);
+		free(msh->pexe);
+		msh->pexe = NULL;
+		msh->pexe = next;
 	}
 	msh->pexe = NULL;
 }

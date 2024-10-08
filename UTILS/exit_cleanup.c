@@ -54,7 +54,7 @@ void	handle_message(int check, char *msg)
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
 	if (flag)
-		ft_printf("%d: ", flag);
+		ft_printf("%d: ", flag); // force to right in stdin
 	if (msg != NULL)
 		ft_printf("%s\n", msg);
 	if (check == 1 || check == 2)
