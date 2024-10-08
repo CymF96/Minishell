@@ -80,7 +80,10 @@ char	*find_executable_path(t_msh *msh)
 
 	path = get_path(msh->envp);
 	if (path == NULL)
+	{
+		exit_cleanup("Path or Command not found", msh, 127, 0);
 		return (NULL);
+	}
 	paths = ft_split(path, ':');
 	free(path);
 	path = NULL;
@@ -104,7 +107,6 @@ char	*find_executable_path(t_msh *msh)
 		free(path);
 	}
 	free_mallocs(NULL, (void **)paths);
-	exit_cleanup("Path or Command not found", msh, 127, 0);
 	return (NULL);
 }
 
@@ -116,13 +118,13 @@ char	*set_var_name(char *cmd)
 	i = 0;
 	while (cmd[i] && cmd[i] != '=')
 		i++;
-	var_name = malloc(sizeof(i + 1));
+	var_name = malloc(i + 1);
 	i = 0;
-	while (cmd[i] != '\0' && cmd[i] != '=')
+	while (cmd[i] && cmd[i] != '=')
 	{
 		var_name[i] = cmd[i];
 		i++;
 	}
-	var_name[i] = '\0'; //memory leak to check
+	var_name[i] = '\0';
 	return (var_name);
 }
