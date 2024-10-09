@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 18:39:10 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:01:02 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ typedef struct s_parse
 	int		**poi;
 	int		here_fd;
 	char	*temp;
-	int		**wilds;
+	int		w_count;
+	int		**w_pos;
+	char	**w_str;
 	t_token	*head;
 }	t_parse;
 
@@ -174,6 +176,9 @@ void	cmd_unset(t_msh *msh);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);
+int		handle_wilds(t_msh *msh, t_parse *pars);
+void	wild_malloc(t_msh *msh, t_parse *pars);
+void	wild_cleanup(t_parse *pars);
 void	parse_malloc(t_msh *msh);
 t_token	*token_malloc(t_msh *msh);
 t_pexe	*pexe_malloc(t_msh *msh);
@@ -201,7 +206,6 @@ void	get_here_doc(t_msh *msh, char *delim, int flag);
 void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
-// void	fill_pexe(t_msh *msh);
 void	free_parse(t_msh *msh);
 void	sort_pexe(t_msh *msh);
 

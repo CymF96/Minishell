@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/08 12:59:28 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:19:07 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,9 @@ int	parse_main(t_msh *msh)
 	}
 	if (create_modified(msh, msh->parse) == 1)
 		return (1);
-	// printf("Modified string is: %s\n", msh->parse->modified);
+	if (handle_wilds(msh, msh->parse) == 1)
+		return (1);
+	printf("Modified string is: %s\n", msh->parse->modified);
 	
 	parse_tokenize(msh, msh->parse);
 
