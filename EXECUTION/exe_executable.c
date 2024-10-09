@@ -21,16 +21,17 @@ void	append_args(t_msh *msh, t_pexe *head, int len_group)
 	head->option = temp_option;
 }
 
-void	check_wc(t_msh *msh, t_pexe *head)
+int	check_wc(t_msh *msh, t_pexe *head)
 {
 	t_pexe	*current;
 	t_pexe	*next;
 
 	current = head;
 	next = head->next;
-	if (next != NULL && next->type == HEREDOC)
+	if (next != NULL)
 	{
-		swap(current, next);
+		if (next->type == HEREDOC)
+			swap(current, next);
 		if (next->next != NULL && next->next->type == HEREDOC)
 		{
 			swap(next, next->next);
@@ -38,15 +39,19 @@ void	check_wc(t_msh *msh, t_pexe *head)
 		}
 	}
 	msh->pexe = head;
-	ft_printf("%s\n", head->cmd);
 	if (head->type == HEREDOC)
+	{
 		red_left(msh);
+		return (1);
+	}
+	return (0);
 }
 
 void	pipe_exe(t_msh *msh, t_pexe *head)
 {
 	int	status;
 
+	msh->chds = malloc(sizeof(t_pipex));
 	msh->chds[0] = (t_pipex *)malloc(sizeof(t_pipex));
 	clean_init_chds(msh->chds[0]);
 	msh->chds[0]->pid = fork();
@@ -75,13 +80,14 @@ void	exe(t_msh *msh)
 
 	head = msh->pexe;
 	len_group = node_strlen(msh->pexe);
+	if (check_wc(msh, head))
+		return ;
 	create_path(msh, head->cmd);
 	if (msh->path == NULL)
 	{
 		exit_cleanup("Command not found", msh, 127, 0);
 		return ;
 	}
-	msh->chds = malloc(sizeof(t_pipex));
 	if (msh->path != NULL)
 	{
 		append_args(msh, head, len_group);
@@ -91,10 +97,7 @@ void	exe(t_msh *msh)
 				exit_cleanup(NULL, msh, errno, 0);
 		}
 		else
-		{
-			check_wc(msh, head);
 			pipe_exe(msh, head);
-		}
 		exit_cleanup(NULL, msh, 0, 0);
 	}
 }
