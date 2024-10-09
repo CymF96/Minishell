@@ -17,11 +17,16 @@ void	free_pipex(t_msh *msh)
 	int	i;
 
 	i = 0;
-	while (msh->chds[i] != NULL)
+	if (!msh->child)
+		free(msh->chds[0]);
+	else
 	{
-		free(msh->chds[i]);
-		msh->chds[i] = NULL;
-		i++;
+		while (msh->chds[i] != NULL)
+		{
+			free(msh->chds[i]);
+			msh->chds[i] = NULL;
+			i++;
+		}
 	}
 	free(msh->chds);
 }
@@ -104,7 +109,7 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 	}
 	if (msh->chds != NULL)
 	{
-		free_mallocs(NULL,(void **) msh->chds);
+		free_pipex(msh);
 		msh->chds = NULL;
 	}
 	clear_msh2(msh);
