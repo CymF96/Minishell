@@ -38,48 +38,79 @@ void	last_fork(t_msh *msh, int i, int nb_chds)
 	}
 }
 
-void	kill_children(t_msh *msh)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (msh->chds[i] != NULL)
-	{
-		if (waitpid(msh->chds[i]->pid, &status, WNOHANG) == 0)
-			kill(msh->chds[i]->pid, SIGTERM);
-		i++;
-	}
-	i = 0;
-	while (msh->chds[i] != NULL)
-	{
-		if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
-			perror("Error");
-		i++;
-	}
-}
-
 void	closing(t_msh *msh, int nb_chds)
 {
 	int	i;
-	int	flag;
+	int	j;
 	int	status;
 
 	i = 0;
-	flag = 0;
 	close_fds(msh, nb_chds, -1);
 	dup2(msh->fd[0], STDIN_FILENO);
 	dup2(msh->fd[1], STDOUT_FILENO);
-	i = 0;
 	while (msh->chds[i] != NULL)
 	{
-		if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
-			exit_cleanup("Error in Waitpid", msh, errno, 2);
+		waitpid(msh->chds[i]->pid, &status, 0);
 		if (WIFSIGNALED(status))
-			flag = 1;
+		{
+			j = 0;
+			while (j != i && msh->chds[j] != NULL)
+			{
+				kill(msh->chds[j]->pid, SIGTERM);
+				j++;
+			}
+			break ;
+		}
 		i++;
 	}
-	if (flag)
-		kill_children(msh);
 	exit_cleanup(NULL, msh, errno, 0);
 }
+
+// void	kill_children(t_msh *msh, int killed_child)
+// {
+// 	int	i;
+// 	int	status;
+
+// 	i = 0;
+// 	while (msh->chds[i] != NULL && i != killed_child)
+// 	{
+// 		kill(msh->chds[i]->pid, SIGTERM);
+// 		i++;
+// 	}
+// 	i = 0;
+// 	while (msh->chds[i] != NULL)
+// 	{
+// 		if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
+// 			perror("Error");
+// 		i++;
+// 	}
+// }
+
+// void	closing(t_msh *msh, int nb_chds)
+// {
+// 	int	i;
+// 	int	flag;
+// 	int	status;
+// 	int	killed_child;
+
+// 	i = 0;
+// 	flag = 0;
+// 	close_fds(msh, nb_chds, -1);
+// 	dup2(msh->fd[0], STDIN_FILENO);
+// 	dup2(msh->fd[1], STDOUT_FILENO);
+// 	i = 0;
+// 	while (msh->chds[i] != NULL)
+// 	{
+// 		if (waitpid(msh->chds[i]->pid, &status, 0) == -1)
+// 			exit_cleanup("Error in Waitpid", msh, errno, 2);
+// 		if (WIFSIGNALED(status))
+// 		{
+// 			flag = 1;
+// 			killed_child = i;
+// 		}
+// 		i++;
+// 	}
+// 	if (flag)
+// 		kill_children(msh, killed_child);
+// 	exit_cleanup(NULL, msh, errno, 0);
+// }

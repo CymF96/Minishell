@@ -12,6 +12,21 @@
 
 # include "../minishell.h"
 
+int	node_strlen(t_pexe *node)
+{
+	int	len;
+	int	g;
+
+	g = node->group_id;
+	len = 0;
+	while (node != NULL && node->group_id == g)
+	{
+		len++;
+		node = node->next;
+	}
+	return (len);
+}
+
 int	move_node(t_msh *msh)
 {
 	int	g;

@@ -12,6 +12,19 @@
 
 #include "../minishell.h"
 
+void	free_envp(t_msh *msh)
+{
+	int	i;
+
+	i = 0;
+	if (msh->envp != NULL)
+	{
+		while (msh->envp[i] != NULL)
+			free(msh->envp[i++]);
+		free(msh->envp);
+	}
+}
+
 void	free_mallocs(void *s_ptr, void **d_ptr)
 {
 	int	i;
@@ -53,10 +66,11 @@ void	handle_message(int check, char *msg)
 
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 {
-	if (flag)
-		ft_printf("%d: ", flag); // force to right in stdin
 	if (msg != NULL)
-		ft_printf("%s\n", msg);
+	{
+		ft_putstr_fd(msg, STDERR_FILENO);
+		write(STDERR_FILENO, "\n", 1);
+	}
 	if (check == 1 || check == 2)
 	{
 		clear_msh(msh, check, msg);

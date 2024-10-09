@@ -12,19 +12,6 @@
 
 #include "../minishell.h"
 
-void	free_envp(t_msh *msh)
-{
-	int	i;
-
-	i = 0;
-	if (msh->envp != NULL)
-	{
-		while (msh->envp[i] != NULL)
-			free(msh->envp[i++]);
-		free(msh->envp);
-	}
-}
-
 void	copy_envp(t_msh *msh, char **envp)
 {
 	int		i;
@@ -48,6 +35,26 @@ void	copy_envp(t_msh *msh, char **envp)
 	temp_envp[i] = NULL;
 	msh->envp = temp_envp;
 }
+
+
+void	create_path(t_msh *msh, char *exe_cmd)
+{
+	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
+		|| !ft_strncmp("/usr/bin/", msh->pexe->cmd, 9))
+		msh->path = ft_strdup(exe_cmd);
+	else
+		msh->path = find_executable_path(msh);
+	if (!msh->path)
+		return ;
+	if (move_node(msh) && !ft_strncmp("cat", exe_cmd, 3))
+	{
+		if (access(msh->pexe->cmd, F_OK) != 0)
+			msh->exit_error = errno;
+		if (access(msh->pexe->cmd, X_OK) != 0)
+			msh->exit_error = errno;
+	}
+}
+
 
 char	*get_path(char **envp)
 {
@@ -80,10 +87,7 @@ char	*find_executable_path(t_msh *msh)
 
 	path = get_path(msh->envp);
 	if (path == NULL)
-	{
-		exit_cleanup("Path or Command not found", msh, 127, 0);
 		return (NULL);
-	}
 	paths = ft_split(path, ':');
 	free(path);
 	path = NULL;
