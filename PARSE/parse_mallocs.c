@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 14:15:29 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:38:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	wild_cleanup(t_parse *pars)
 	int	i;
 
 	i = 0;
-	printf("W_COUNT IS %d\n", pars->w_count);
 	if (pars->w_pos != NULL)
 	{
 		while (i < pars->w_count && pars->w_pos[i] != NULL)

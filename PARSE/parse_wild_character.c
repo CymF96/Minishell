@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:10:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 14:43:58 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:37:43 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	handle_wilds(t_msh *msh, t_parse *pars)
 		if (type == D_QT || type == S_QT)
 			i = check_quote_ending(pars->modified, i);
 		else if (type == WILDCARD)
-			pars->w_pos[j++] = i;
+			pars->w_pos[j++][0] = i;
 		i++;
 	}
 	wild_cleanup(pars);
