@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 15:38:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:06:51 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	else
 		(*i)++;
 	j = *i;
-	while (msh->input[j] != '\0')
+	while (j < (int)ft_strlen(msh->input) && msh->input[j] != '\0')
 	{
 		type = check_special(msh->input, &j);
-		if (msh->input[j] == ' ' && msh->input[j] == '\t')
+		if (msh->input[j] != '\0' && msh->input[j] == ' ' && msh->input[j] == '\t')
 		{
 			j++;
 			continue ;
@@ -37,7 +37,7 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 		else if (type != REGULAR && type != DOLLAR && \
 				type != S_QT && type != D_QT)
 			return (1);
-		else if (type == REGULAR)
+		else if (type == REGULAR && msh->input[j] != '\0')
 			return (0);
 		j++;
 	}
@@ -73,12 +73,19 @@ int	analyse_input(t_msh *msh, t_parse *pars)
 	while (msh->input[++i] != '\0')
 	{
 		tye = check_special(msh->input, &i);
-		if (tye == HEREDOC || tye == APPEND || tye == INFILE || \
-			tye == OUTFILE || tye == PIPE)
+		if (tye == HEREDOC || tye == APPEND || tye == INFILE || tye == OUTFILE)
 		{
 			if (check_something_exists(msh, &i, tye) != 0)
+			{
+				write(2, "Syntax Error Near Special Character\n", 37);
 				return (1);
+			}
 			i--;
+		}
+		else if (tye == PIPE)
+		{
+			if (check_something_exists(msh, &i, tye) != 0)
+				return (2);
 		}
 		else if (tye == D_QT || tye == S_QT)
 		{
@@ -111,9 +118,11 @@ int	parse_main(t_msh *msh)
 	}
 	if (create_modified(msh, msh->parse) == 1)
 		return (1);
+	if (msh->parse->modified[0] == '|')
+		return (1);
 	if (handle_wilds(msh, msh->parse) == 1)
 		return (1);
-	// printf("Modified string is: %s\n", msh->parse->modified);
+	printf("Modified string is: %s\n", msh->parse->modified);
 	
 	parse_tokenize(msh, msh->parse);
 

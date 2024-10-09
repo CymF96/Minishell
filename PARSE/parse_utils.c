@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:18:05 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/09 10:18:00 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:34:05 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end)
 	temp_free = msh->parse->modified;
 	msh->parse->modified = ft_strjoin(msh->parse->modified, temp);
 	if (msh->parse->modified == NULL)
+	{
+		free (temp_free);
+		free (temp);
 		exit_cleanup("Malloc Failed", msh, errno, 2);
+	}
 	free (temp_free);
 	free (temp);
 }
