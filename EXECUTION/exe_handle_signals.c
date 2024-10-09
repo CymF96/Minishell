@@ -12,7 +12,7 @@ t_msh	*get_msh_instance(t_msh *new_msh)
 void	sigeof(t_msh *msh)
 {
 	if (isatty(STDIN_FILENO))
-		exit_cleanup(NULL, msh, errno, 1);
+		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 	else if (msh->pexe != NULL)
 	{
 		write(STDOUT_FILENO, "\n", 1);

@@ -141,6 +141,12 @@ int		updating_var(char **env_struct, char *var_name, char *cmd);
 char	*find_executable_path(t_msh *msh);
 void	move_group(t_msh *msh);
 int		move_node(t_msh *msh);
+void	check_heredoc_infile(t_msh *msh);
+void    check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g);
+void	check_double_heredoc(t_msh *msh);
+void	remove_node(t_msh *msh, int heredoc, int g);
+void	swap(t_pexe *node_a, t_pexe *node_b);
+void	create_path(t_msh *msh, char *exe_cmd);
 
 /*------- EXECUTION -------*/
 void	check_exit_status_cmd(t_msh *msh, int flag);

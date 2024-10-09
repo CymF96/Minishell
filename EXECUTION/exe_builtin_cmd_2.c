@@ -72,7 +72,7 @@ int	remove_var(t_msh *msh, char	*var_name)
 	j = 0;
 	while (msh->envp[j] != NULL)
 	{
-		if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name))) //memory leak to check
+		if (!ft_strncmp(msh->envp[j], var_name, ft_strlen(var_name)))
 		{
 			free(msh->envp[j]);
 			while (msh->envp[j] != NULL)

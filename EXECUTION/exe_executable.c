@@ -1,20 +1,5 @@
 #include "../minishell.h"
 
-int	node_strlen(t_pexe *node)
-{
-	int	len;
-	int	g;
-
-	g = node->group_id;
-	len = 0;
-	while (node != NULL && node->group_id == g)
-	{
-		len++;
-		node = node->next;
-	}
-	return (len);
-}
-
 void	append_args(t_msh *msh, t_pexe *head, int len_group)
 {
 	int		i;
@@ -36,25 +21,26 @@ void	append_args(t_msh *msh, t_pexe *head, int len_group)
 	head->option = temp_option;
 }
 
-void	create_path(t_msh *msh, char *exe_cmd)
+void	check_wc(t_msh *msh, t_pexe *head)
 {
-	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
-		|| !ft_strncmp("/usr/bin/", msh->pexe->cmd, 9))
-		msh->path = ft_strdup(exe_cmd);
-	else
-		msh->path = find_executable_path(msh);
-	if (!msh->path)
+	t_pexe	*current;
+	t_pexe	*next;
+
+	current = head;
+	next = head->next;
+	if (next != NULL && next->type == HEREDOC)
 	{
-		msh->path = NULL;
-		return ;
+		swap(current, next);
+		if (next->next != NULL && next->next->type == HEREDOC)
+		{
+			swap(next, next->next);
+			swap(current, next);
+		}
 	}
-	if (move_node(msh) && !ft_strncmp("cat", exe_cmd, 3))
-	{
-		if (access(msh->pexe->cmd, F_OK) != 0)
-			msh->exit_error = errno;
-		if (access(msh->pexe->cmd, X_OK) != 0)
-			msh->exit_error = errno;
-	}
+	msh->pexe = head;
+	ft_printf("%s\n", head->cmd);
+	if (head->type == HEREDOC)
+		red_left(msh);
 }
 
 void	pipe_exe(t_msh *msh, t_pexe *head)
@@ -74,15 +60,11 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 			return ;
 		}
 	}
-	else if (msh->chds[0]->pid > 0)
+	else
 	{
 		waitpid(msh->chds[0]->pid, &status, 0);
 		if (WIFSIGNALED(status))
-		{
-			if (waitpid(msh->chds[0]->pid, &status, WNOHANG) == 0)
-				kill(msh->chds[0]->pid, SIGTERM);
 			exit_cleanup(NULL, msh, errno, 0);
-		}
 	}
 }
 
@@ -95,7 +77,10 @@ void	exe(t_msh *msh)
 	len_group = node_strlen(msh->pexe);
 	create_path(msh, head->cmd);
 	if (msh->path == NULL)
+	{
+		exit_cleanup("Command not found", msh, 127, 0);
 		return ;
+	}
 	msh->chds = malloc(sizeof(t_pipex));
 	if (msh->path != NULL)
 	{
@@ -106,11 +91,10 @@ void	exe(t_msh *msh)
 				exit_cleanup(NULL, msh, errno, 0);
 		}
 		else
+		{
+			check_wc(msh, head);
 			pipe_exe(msh, head);
-		free(msh->chds[0]);
-		msh->chds[0] = NULL;
-		free(msh->chds);
-		msh->chds = NULL;
+		}
 		exit_cleanup(NULL, msh, 0, 0);
 	}
 }
