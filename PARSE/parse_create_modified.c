@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 22:42:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 13:22:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,13 @@ static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 	else if (type == L_PAR || type == R_PAR)
 		handle_paran(msh, pars, type);
 	else if (type == WILDCARD)
-		handle_wild_character(msh, i);
-	if(type != DOLLAR)
+	{
+		copy_input_mod(msh, "*", 0, 1);
+		pars->w_count++;
+	}
+	if (type != DOLLAR)
 		(*i)++;
 }
-
-// static int	check_for_wild(t_msh *msh, char *str, int *i, int *flag)
-// {
-// 	int	k;
-
-// 	k = *i;
-// 	while ((str[*i] == ' ' || str[*i] == '\t') && str[*i] != '\0')
-// 		(*i)++;
-// 	copy_input_mod(msh, &msh->input[k], k, *i - 1);
-// 	k = *i;
-// 	while (str[k] != ' ' && str[k] != '\t' && str[k] != '\0')
-// 	{
-// 		if (check_special(str, &k) == WILDCARD)
-// 		{
-// 			*flag = 1;
-// 			return (1);
-// 		}
-// 		k++;
-// 	}
-// 	return (0);
-// }
 
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
 int	input_to_modified(t_msh *msh, t_parse *pars)
@@ -111,7 +93,8 @@ int	input_to_modified(t_msh *msh, t_parse *pars)
 
 	start = 0;
 	i = 0;
-	while (msh->input != NULL && i < (int)ft_strlen(msh->input) && msh->input[i] != '\0')
+	while (msh->input != NULL && i < (int)ft_strlen(msh->input) \
+			&& msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
 		if (dollar_expansion(msh, &i, type))

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 11:37:15 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 13:22:36 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ void	clean_init_parse(t_parse *pars)
 	pars->here_fd = -1;
 	pars->l_count = 0;
 	pars->r_count = 0;
+	pars->w_count = 0;
+	pars->temp = NULL;
+	pars->w_pos = NULL;
+	pars->w_str = NULL;
 }
 
 void	clean_msh_init(t_msh *msh)
