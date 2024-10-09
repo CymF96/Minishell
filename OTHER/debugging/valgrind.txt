@@ -1,163 +1,38 @@
-==423891== Memcheck, a memory error detector
-==423891== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==423891== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==423891== Command: /usr/bin/wc
-==423891== Parent PID: 423792
-==423891== 
-==423792== Invalid write of size 8
-==423792==    at 0x10D15C: pipe_exe (exe_executable.c:50)
-==423792==    by 0x10D39E: exe (exe_executable.c:96)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
-==423792== 
-==423792== 
-==423792== Process terminating with default action of signal 11 (SIGSEGV)
-==423792==  Access not within mapped region at address 0x0
-==423792==    at 0x10D15C: pipe_exe (exe_executable.c:50)
-==423792==    by 0x10D39E: exe (exe_executable.c:96)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792==  If you believe this happened as a result of a stack
-==423792==  overflow in your program's main thread (unlikely but
-==423792==  possible), you can try to increase the size of the
-==423792==  main thread stack using the --main-stacksize= flag.
-==423792==  The main thread stack size used in this run was 8388608.
-==423792== 
-==423792== FILE DESCRIPTORS: 9 open (3 std) at exit.
-==423792== Open file descriptor 4: /dev/pts/0
-==423792==    at 0x49D793B: dup (syscall-template.S:120)
-==423792==    by 0x10E56A: red_left (exe_redirection.c:33)
-==423792==    by 0x10D122: check_wc (exe_executable.c:43)
-==423792==    by 0x10D38B: exe (exe_executable.c:95)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==423792==    <inherited from parent>
-==423792== 
-==423792== Open AF_UNIX socket 39: <unknown>
-==423792==    <inherited from parent>
-==423792== 
-==423792== Open file descriptor 38: /home/coline/.config/Code/logs/20241009T121315/ptyhost.log
-==423792==    <inherited from parent>
-==423792== 
-==423792== Open file descriptor 37: /usr/share/code/resources/app/node_modules.asar
-==423792==    <inherited from parent>
-==423792== 
-==423792== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==423792==    <inherited from parent>
-==423792== 
-==423792== 
-==423792== HEAP SUMMARY:
-==423792==     in use at exit: 244,030 bytes in 336 blocks
-==423792==   total heap usage: 635 allocs, 299 frees, 261,551 bytes allocated
-==423792== 
-==423792== 3 bytes in 1 blocks are indirectly lost in loss record 1 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x110ABF: ft_strdup (in /home/coline/42_common_core/minishell/minishell)
-==423792==    by 0x10CFA9: append_args (exe_executable.c:12)
-==423792==    by 0x10D329: exe (exe_executable.c:87)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 12 bytes in 1 blocks are definitely lost in loss record 13 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x1116B0: ft_calloc (in /home/coline/42_common_core/minishell/minishell)
-==423792==    by 0x110B3A: ft_strjoin (in /home/coline/42_common_core/minishell/minishell)
-==423792==    by 0x10F1AD: find_executable_path (envp_utils.c:102)
-==423792==    by 0x10EF57: create_path (envp_utils.c:46)
-==423792==    by 0x10D2BB: exe (exe_executable.c:78)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 12 bytes in 1 blocks are definitely lost in loss record 14 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x10D2F7: exe (exe_executable.c:84)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 12 bytes in 1 blocks are definitely lost in loss record 15 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x10D15B: pipe_exe (exe_executable.c:50)
-==423792==    by 0x10D39E: exe (exe_executable.c:96)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 15 bytes in 1 blocks are indirectly lost in loss record 20 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x110ABF: ft_strdup (in /home/coline/42_common_core/minishell/minishell)
-==423792==    by 0x10CFE8: append_args (exe_executable.c:16)
-==423792==    by 0x10D329: exe (exe_executable.c:87)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 42 (24 direct, 18 indirect) bytes in 1 blocks are definitely lost in loss record 31 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x10CF71: append_args (exe_executable.c:9)
-==423792==    by 0x10D329: exe (exe_executable.c:87)
-==423792==    by 0x10DF28: command (exe_main.c:18)
-==423792==    by 0x10DFA1: check_type (exe_main.c:31)
-==423792==    by 0x10E0D4: execution (exe_main.c:54)
-==423792==    by 0x1096BD: minishell_running (minishell.c:40)
-==423792==    by 0x1097AD: minishell_start (minishell.c:62)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 96 bytes in 1 blocks are still reachable in loss record 39 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x1097E4: main (minishell.c:72)
-==423792== 
-==423792== 536 bytes in 1 blocks are still reachable in loss record 47 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x10EDF5: copy_envp (envp_utils.c:25)
-==423792==    by 0x10971A: minishell_start (minishell.c:51)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== 4,385 bytes in 66 blocks are still reachable in loss record 87 of 101
-==423792==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==423792==    by 0x110ABF: ft_strdup (in /home/coline/42_common_core/minishell/minishell)
-==423792==    by 0x10EE5B: copy_envp (envp_utils.c:31)
-==423792==    by 0x10971A: minishell_start (minishell.c:51)
-==423792==    by 0x10981D: main (minishell.c:78)
-==423792== 
-==423792== LEAK SUMMARY:
-==423792==    definitely lost: 60 bytes in 4 blocks
-==423792==    indirectly lost: 18 bytes in 2 blocks
-==423792==      possibly lost: 0 bytes in 0 blocks
-==423792==    still reachable: 5,017 bytes in 68 blocks
-==423792==         suppressed: 238,935 bytes in 262 blocks
-==423792== 
-==423792== For lists of detected and suppressed errors, rerun with: -s
-==423792== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)
+==446087== Memcheck, a memory error detector
+==446087== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==446087== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==446087== Command: /usr/bin/wc
+==446087== Parent PID: 446044
+==446087== 
+==446044== 
+==446044== FILE DESCRIPTORS: 8 open (3 std) at exit.
+==446044== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin (deleted)
+==446044==    <inherited from parent>
+==446044== 
+==446044== Open AF_UNIX socket 39: <unknown>
+==446044==    <inherited from parent>
+==446044== 
+==446044== Open file descriptor 38: /home/coline/.config/Code/logs/20241009T121315/ptyhost.log
+==446044==    <inherited from parent>
+==446044== 
+==446044== Open file descriptor 37: /usr/share/code/resources/app/node_modules.asar (deleted)
+==446044==    <inherited from parent>
+==446044== 
+==446044== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==446044==    <inherited from parent>
+==446044== 
+==446044== 
+==446044== HEAP SUMMARY:
+==446044==     in use at exit: 232,823 bytes in 234 blocks
+==446044==   total heap usage: 605 allocs, 371 frees, 260,692 bytes allocated
+==446044== 
+==446044== LEAK SUMMARY:
+==446044==    definitely lost: 0 bytes in 0 blocks
+==446044==    indirectly lost: 0 bytes in 0 blocks
+==446044==      possibly lost: 0 bytes in 0 blocks
+==446044==    still reachable: 0 bytes in 0 blocks
+==446044==         suppressed: 232,823 bytes in 234 blocks
+==446044== 
+==446044== For lists of detected and suppressed errors, rerun with: -s
+==446044== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+ from 0)

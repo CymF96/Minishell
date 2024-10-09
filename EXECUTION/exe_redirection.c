@@ -28,11 +28,13 @@ void	double_red_right(t_msh *msh)
 
 void	red_left(t_msh *msh)
 {
-	int	save_stdin;
+	int		save_stdin;
 
 	save_stdin = dup(STDIN_FILENO);
 	if (msh->fd[0] != -1)
 		close(msh->fd[0]);
+	if (msh->pexe->type == HEREDOC)
+		msh->heredoc = ft_strdup(msh->pexe->cmd);
 	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
 	if (msh->fd[0] == -1)
 		exit_cleanup(NULL, msh, errno, 0);
