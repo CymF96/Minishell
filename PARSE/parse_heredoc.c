@@ -55,7 +55,7 @@ static char	*heredoc_name(t_msh *msh, int *num)
 	return (num_str);
 }
 
-void	get_here_doc(t_msh *msh, char *delim, int flag)
+int	get_here_doc(t_msh *msh, char *delim, int flag)
 {
 	char		*gnl;
 	char		*temp;
@@ -71,6 +71,13 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	while (1)
 	{
 		write(1, ">", 1);
+		if (msh->interrupted)
+		{
+			close(msh->parse->here_fd);
+			if (gnl != NULL)
+				free(gnl);
+			return (1);
+		}
 		gnl = get_next_line(fd_temp);
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
@@ -82,6 +89,7 @@ void	get_here_doc(t_msh *msh, char *delim, int flag)
 	if (gnl != NULL)
 		free(gnl);
 	close(msh->parse->here_fd);
+	return (0);
 }
 
 static bool	remove_quote_helper(int *count, int *i, int *flag, char *str)
@@ -143,7 +151,7 @@ static void	heredoc_specials(t_msh *msh, int *i, int *flag)
 	}
 }
 
-void	handle_heredoc(t_msh *msh, int *i)
+int	handle_heredoc(t_msh *msh, int *i)
 {
 	int		start;
 	int		flag;
@@ -157,7 +165,11 @@ void	handle_heredoc(t_msh *msh, int *i)
 	heredoc_specials(msh, i, &flag);
 	delim = malloc(sizeof(char) * (*i - start + 1));
 	remove_quotes(&msh->input[start], *i - start, delim);
-	get_here_doc(msh, delim, flag);
-	free (delim);
+	if (get_here_doc(msh, delim, flag))
+	{
+		free (delim);
+		return (1);
+	}
 	(*i)--;
+	return (0);
 }

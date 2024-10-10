@@ -35,10 +35,7 @@ void	minishell_running(t_msh *msh)
 	if (!ft_strncmp("$$", msh->input, 2))
 		return ;
 	if (parse_main(msh) == 0)
-	{
-		//printf("Exec Would ve Happened\n");
 		execution(msh);
-	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 

@@ -44,7 +44,7 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	return (1);
 }
 
-void	request_more_input(t_msh *msh, t_parse *pars)
+int	request_more_input(t_msh *msh, t_parse *pars)
 {
 	char	*gnl_temp;
 	int		i;
@@ -54,6 +54,12 @@ void	request_more_input(t_msh *msh, t_parse *pars)
 	i = write (1, "> ", 2);
 	(void) i;
 	temp = get_next_line(STDIN_FILENO);
+	if (msh->interrupted)
+	{
+		if (temp != NULL)
+			free(temp);
+		return (1);
+	}
 	gnl_temp = ft_strjoin(" ", temp);
 	free(temp);
 	msh->text = ft_strjoin(msh->input, gnl_temp);
@@ -61,6 +67,7 @@ void	request_more_input(t_msh *msh, t_parse *pars)
 	free (msh->input);
 	msh->input = msh->text;
 	msh->text = NULL;
+	return (0);
 }
 
 int	analyse_input(t_msh *msh, t_parse *pars)
@@ -113,7 +120,8 @@ int	parse_main(t_msh *msh)
 			break ;
 		if (flag == 1)
 			return (1);
-		request_more_input(msh, msh->parse);
+		if ((request_more_input(msh, msh->parse)))
+			return (1);
 		flag = analyse_input(msh, msh->parse);
 	}
 	if (create_modified(msh, msh->parse) == 1)

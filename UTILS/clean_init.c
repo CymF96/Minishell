@@ -66,6 +66,7 @@ void	clean_msh_init(t_msh *msh)
 	msh->fd[1] = -1;
 	msh->pipe_nb = 0;
 	msh->flag = -1;
+	msh->interrupted = 0;
 	msh->parse = NULL;
 	msh->pexe = NULL;
 	msh->child = 0;

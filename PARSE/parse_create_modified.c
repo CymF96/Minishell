@@ -65,10 +65,13 @@ int	handle_quote(t_msh *msh, int *i)
 }
 
 // Checks for special characters and direct them to their own functions
-static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
+static int	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 {
 	if (type == HEREDOC || type == INFILE || type == APPEND || type == OUTFILE)
-		handle_redir(msh, pars, i, type);
+	{
+		if (handle_redir(msh, pars, i, type) == 1)
+			return (1);
+	}
 	else if (type == PIPE)
 		handle_pipes(msh, pars, type);
 	else if (type == AND || type == OR)
@@ -82,6 +85,7 @@ static void	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 	}
 	if (type != DOLLAR)
 		(*i)++;
+	return (0);
 }
 
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
@@ -113,7 +117,10 @@ int	input_to_modified(t_msh *msh, t_parse *pars)
 			copy_input_mod(msh, &msh->input[start], start, i - 1);
 		}
 		else
-			check_character(msh, pars, &i, type);
+		{
+			if (check_character(msh, pars, &i, type) == 1)
+				return (1);
+		}
 	}
 	return (0);
 }

@@ -17,7 +17,7 @@ void	command(t_msh *msh, char *cmd)
 	else
 		exe(msh);
 	if (msh->child)
-		exit(EXIT_SUCCESS);
+		exit_cleanup(NULL, msh, 0, 1);
 }
 
 void	check_type(t_msh *msh)
