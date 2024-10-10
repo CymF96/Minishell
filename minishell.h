@@ -112,6 +112,7 @@ typedef struct s_msh
 	int			pipe_nb;
 	int			flag;
 	int			exit_error;
+	int			interrupted;
 	int			child;
 	t_parse		*parse;
 	t_pexe		*pexe;
@@ -189,7 +190,7 @@ void	parse_malloc(t_msh *msh);
 t_token	*token_malloc(t_msh *msh);
 t_pexe	*pexe_malloc(t_msh *msh);
 int		analyse_input(t_msh *msh, t_parse *pars);
-void	request_more_input(t_msh *msh, t_parse *pars);
+int		request_more_input(t_msh *msh, t_parse *pars);
 t_type	check_special(char *str, int *i);
 t_type	check_if_qt(char *str, int *i);
 int		check_quote_ending(char *input, int i);
@@ -203,17 +204,19 @@ char	*expand_env(t_msh *msh, int *i, int flag);
 void	handle_paran(t_msh *msh, t_parse *pars, t_type type);
 void	handle_logic(t_msh *msh, t_parse *pars, int *i, t_type type);
 void	handle_pipes(t_msh *msh, t_parse *pars, t_type type);
-void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type);
+int		handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type);
 void	handle_wild_character(t_msh *msh, int *i);
 void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
-void	handle_heredoc(t_msh *msh, int *i);
-void	get_here_doc(t_msh *msh, char *delim, int flag);
+int		handle_heredoc(t_msh *msh, int *i);
+int		get_here_doc(t_msh *msh, char *delim, int flag);
 void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
 void	free_parse(t_msh *msh);
 void	sort_pexe(t_msh *msh);
+
+
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);

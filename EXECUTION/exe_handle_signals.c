@@ -24,6 +24,7 @@ void	sigeof(t_msh *msh)
 
 void	sig_do(t_msh *msh, int sig, int i)
 {
+	msh->interrupted = 1;
 	if (sig == SIGINT)
 	{
 		if (msh->pexe != NULL)

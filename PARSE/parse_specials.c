@@ -31,7 +31,7 @@ static void	input_to_poi(t_msh *msh, t_parse *pars, t_type symbol)
 		pars->poi[i][1] = ft_strlen(pars->modified) - 1;
 }
 
-void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
+int	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
 {
 	if (type == INFILE)
 	{
@@ -43,7 +43,8 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
 		copy_input_mod(msh, "<", 0, 0);
 		input_to_poi(msh, pars, HEREDOC);
 		(*i) += 1;
-		handle_heredoc(msh, i);
+		if (handle_heredoc(msh, i) == 1)
+			return (1);
 	}
 	else if (type == OUTFILE)
 	{
@@ -56,6 +57,7 @@ void	handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type)
 		input_to_poi(msh, pars, APPEND);
 		(*i) += 1;
 	}
+	return (0);
 }
 
 void	handle_pipes(t_msh *msh, t_parse *pars, t_type type)

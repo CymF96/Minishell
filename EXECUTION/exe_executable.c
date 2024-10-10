@@ -69,7 +69,14 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	{
 		waitpid(msh->chds[0]->pid, &status, 0);
 		if (WIFSIGNALED(status))
+		{
+			if (msh->chds != NULL)
+			{
+				free_pipex(msh);
+				msh->chds = NULL;
+			}
 			exit_cleanup(NULL, msh, errno, 0);
+		}
 	}
 }
 
@@ -98,6 +105,11 @@ void	exe(t_msh *msh)
 		}
 		else
 			pipe_exe(msh, head);
+		if (msh->chds != NULL)
+		{
+			free_pipex(msh);
+			msh->chds = NULL;
+		}
 		exit_cleanup(NULL, msh, 0, 0);
 	}
 }

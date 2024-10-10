@@ -63,6 +63,11 @@ void	closing(t_msh *msh, int nb_chds)
 		}
 		i++;
 	}
+	if (msh->chds != NULL)
+	{
+		free_pipex(msh);
+		msh->chds = NULL;
+	}
 	exit_cleanup(NULL, msh, errno, 0);
 }
 
