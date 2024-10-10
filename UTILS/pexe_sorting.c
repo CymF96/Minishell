@@ -16,7 +16,7 @@ void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g)
 			current->prev = delme->prev;
 			delme->prev->next = current;
 			unlink(delme->cmd);
-			free(delme->temp);
+			free(delme->cmd);
 			free(delme);
 			delme = NULL;
 		}

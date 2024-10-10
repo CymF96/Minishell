@@ -170,6 +170,7 @@ int	handle_heredoc(t_msh *msh, int *i)
 		free (delim);
 		return (1);
 	}
+	free(delim);
 	(*i)--;
 	return (0);
 }

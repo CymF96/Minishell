@@ -65,11 +65,12 @@ void	check_exit_status_cmd(t_msh *msh, int flag)
 {
 	char	*exit_message;
 
+	exit_message = NULL;
 	if (msh->exit_error)
 		exit_message = strerror(msh->exit_error);
 	else if (msh->exit_error < 0)
 		ft_printf("Error unknown\n");
-	if (flag == 1)
+	if (flag == 1 && exit_message)
 		ft_printf("%d: %s\n", msh->exit_error, exit_message);
 	else
 		ft_printf("%d\n", msh->exit_error);
