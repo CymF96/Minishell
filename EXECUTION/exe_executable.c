@@ -59,7 +59,7 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 		exit_cleanup(NULL, msh, errno, 0);
 	if (msh->chds[0]->pid == 0)
 	{
-		if (execve(msh->path, head->option, NULL) == -1)
+		if (execve(msh->path, head->option, msh->envp) == -1)
 		{
 			exit_cleanup("execve failed to execute", msh, errno, 0);
 			return ;
@@ -100,7 +100,7 @@ void	exe(t_msh *msh)
 		append_args(msh, head, len_group);
 		if (msh->child)
 		{
-			if (execve(msh->path, head->option, NULL) == -1)
+			if (execve(msh->path, head->option, msh->envp) == -1)
 				exit_cleanup(NULL, msh, errno, 0);
 		}
 		else
