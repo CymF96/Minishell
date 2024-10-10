@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 17:06:51 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:11:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	while (j < (int)ft_strlen(msh->input) && msh->input[j] != '\0')
 	{
 		type = check_special(msh->input, &j);
-		if (msh->input[j] != '\0' && msh->input[j] == ' ' && msh->input[j] == '\t')
+		if (msh->input[j] != '\0' && (msh->input[j] == ' ' || msh->input[j] == '\t'))
 		{
 			j++;
 			continue ;
