@@ -86,10 +86,13 @@ void	clear_msh2(t_msh *msh)
 		free(msh->input);
 		msh->input = NULL;
 	}
-	if (msh->fd[0] != -1)
+	if (msh->child)
+	{
+		if (msh->fd[0] != -1)
 		close(msh->fd[0]);
-	if (msh->fd[1] != -1)
+		if (msh->fd[1] != -1)
 		close(msh->fd[1]);
+	}
 }
 
 void	clear_msh(t_msh *msh, int check, char *msg)

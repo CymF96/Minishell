@@ -28,7 +28,7 @@ void	sig_do(t_msh *msh, int sig, int i)
 	if (sig == SIGINT)
 	{
 		if (msh->pexe != NULL)
-			exit_cleanup(NULL, msh, 0, 0);
+			exit_cleanup(NULL, msh, errno, 0);
 		else
 		{
 			rl_replace_line("", 0);
@@ -44,7 +44,7 @@ void	sig_do(t_msh *msh, int sig, int i)
 		{
 			while (msh->chds[i])
 				kill(msh->chds[i++]->pid, SIGQUIT);
-			exit_cleanup("Quit", msh, 0, 0);
+			exit_cleanup("Quit", msh, errno, 0);
 		}
 	}
 }

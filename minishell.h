@@ -122,7 +122,7 @@ typedef struct s_msh
 /*------- MAIN/CONTROL FUNCTIONS -------*/
 void	minishell_start(t_msh *msh, int ac, char **envp);
 void	minishell_running(t_msh *msh);
-void	check_if_exit(t_msh *msh);
+int		check_if_exit(t_msh *msh);
 
 /*------- INPUT_VALIDATE -------*/
 int		input_validate(int ac, char **envp);
@@ -180,6 +180,7 @@ void	adding_var(t_msh *msh, char *new_var);
 void	cmd_export(t_msh *msh);
 int		remove_var(t_msh *msh, char	*var_name);
 void	cmd_unset(t_msh *msh);
+void	pipe_exe(t_msh *msh, t_pexe *head);
 
 /*------- PARSE USER INPUT -------*/
 int		parse_main(t_msh *msh);

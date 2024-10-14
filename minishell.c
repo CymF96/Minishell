@@ -12,26 +12,32 @@
 
 #include "minishell.h"
 
-void	check_if_exit(t_msh *msh)
+int	check_if_exit(t_msh *msh)
 {
 	char	*temp;
 
-	temp = malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
-	if (temp == NULL)
-		exit_cleanup("Malloc Failed", msh, errno, 2);
-	remove_quotes(msh->input, ft_strlen(msh->input), temp);
-	if (ft_strlen(temp) == 4 && !ft_strncmp("exit", temp, 4))
+	if (msh->input != NULL)
 	{
+		temp = malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
+		if (temp == NULL)
+			exit_cleanup("Malloc Failed", msh, errno, 2);
+		remove_quotes(msh->input, ft_strlen(msh->input), temp);
+		if (ft_strlen(temp) == 4 && !ft_strncmp("exit", temp, 4))
+		{
+			free(temp);
+			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+		}
 		free(temp);
-		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+		return (0);
 	}
-	free(temp);
+	return (1);
 }
 
 void	minishell_running(t_msh *msh)
 {
 	add_history(msh->input);
-	check_if_exit(msh);
+	if (check_if_exit(msh))
+		return ;
 	if (!ft_strncmp("$$", msh->input, 2))
 		return ;
 	if (parse_main(msh) == 0)
