@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/08 13:35:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:53:37 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 				free(gnl);
 			return (1);
 		}
-		gnl = get_next_line(fd_temp);
+		gnl = get_next_line(fd_temp, msh);
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
 			break ;
@@ -165,7 +165,7 @@ int	handle_heredoc(t_msh *msh, int *i)
 	heredoc_specials(msh, i, &flag);
 	delim = malloc(sizeof(char) * (*i - start + 1));
 	remove_quotes(&msh->input[start], *i - start, delim);
-	if (get_here_doc(msh, delim, flag))
+	if (get_here_doc(msh, delim, flag) || msh->interrupted)
 	{
 		free (delim);
 		return (1);

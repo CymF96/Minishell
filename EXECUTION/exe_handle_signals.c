@@ -33,7 +33,7 @@ void	sig_do(t_msh *msh, int sig, int i)
 		{
 			rl_replace_line("", 0);
 			rl_on_new_line();
-			rl_redisplay();
+			rl_redisplay(); // THIS LINE DOUBLE PRINTS THE HEART OF GOLD WHEN CTRL C and READ MEETS
 		}
 	}
 	if (sig == SIGQUIT)
@@ -66,7 +66,8 @@ void	signal_handler_init(t_msh *msh)
 
 	get_msh_instance(msh);
 	sa.sa_handler = signals_handler;
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
+	// sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);

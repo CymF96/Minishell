@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:12:01 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/07/06 10:16:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/11 12:46:01 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	clean_up(t_gnl **list)
 	buff[j] = '\0';
 	new_node->content = buff;
 	new_node->next = NULL;
-	dealloc(list, new_node, buff);
+	dealloc(list, new_node, buff, 0);
 }
 
 char	*get_line(t_gnl *list)
@@ -69,7 +69,7 @@ void	append(t_gnl **list, char *buff)
 	new_node->next = NULL;
 }
 
-int	create_list(t_gnl **list, int fd)
+int	create_list(t_gnl **list, int fd, t_msh *msh)
 {
 	int		char_read;
 	char	*buff;
@@ -79,6 +79,14 @@ int	create_list(t_gnl **list, int fd)
 		buff = malloc(BUFFER_SIZE + 1);
 		if (!buff)
 			return (0);
+		if (msh->interrupted)
+		{
+			if (list != NULL)
+				dealloc(list, NULL, NULL, 1);
+			if (buff != NULL)
+				free (buff);
+			return (-1);
+		}
 		char_read = read (fd, buff, BUFFER_SIZE);
 		if (char_read == -1)
 		{
@@ -96,7 +104,7 @@ int	create_list(t_gnl **list, int fd)
 	return (0);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, t_msh *msh)
 {
 	static t_gnl	*list = NULL;
 	char			*next_line;
@@ -104,7 +112,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	i = create_list (&list, fd);
+	i = create_list (&list, fd, msh);
 	if (!list || i == -1)
 		return (NULL);
 	next_line = get_line(list);

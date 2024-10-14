@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:12:46 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/07/06 10:14:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/11 12:14:08 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	copy_str(t_gnl *list, char *str)
 	str[j] = '\0';
 }
 
-void	dealloc(t_gnl **list, t_gnl *new_node, char *buff)
+void	dealloc(t_gnl **list, t_gnl *new_node, char *buff, int flag)
 {
 	t_gnl	*temp;
 
@@ -107,6 +107,8 @@ void	dealloc(t_gnl **list, t_gnl *new_node, char *buff)
 		*list = temp;
 	}
 	*list = NULL;
+	if (flag == 1)
+		return ;
 	if (new_node->content[0])
 		*list = new_node;
 	else
