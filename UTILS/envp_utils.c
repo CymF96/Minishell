@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 17:53:21 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:45:30 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	copy_envp(t_msh *msh, char **envp)
 	msh->envp = temp_envp;
 }
 
-
 void	create_path(t_msh *msh, char *exe_cmd)
 {
 	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
@@ -54,7 +53,6 @@ void	create_path(t_msh *msh, char *exe_cmd)
 			msh->exit_error = errno;
 	}
 }
-
 
 char	*get_path(char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:13:04 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/11 12:45:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:41:40 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <unistd.h>
 # include "../minishell.h"
 
-typedef struct s_msh t_msh;
+typedef struct s_msh	t_msh;
 
 typedef struct s_gnl
 {

@@ -6,11 +6,18 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:45:44 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 11:51:52 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:45:03 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../minishell.h"
+
+t_pexe	*head(t_pexe *current)
+{
+	while (current->prev != NULL)
+		current = current->prev;
+	return (current);
+}
 
 int	node_strlen(t_pexe *node)
 {

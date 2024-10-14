@@ -11,9 +11,11 @@ SRC =	minishell.c\
 		PARSE/parse_create_modified.c \
 		PARSE/parse_env_variables.c \
 		PARSE/parse_heredoc.c \
+		PARSE/parse_heredoc_helper.c \
 		PARSE/parse_main.c \
 		PARSE/parse_mallocs.c \
 		PARSE/parse_pexe.c \
+		PARSE/parse_pexe_cleaner.c \
 		PARSE/parse_specials.c \
 		PARSE/parse_tokenize.c \
 		PARSE/parse_utils.c \

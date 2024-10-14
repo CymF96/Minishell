@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:24:52 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 15:38:22 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:10:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	wild_cleanup(t_parse *pars)
 		free(pars->w_str);
 		pars->w_str = NULL;
 	}
-
 }
 
 void	wild_malloc(t_msh *msh, t_parse *pars)

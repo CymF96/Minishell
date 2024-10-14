@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:53:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/03 14:34:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:44:58 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void	clear_msh2(t_msh *msh)
 	if (msh->child)
 	{
 		if (msh->fd[0] != -1)
-		close(msh->fd[0]);
+			close(msh->fd[0]);
 		if (msh->fd[1] != -1)
-		close(msh->fd[1]);
+			close(msh->fd[1]);
 	}
 }
 
@@ -117,11 +117,4 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 	}
 	clear_msh2(msh);
 	handle_message(check, msg);
-}
-
-t_pexe	*head(t_pexe *current)
-{
-	while (current->prev != NULL)
-		current = current->prev;
-	return (current);
 }

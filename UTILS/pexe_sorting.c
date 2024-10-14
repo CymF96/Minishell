@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pexe_sorting.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 20:45:51 by mcoskune          #+#    #+#             */
+/*   Updated: 2024/10/14 20:46:55 by mcoskune         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g)
@@ -26,9 +38,9 @@ void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g)
 
 void	check_heredoc_infile(t_msh *msh)
 {
-	int	heredoc;
-	int	infile;
-	int	g_infile;
+	int		heredoc;
+	int		infile;
+	int		g_infile;
 	t_pexe	*head;
 
 	head = msh->pexe;
@@ -74,7 +86,6 @@ void	remove_node(t_msh *msh, int heredoc, int g)
 		else
 			current = current->next;
 	}
-
 }
 
 void	check_double_heredoc(t_msh *msh)
@@ -99,7 +110,6 @@ void	check_double_heredoc(t_msh *msh)
 	msh->pexe = head;
 }
 
-
 void	sort_pexe(t_msh *msh)
 {
 	t_pexe	*current;
@@ -120,8 +130,8 @@ void	sort_pexe(t_msh *msh)
 				swap(current, next);
 				current = next;
 				next = next->next;
-				if (next != NULL && current->type == HEREDOC && next->type == STRING \
-						&& current->group_id == next->group_id)
+				if (next != NULL && current->type == HEREDOC && \
+				next->type == STRING && current->group_id == next->group_id)
 				{
 					next->p_index = current->p_index++;
 					swap(current, next);
