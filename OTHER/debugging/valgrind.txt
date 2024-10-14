@@ -1,34 +1,40 @@
-==605246== Memcheck, a memory error detector
-==605246== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==605246== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==605246== Command: /usr/bin/cat
-==605246== Parent PID: 605192
-==605246== ==605192== 
-==605192== FILE DESCRIPTORS: 7 open (3 std) at exit.
-==605192== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==605192==    <inherited from parent>
-==605192== 
-==605192== Open file descriptor 44: /dev/ptmx
-==605192==    <inherited from parent>
-==605192== 
-==605192== Open file descriptor 43: /home/coline/.config/Code/logs/20241010T121225/ptyhost.log
-==605192==    <inherited from parent>
-==605192== 
-==605192== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==605192==    <inherited from parent>
-==605192== 
-==605192== 
-==605192== HEAP SUMMARY:
-==605192==     in use at exit: 232,823 bytes in 234 blocks
-==605192==   total heap usage: 622 allocs, 388 frees, 261,000 bytes allocated
-==605192== 
-==605192== LEAK SUMMARY:
-==605192==    definitely lost: 0 bytes in 0 blocks
-==605192==    indirectly lost: 0 bytes in 0 blocks
-==605192==      possibly lost: 0 bytes in 0 blocks
-==605192==    still reachable: 0 bytes in 0 blocks
-==605192==         suppressed: 232,823 bytes in 234 blocks
-==605192== 
-==605192== For lists of detected and suppressed errors, rerun with: -s
-==605192== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-ed: 0 from 0)
+==1035617== Memcheck, a memory error detector
+==1035617== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==1035617== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==1035617== Command: /usr/bin/wc
+==1035617== Parent PID: 1035562
+==1035617== 
+==1035562== 
+==1035562== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==1035562== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==1035562==    <inherited from parent>
+==1035562== 
+==1035562== Open AF_UNIX socket 43: <unknown>
+==1035562==    <inherited from parent>
+==1035562== 
+==1035562== Open file descriptor 42: /home/coline/.config/Code/logs/20241014T115104/ptyhost.log
+==1035562==    <inherited from parent>
+==1035562== 
+==1035562== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==1035562==    <inherited from parent>
+==1035562== 
+==1035562== 
+==1035562== HEAP SUMMARY:
+==1035562==     in use at exit: 232,823 bytes in 234 blocks
+==1035562==   total heap usage: 608 allocs, 374 frees, 260,553 bytes allocated
+==1035562== 
+==1035562== LEAK SUMMARY:
+==1035562==    definitely lost: 0 bytes in 0 blocks
+==1035562==    indirectly lost: 0 bytes in 0 blocks
+==1035562==      possibly lost: 0 bytes in 0 blocks
+==1035562==    still reachable: 0 bytes in 0 blocks
+==1035562==         suppressed: 232,823 bytes in 234 blocks
+==1035562== 
+==1035562== For lists of detected and suppressed errors, rerun with: -s
+==1035562== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+located
+==1035617== 
+==1035617== All heap blocks were freed -- no leaks are possible
+==1035617== 
+==1035617== For lists of detected and suppressed errors, rerun with: -s
+==1035617== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -27,13 +27,15 @@ void	sig_do(t_msh *msh, int sig, int i)
 	msh->interrupted = 1;
 	if (sig == SIGINT)
 	{
-		if (msh->pexe != NULL)
+		if (msh->parse->here_fd)
+			close(msh->parse->here_fd);
+		if (msh->pexe != NULL || msh->parse != NULL)
 			exit_cleanup(NULL, msh, errno, 0);
 		else
 		{
 			rl_replace_line("", 0);
 			rl_on_new_line();
-			rl_redisplay(); // THIS LINE DOUBLE PRINTS THE HEART OF GOLD WHEN CTRL C and READ MEETS
+			rl_redisplay();
 		}
 	}
 	if (sig == SIGQUIT)
