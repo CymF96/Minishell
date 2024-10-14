@@ -65,7 +65,6 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 	fd_temp = STDIN_FILENO;
 	temp = heredoc_name(msh, &num);
 	msh->parse->here_fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(temp);
 	if (msh->parse->here_fd == -1)
 		exit_cleanup("fd problem", msh, errno, 2);
 	while (1)
@@ -74,8 +73,8 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 		if (msh->interrupted)
 		{
 			close(msh->parse->here_fd);
-			if (gnl != NULL)
-				free(gnl);
+			unlink(temp);
+			free(temp);
 			return (1);
 		}
 		gnl = get_next_line(fd_temp, msh);
@@ -88,7 +87,9 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 	}
 	if (gnl != NULL)
 		free(gnl);
-	close(msh->parse->here_fd);
+	if (!msh->interrupted)
+		close(msh->parse->here_fd);
+	free(temp);
 	return (0);
 }
 
