@@ -65,14 +65,8 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 			if (msh->input == NULL)
 				sigeof(msh);
 		}
-		else //if (msh->interrupted)
-		{
-			msh->interrupted = 0;
-			printf("I AM IN INTERRPUTED\n\n");
-			continue ;
-		}
-			minishell_running(msh);
-			clean_msh_init(msh);
+		minishell_running(msh);
+		clean_msh_init(msh);
 	}
 }
 

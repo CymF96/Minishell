@@ -69,7 +69,7 @@ void	signal_handler_init(t_msh *msh)
 	get_msh_instance(msh);
 	sa.sa_handler = signals_handler;
 	sa.sa_flags = 0;
-	// sa.sa_flags = SA_RESTART;
+	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);

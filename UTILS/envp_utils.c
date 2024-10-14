@@ -12,31 +12,6 @@
 
 #include "../minishell.h"
 
-void	copy_envp(t_msh *msh, char **envp)
-{
-	int		i;
-	int		envp_len;
-	char	**temp_envp;
-
-	msh->envp = NULL;
-	envp_len = 0;
-	while (envp[envp_len] != NULL)
-		envp_len++;
-	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
-	if (temp_envp == NULL)
-		exit_cleanup(NULL, msh, errno, 1);
-	i = 0;
-	while (i < envp_len)
-	{
-		temp_envp[i] = ft_strdup(envp[i]);
-		if (temp_envp[i++] == NULL)
-			exit_cleanup(NULL, msh, errno, 1);
-	}
-	temp_envp[i] = NULL;
-	msh->envp = temp_envp;
-}
-
-
 void	create_path(t_msh *msh, char *exe_cmd)
 {
 	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
@@ -54,7 +29,6 @@ void	create_path(t_msh *msh, char *exe_cmd)
 			msh->exit_error = errno;
 	}
 }
-
 
 char	*get_path(char **envp)
 {
@@ -78,12 +52,10 @@ char	*get_path(char **envp)
 	return (path);
 }
 
-char	*find_executable_path(t_msh *msh)
+char	**set_paths_envp(t_msh *msh)
 {
 	char	**paths;
 	char	*path;
-	char	*cmd_path;
-	int		i;
 
 	path = get_path(msh->envp);
 	if (path == NULL)
@@ -93,6 +65,17 @@ char	*find_executable_path(t_msh *msh)
 	path = NULL;
 	if (paths == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
+	return (paths);
+}
+
+char	*find_executable_path(t_msh *msh)
+{
+	char	**paths;
+	char	*path;
+	char	*cmd_path;
+	int		i;
+
+	paths = set_paths_envp(msh);
 	i = -1;
 	while (paths[++i])
 	{

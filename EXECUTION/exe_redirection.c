@@ -29,6 +29,19 @@ void	double_red_right(t_msh *msh)
 	}
 }
 
+int	open_heredoc(t_msh *msh)
+{
+	if (msh->pexe->type == HEREDOC)
+		msh->heredoc = ft_strdup(msh->pexe->cmd);
+	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
+	if (msh->fd[0] == -1)
+	{
+		exit_cleanup(NULL, msh, errno, 0);
+		return (1);
+	}
+	return (0);
+}
+
 void	red_left(t_msh *msh)
 {
 	int		save_stdin;
@@ -36,11 +49,8 @@ void	red_left(t_msh *msh)
 	save_stdin = dup(STDIN_FILENO);
 	if (msh->fd[0] != -1)
 		close(msh->fd[0]);
-	if (msh->pexe->type == HEREDOC)
-		msh->heredoc = ft_strdup(msh->pexe->cmd);
-	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
-	if (msh->fd[0] == -1)
-		exit_cleanup(NULL, msh, errno, 0);
+	if (open_heredoc(msh) == 1)
+		return ;
 	if (dup2(msh->fd[0], STDIN_FILENO) < 0)
 	{
 		close(msh->fd[1]);

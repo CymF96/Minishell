@@ -1,4 +1,4 @@
-# include "../minishell.h"
+#include "../minishell.h"
 
 int	dollar_expansion(t_msh *msh, int *i, t_type type)
 {
@@ -12,10 +12,9 @@ int	dollar_expansion(t_msh *msh, int *i, t_type type)
 	return (1);
 }
 
-
 int	count(t_msh *msh)
 {
-	int count;
+	int	count;
 	int	i;
 
 	i = 0;
@@ -29,33 +28,39 @@ int	count(t_msh *msh)
 	return (count);
 }
 
-void	exit_error_addition(t_msh *msh)
+void	exit_error_message(t_msh *msh, int len, char *num, char *ex_code)
 {
-	char	*code_exit;
-	int		i;
-	int		j;
-	char	*exit_error_num;
-	int		len;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	exit_error_num = ft_itoa(msh->exit_error);
-	len = ft_strlen(exit_error_num);
-	code_exit = malloc(ft_strlen(msh->input + 1) + (count(msh)));
 	while (msh->input[i])
 	{
 		if (msh->input[i] == '\"')
 			i++;
 		if (msh->input[i] == '$' && msh->input[i + 1] == '?')
 		{
-			ft_strlcpy(code_exit + j, exit_error_num, len + 1);
+			ft_strlcpy(ex_code + j, num, len + 1);
 			j += len;
 			i += 2;
 		}
 		else if (msh->input[i])
-			code_exit[j++] = msh->input[i++];
+			ex_code[j++] = msh->input[i++];
 	}
-	code_exit[j] = '\0';
+	ex_code[j] = '\0';
+}
+
+void	exit_error_addition(t_msh *msh)
+{
+	char	*code_exit;
+	char	*exit_error_num;
+	int		len;
+
+	exit_error_num = ft_itoa(msh->exit_error);
+	len = ft_strlen(exit_error_num);
+	code_exit = malloc(ft_strlen(msh->input + 1) + (count(msh)));
+	exit_error_message(msh, len, exit_error_num, code_exit);
 	ft_printf("%s: command not found\n", code_exit);
 	free(code_exit);
 	free(exit_error_num);

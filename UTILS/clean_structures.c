@@ -89,9 +89,9 @@ void	clear_msh2(t_msh *msh)
 	if (msh->child)
 	{
 		if (msh->fd[0] != -1)
-		close(msh->fd[0]);
+			close(msh->fd[0]);
 		if (msh->fd[1] != -1)
-		close(msh->fd[1]);
+			close(msh->fd[1]);
 	}
 }
 
@@ -117,11 +117,4 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 	}
 	clear_msh2(msh);
 	handle_message(check, msg);
-}
-
-t_pexe	*head(t_pexe *current)
-{
-	while (current->prev != NULL)
-		current = current->prev;
-	return (current);
 }
