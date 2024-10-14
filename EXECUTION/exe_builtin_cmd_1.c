@@ -44,6 +44,8 @@ void	cmd_echo(t_msh *msh)
 	}
 	if (flag == 0)
 		ft_printf("\n");
+	// free(msh->envp);  ///////////////DELEEEEEEEEEEEEETE MEEEEEE!!!!!!!!!!/////////////////
+	// exit_cleanup("ECHO DELETE THIS CLEANUP", msh, errno, 0); ///////////////DELEEEEEEEEEEEEETE MEEEEEE!!!!!!!!!!/////////////////
 }
 
 void	cmd_pwd(t_msh *msh)

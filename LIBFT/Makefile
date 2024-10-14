@@ -6,7 +6,7 @@
 #    By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/13 14:18:02 by mcoskune          #+#    #+#              #
-#    Updated: 2024/07/10 14:23:15 by mcoskune         ###   ########.fr        #
+#    Updated: 2024/10/11 12:32:23 by mcoskune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,14 @@ AR = ar -rcs
 SRCS = $(wildcard *.c)
 OBJS = $(SRCS:.c=.o)
 
+HEADERS = ../minishell.h libft.h
 .c.o:
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJS)
 	@$(AR) $@ $^
+
+$(OBJS): $(HEADERS)
 
 all: $(NAME)
 

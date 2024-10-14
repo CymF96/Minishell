@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 10:13:18 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/05/24 13:20:08 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/11 12:33:33 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdint.h>
 # include "get_next_line.h"
 # include "ft_printf.h"
+# include "../minishell.h"
 
 /*	CHARS	*/
 

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 16:50:16 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/11 13:37:30 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,20 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 		exit_cleanup("invalid input\n", msh, 0, 1);
 	while (loop)
 	{
-		msh->input = readline("Heart of Gold>> ");
-		if (msh->input == NULL)
-			sigeof(msh);
-		minishell_running(msh);
-		clean_msh_init(msh);
+		if (!msh->interrupted)
+		{
+			msh->input = readline("Heart of Gold>> ");
+			if (msh->input == NULL)
+				sigeof(msh);
+		}
+		else //if (msh->interrupted)
+		{
+			msh->interrupted = 0;
+			printf("I AM IN INTERRPUTED\n\n");
+			continue ;
+		}
+			minishell_running(msh);
+			clean_msh_init(msh);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 17:06:51 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:17:13 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	while (j < (int)ft_strlen(msh->input) && msh->input[j] != '\0')
 	{
 		type = check_special(msh->input, &j);
-		if (msh->input[j] != '\0' && msh->input[j] == ' ' && msh->input[j] == '\t')
+		if (msh->input[j] != '\0' && (msh->input[j] == ' ' || msh->input[j] == '\t'))
 		{
 			j++;
 			continue ;
@@ -44,6 +44,40 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	return (1);
 }
 
+// int	request_more_input(t_msh *msh, t_parse *pars)
+// {
+// 	// char	*gnl_temp;
+// 	// // int		fd[2];
+// 	// char	*temp;
+// 	char	test[100];
+// 	(void) msh;
+// 	clean_init_parse(pars);
+// 	write (1, "> ", 2);
+// 	// if (pipe(fd) == -1)
+// 	// 	exit_cleanup("Pipe Failed\n", msh, errno, 0);
+// 	int	i = read(0, test, 100);
+// 	test[i] = '\0';
+// 	printf("TEST IS %s\n", test);
+// 	msh->input = ft_strjoin(msh->input, " ");
+// 	msh->input = ft_strjoin(msh->input, test);
+// 	// temp = get_next_line(STDIN_FILENO);
+// 	if (msh->interrupted)
+// 	{
+// 		if (msh->input != NULL)
+// 			free(msh->input);
+// 		msh->input = NULL;
+// 		return (1);
+// 	}
+// 	// gnl_temp = ft_strjoin(" ", temp);
+// 	// free(temp);
+// 	// msh->text = ft_strjoin(msh->input, gnl_temp);
+// 	// free (gnl_temp);
+// 	// free (msh->input);
+// 	// msh->input = msh->text;
+// 	// msh->text = NULL;
+// 	return (0);
+// }
+
 int	request_more_input(t_msh *msh, t_parse *pars)
 {
 	char	*gnl_temp;
@@ -53,11 +87,15 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	clean_init_parse(pars);
 	i = write (1, "> ", 2);
 	(void) i;
-	temp = get_next_line(STDIN_FILENO);
-	if (msh->interrupted)
+	temp = get_next_line(STDIN_FILENO, msh);
+	if (msh->interrupted || temp == NULL)
 	{
 		if (temp != NULL)
 			free(temp);
+		temp = NULL;
+		if (msh->input != NULL)
+			free(msh->input);
+		msh->input = NULL;
 		return (1);
 	}
 	gnl_temp = ft_strjoin(" ", temp);
