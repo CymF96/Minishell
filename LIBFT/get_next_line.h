@@ -22,7 +22,7 @@
 # include <unistd.h>
 # include "../minishell.h"
 
-typedef struct s_msh t_msh;
+typedef struct s_msh	t_msh;
 
 typedef struct s_gnl
 {

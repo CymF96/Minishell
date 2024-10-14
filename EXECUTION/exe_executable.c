@@ -47,6 +47,16 @@ int	check_wc(t_msh *msh, t_pexe *head)
 	return (0);
 }
 
+void	clean_child(t_msh *msh)
+{
+	if (msh->chds != NULL)
+	{
+		free_pipex(msh);
+		msh->chds = NULL;
+	}
+	exit_cleanup(NULL, msh, errno, 0);
+}
+
 void	pipe_exe(t_msh *msh, t_pexe *head)
 {
 	int	status;
@@ -69,14 +79,7 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	{
 		waitpid(msh->chds[0]->pid, &status, 0);
 		if (WIFSIGNALED(status))
-		{
-			if (msh->chds != NULL)
-			{
-				free_pipex(msh);
-				msh->chds = NULL;
-			}
-			exit_cleanup(NULL, msh, errno, 0);
-		}
+			clean_child(msh);
 	}
 }
 
@@ -105,11 +108,6 @@ void	exe(t_msh *msh)
 		}
 		else
 			pipe_exe(msh, head);
-		if (msh->chds != NULL)
-		{
-			free_pipex(msh);
-			msh->chds = NULL;
-		}
-		exit_cleanup(NULL, msh, 0, 0);
+		clean_child(msh);
 	}
 }
