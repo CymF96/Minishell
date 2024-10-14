@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 20:45:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:54:58 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,10 @@ char	*get_path(char **envp)
 	return (path);
 }
 
-char	*find_executable_path(t_msh *msh)
+char	**set_paths_envp(t_msh *msh)
 {
 	char	**paths;
 	char	*path;
-	char	*cmd_path;
-	int		i;
 
 	path = get_path(msh->envp);
 	if (path == NULL)
@@ -91,6 +89,17 @@ char	*find_executable_path(t_msh *msh)
 	path = NULL;
 	if (paths == NULL)
 		exit_cleanup(NULL, msh, errno, 1);
+	return (paths);
+}
+
+char	*find_executable_path(t_msh *msh)
+{
+	char	**paths;
+	char	*path;
+	char	*cmd_path;
+	int		i;
+
+	paths = set_paths_envp(msh);
 	i = -1;
 	while (paths[++i])
 	{

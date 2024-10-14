@@ -33,3 +33,60 @@ int	input_validate(int ac, char **envp)
 	}
 	return (0);
 }
+
+t_pexe	*head(t_pexe *current)
+{
+	while (current->prev != NULL)
+		current = current->prev;
+	return (current);
+}
+
+void	copy_envp(t_msh *msh, char **envp)
+{
+	int		i;
+	int		envp_len;
+	char	**temp_envp;
+
+	msh->envp = NULL;
+	envp_len = 0;
+	while (envp[envp_len] != NULL)
+		envp_len++;
+	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
+	if (temp_envp == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	i = 0;
+	while (i < envp_len)
+	{
+		temp_envp[i] = ft_strdup(envp[i]);
+		if (temp_envp[i++] == NULL)
+			exit_cleanup(NULL, msh, errno, 1);
+	}
+	temp_envp[i] = NULL;
+	msh->envp = temp_envp;
+}
+
+void	remove_node(t_msh *msh, int heredoc, int g)
+{
+	t_pexe	*current;
+	t_pexe	*delme;
+
+	current = msh->pexe;
+	while (current != NULL)
+	{
+		if (current->type == HEREDOC && heredoc > 1 \
+				&& current->group_id == g)
+		{
+			heredoc--;
+			delme = current;
+			current = current->next;
+			current->prev = delme->prev;
+			delme->prev->next = current;
+			unlink(delme->cmd);
+			free(delme->cmd);
+			free(delme);
+			delme = NULL;
+		}
+		else
+			current = current->next;
+	}
+}

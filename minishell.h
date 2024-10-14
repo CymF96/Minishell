@@ -143,7 +143,7 @@ char	*find_executable_path(t_msh *msh);
 void	move_group(t_msh *msh);
 int		move_node(t_msh *msh);
 void	check_heredoc_infile(t_msh *msh);
-void    check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g);
+void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g);
 void	check_double_heredoc(t_msh *msh);
 void	remove_node(t_msh *msh, int heredoc, int g);
 void	swap(t_pexe *node_a, t_pexe *node_b);
@@ -166,7 +166,7 @@ void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, int nb_chds);
 void	mdlchd_fork(t_msh *msh, int i, int nb_chds);
 void	last_fork(t_msh *msh, int i, int nb_chds);
-void	kill_children(t_msh *msh);
+int     kill_children(t_msh *msh, int status, int i);
 void	closing(t_msh *msh, int nb_chds);
 void	close_fds(t_msh *msh, int nb_chds, int current);
 int		node_strlen(t_pexe *node);
@@ -219,8 +219,6 @@ void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);
 void	free_parse(t_msh *msh);
 void	sort_pexe(t_msh *msh);
-
-
 
 /*------- CLEANUP -------*/
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check);

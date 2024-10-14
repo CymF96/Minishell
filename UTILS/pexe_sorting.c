@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:45:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 20:46:55 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:54:46 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,6 @@ void	check_heredoc_infile(t_msh *msh)
 	msh->pexe = head;
 }
 
-void	remove_node(t_msh *msh, int heredoc, int g)
-{
-	t_pexe	*current;
-	t_pexe	*delme;
-
-	current = msh->pexe;
-	while (current != NULL)
-	{
-		if (current->type == HEREDOC && heredoc > 1 \
-				&& current->group_id == g)
-		{
-			heredoc--;
-			delme = current;
-			current = current->next;
-			current->prev = delme->prev;
-			delme->prev->next = current;
-			unlink(delme->cmd);
-			free(delme->cmd);
-			free(delme);
-			delme = NULL;
-		}
-		else
-			current = current->next;
-	}
-}
-
 void	check_double_heredoc(t_msh *msh)
 {
 	t_pexe	*head;
@@ -110,6 +84,25 @@ void	check_double_heredoc(t_msh *msh)
 	msh->pexe = head;
 }
 
+int	check_swapping(t_pexe *current, t_pexe *next)
+{
+	if (current->group_id > next->group_id || (current->group_id == \
+			next->group_id && current->p_index > next->p_index))
+	{
+		swap(current, next);
+		current = next;
+		next = next->next;
+		if (next != NULL && current->type == HEREDOC && next->type == STRING \
+				&& current->group_id == next->group_id)
+		{
+			next->p_index = current->p_index++;
+			swap(current, next);
+		}
+		return (1);
+	}
+	return (0);
+}
+
 void	sort_pexe(t_msh *msh)
 {
 	t_pexe	*current;
@@ -124,20 +117,7 @@ void	sort_pexe(t_msh *msh)
 		while (current != NULL && current->next != NULL)
 		{
 			next = current->next;
-			if (current->group_id > next->group_id || (current->group_id == \
-				next->group_id && current->p_index > next->p_index))
-			{
-				swap(current, next);
-				current = next;
-				next = next->next;
-				if (next != NULL && current->type == HEREDOC && \
-				next->type == STRING && current->group_id == next->group_id)
-				{
-					next->p_index = current->p_index++;
-					swap(current, next);
-				}
-				loop = 1;
-			}
+			loop = check_swapping(current, next);
 			current = current->next;
 		}
 	}
