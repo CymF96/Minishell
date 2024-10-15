@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 22:38:27 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:59:48 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 	msh->parse->here_fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (msh->parse->here_fd == -1)
 		exit_cleanup("Problem Encoured Opening Heredoc", msh, errno, 2);
-	if (get_doc_helper(msh, gnl, delim, flag) != 0)
+	if (get_doc_helper(msh, gnl, delim, flag) != 0 && msh->interrupted == 0)
 	{
 		unlink(temp);
 		free(temp);

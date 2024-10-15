@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 20:50:25 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:21:51 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	remove_quotes(char *str, int len, char *delim)
 			delim[j++] = str[i++];
 	}
 	delim[j] = '\0';
-	printf("DELIM IS %s\n\n", delim);
 }
 
 static void	heredoc_specials(t_msh *msh, int *i, int *flag)
@@ -99,10 +98,8 @@ int	handle_heredoc(t_msh *msh, int *i)
 	while (msh->input[*i] == ' ' || msh->input[*i] == '\t')
 		(*i)++;
 	start = (*i);
-	printf("HELLOOOOO\n");
 	heredoc_specials(msh, i, &flag);
 	delim = malloc(sizeof(char) * (*i - start + 1));
-	printf("START IS: %d\nEND IS: %d\n", start, *i);
 	remove_quotes(&msh->input[start], *i - start, delim);
 	if (get_here_doc(msh, delim, flag) || msh->interrupted)
 	{
