@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 11:17:13 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 21:31:37 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	while (j < (int)ft_strlen(msh->input) && msh->input[j] != '\0')
 	{
 		type = check_special(msh->input, &j);
-		if (msh->input[j] != '\0' && (msh->input[j] == ' ' || msh->input[j] == '\t'))
+		if (msh->input[j] != '\0' && (msh->input[j] == ' ' || \
+			msh->input[j] == '\t'))
 		{
 			j++;
 			continue ;
@@ -44,49 +45,13 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	return (1);
 }
 
-// int	request_more_input(t_msh *msh, t_parse *pars)
-// {
-// 	// char	*gnl_temp;
-// 	// // int		fd[2];
-// 	// char	*temp;
-// 	char	test[100];
-// 	(void) msh;
-// 	clean_init_parse(pars);
-// 	write (1, "> ", 2);
-// 	// if (pipe(fd) == -1)
-// 	// 	exit_cleanup("Pipe Failed\n", msh, errno, 0);
-// 	int	i = read(0, test, 100);
-// 	test[i] = '\0';
-// 	printf("TEST IS %s\n", test);
-// 	msh->input = ft_strjoin(msh->input, " ");
-// 	msh->input = ft_strjoin(msh->input, test);
-// 	// temp = get_next_line(STDIN_FILENO);
-// 	if (msh->interrupted)
-// 	{
-// 		if (msh->input != NULL)
-// 			free(msh->input);
-// 		msh->input = NULL;
-// 		return (1);
-// 	}
-// 	// gnl_temp = ft_strjoin(" ", temp);
-// 	// free(temp);
-// 	// msh->text = ft_strjoin(msh->input, gnl_temp);
-// 	// free (gnl_temp);
-// 	// free (msh->input);
-// 	// msh->input = msh->text;
-// 	// msh->text = NULL;
-// 	return (0);
-// }
-
 int	request_more_input(t_msh *msh, t_parse *pars)
 {
 	char	*gnl_temp;
-	int		i;
 	char	*temp;
 
 	clean_init_parse(pars);
-	i = write (1, "> ", 2);
-	(void) i;
+	write (1, "> ", 2);
 	temp = get_next_line(STDIN_FILENO, msh);
 	if (msh->interrupted || temp == NULL)
 	{
@@ -108,36 +73,45 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	return (0);
 }
 
-int	analyse_input(t_msh *msh, t_parse *pars)
+static int	analyse_helper(t_msh *msh, int *i, t_type tye)
+{
+	if (tye == HEREDOC || tye == APPEND || tye == INFILE || tye == OUTFILE)
+	{
+		if (check_something_exists(msh, i, tye) != 0)
+		{
+			write(2, "Syntax Error Near Special Character\n", 37);
+			return (1);
+		}
+		(*i)--;
+	}
+	else if (tye == PIPE)
+	{
+		if (check_something_exists(msh, i, tye) != 0)
+			return (2);
+	}
+	else if (tye == D_QT || tye == S_QT)
+	{
+		if (check_quote_ending(msh->input, *i) == -1)
+			return (2);
+		*i = check_quote_ending(msh->input, *i);
+	}
+	return (0);
+}
+
+int	analyse_input(t_msh *msh)
 {
 	int		i;
+	int		check;
 	t_type	tye;
 
 	i = -1;
-	(void)pars;
+	check = 0;
 	while (msh->input[++i] != '\0')
 	{
 		tye = check_special(msh->input, &i);
-		if (tye == HEREDOC || tye == APPEND || tye == INFILE || tye == OUTFILE)
-		{
-			if (check_something_exists(msh, &i, tye) != 0)
-			{
-				write(2, "Syntax Error Near Special Character\n", 37);
-				return (1);
-			}
-			i--;
-		}
-		else if (tye == PIPE)
-		{
-			if (check_something_exists(msh, &i, tye) != 0)
-				return (2);
-		}
-		else if (tye == D_QT || tye == S_QT)
-		{
-			if (check_quote_ending(msh->input, i) == -1)
-				return (2);
-			i = check_quote_ending(msh->input, i);
-		}
+		check = analyse_helper(msh, &i, tye);
+		if (check != 0)
+			return (check);
 	}
 	return (0);
 }
@@ -149,7 +123,7 @@ int	parse_main(t_msh *msh)
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh);
-	flag = analyse_input(msh, msh->parse);
+	flag = analyse_input(msh);
 	if (flag == 1)
 		return (1);
 	while (1)
@@ -160,13 +134,11 @@ int	parse_main(t_msh *msh)
 			return (1);
 		if ((request_more_input(msh, msh->parse)))
 			return (1);
-		flag = analyse_input(msh, msh->parse);
+		flag = analyse_input(msh);
 	}
 	if (create_modified(msh, msh->parse) == 1)
 		return (1);
-	if (msh->parse->modified[0] == '|')
-		return (1);
-	if (handle_wilds(msh, msh->parse) == 1)
+	if (msh->parse->modified[0] == '|' || handle_wilds(msh, msh->parse) == 1)
 		return (1);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 14:01:02 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:48:07 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,17 +186,19 @@ void	pipe_exe(t_msh *msh, t_pexe *head);
 int		parse_main(t_msh *msh);
 int		handle_wilds(t_msh *msh, t_parse *pars);
 void	wild_malloc(t_msh *msh, t_parse *pars);
+void	remove_nodes(t_msh *msh);
 void	wild_cleanup(t_parse *pars);
 void	parse_malloc(t_msh *msh);
 t_token	*token_malloc(t_msh *msh);
 t_pexe	*pexe_malloc(t_msh *msh);
-int		analyse_input(t_msh *msh, t_parse *pars);
+int		analyse_input(t_msh *msh);
 int		request_more_input(t_msh *msh, t_parse *pars);
 t_type	check_special(char *str, int *i);
 t_type	check_if_qt(char *str, int *i);
+int		handle_dquote(t_msh *msh, int *i, int *start, int *flag);
 int		check_quote_ending(char *input, int i);
 int		create_modified(t_msh *msh, t_parse *pars);
-int		input_to_modified(t_msh *msh, t_parse *pars);
+int		input_to_modified(t_msh *msh);
 void	copy_input_mod(t_msh *msh, char *to_copy, int start, int end);
 int		dollar_expansion(t_msh *msh, int *i, t_type type);
 int		handle_quote(t_msh *msh, int *i);
@@ -206,11 +208,12 @@ void	handle_paran(t_msh *msh, t_parse *pars, t_type type);
 void	handle_logic(t_msh *msh, t_parse *pars, int *i, t_type type);
 void	handle_pipes(t_msh *msh, t_parse *pars, t_type type);
 int		handle_redir(t_msh *msh, t_parse *pars, int *i, t_type type);
-void	handle_wild_character(t_msh *msh, int *i);
+void	handle_wild_character(t_msh *msh, int *i); //CHECK THIS
 void	addnode(void *node, void **head, size_t offs_next, size_t offs_prev);
 void	parse_tokenize(t_msh *msh, t_parse *prs);
 int		handle_heredoc(t_msh *msh, int *i);
 int		get_here_doc(t_msh *msh, char *delim, int flag);
+char	*heredoc_name(t_msh *msh, int *num);
 void	remove_quotes(char *str, int len, char *delim);
 void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag);
 void	make_pexe(t_msh *msh, t_parse *pars);

@@ -6,13 +6,13 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 13:22:22 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/14 22:48:16 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
+int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 {
 	while (msh->input[*i] != '\"' && msh->input[*i] != '\0')
 	{
@@ -41,29 +41,6 @@ static int	handle_dquote(t_msh *msh, int *i, int *start, int *flag)
 	return (0);
 }
 
-// If single quote, prints all as char. In double quote checks for $ and expands
-int	handle_quote(t_msh *msh, int *i)
-{
-	int	start;
-	int	flag;
-
-	flag = 0;
-	start = (*i)++;
-	if (msh->input[(*i) - 1] == '\'')
-	{
-		while (msh->input[*i] != '\'' && msh->input[*i] != '\0')
-			(*i)++;
-		copy_input_mod(msh, &msh->input[start], start, (*i));
-	}
-	else if (msh->input[(*i) - 1] == '\"')
-	{
-		if (handle_dquote(msh, i, &start, &flag) == 1)
-			return (1);
-	}
-	(*i)++;
-	return (0);
-}
-
 // Checks for special characters and direct them to their own functions
 static int	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 {
@@ -88,8 +65,33 @@ static int	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 	return (0);
 }
 
+static int	modified_helper(t_msh *msh, t_type type, int *i, int *start)
+{
+	if (dollar_expansion(msh, i, type))
+		return (1);
+	else if (type == S_QT || type == D_QT)
+	{
+		if (handle_quote(msh, i) == 1)
+			return (1);
+	}
+	else if (type == REGULAR)
+	{
+		*start = *i;
+		while (msh->input[*i] != '\0' && \
+				check_special(msh->input, i) == REGULAR)
+			(*i)++;
+		copy_input_mod(msh, &msh->input[*start], *start, *i - 1);
+	}
+	else
+	{
+		if (check_character(msh, msh->parse, i, type) == 1)
+			return (1);
+	}
+	return (0);
+}
+
 // Checks for $, ' and ". Otherwise just copy everything to modified char *
-int	input_to_modified(t_msh *msh, t_parse *pars)
+int	input_to_modified(t_msh *msh)
 {
 	int		start;
 	int		i;
@@ -101,26 +103,8 @@ int	input_to_modified(t_msh *msh, t_parse *pars)
 			&& msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
-		if (dollar_expansion(msh, &i, type))
+		if (modified_helper(msh, type, &i, &start) == 1)
 			return (1);
-		else if (type == S_QT || type == D_QT)
-		{
-			if (handle_quote(msh, &i) == 1)
-				return (1);
-		}
-		else if (type == REGULAR)
-		{
-			start = i;
-			while (msh->input[i] != '\0' && \
-					check_special(msh->input, &i) == REGULAR)
-				i++;
-			copy_input_mod(msh, &msh->input[start], start, i - 1);
-		}
-		else
-		{
-			if (check_character(msh, pars, &i, type) == 1)
-				return (1);
-		}
 	}
 	return (0);
 }
@@ -150,7 +134,7 @@ int	create_modified(t_msh *msh, t_parse *pars)
 	if (pars->modified == NULL)
 		exit_cleanup ("Malloc Failed", msh, errno, 2);
 	pars->modified[pars->size_modified] = '\0';
-	if (input_to_modified(msh, pars) == 1)
+	if (input_to_modified(msh) == 1)
 		return (1);
 	return (0);
 }
