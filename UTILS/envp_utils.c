@@ -12,30 +12,6 @@
 
 #include "../minishell.h"
 
-// void	copy_envp(t_msh *msh, char **envp) //THERE IS ANOTHER COPY OF THIS FUNC IN UTILTS_2.c
-// {
-// 	int		i;
-// 	int		envp_len;
-// 	char	**temp_envp;
-
-// 	msh->envp = NULL;
-// 	envp_len = 0;
-// 	while (envp[envp_len] != NULL)
-// 		envp_len++;
-// 	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
-// 	if (temp_envp == NULL)
-// 		exit_cleanup(NULL, msh, errno, 1);
-// 	i = 0;
-// 	while (i < envp_len)
-// 	{
-// 		temp_envp[i] = ft_strdup(envp[i]);
-// 		if (temp_envp[i++] == NULL)
-// 			exit_cleanup(NULL, msh, errno, 1);
-// 	}
-// 	temp_envp[i] = NULL;
-// 	msh->envp = temp_envp;
-// }
-
 void	create_path(t_msh *msh, char *exe_cmd)
 {
 	if (!ft_strncmp("/bin/", msh->pexe->cmd, 5) \
@@ -100,12 +76,12 @@ char	*find_executable_path(t_msh *msh)
 	int		i;
 
 	paths = set_paths_envp(msh);
+	if (paths == NULL)
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], "/");
-		if (cmd_path == NULL)
-			free_mallocs(NULL, (void **)paths);
 		path = ft_strjoin(cmd_path, msh->pexe->cmd);
 		free(cmd_path);
 		if (path == NULL)

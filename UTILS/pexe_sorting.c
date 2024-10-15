@@ -86,18 +86,14 @@ void	check_double_heredoc(t_msh *msh)
 
 int	check_swapping(t_pexe *current, t_pexe *next)
 {
-	if (current->group_id > next->group_id || (current->group_id == \
-			next->group_id && current->p_index > next->p_index))
+	if (current->group_id > next->group_id || \
+			(current->group_id == next->group_id \
+			&& current->p_index > next->p_index))
 	{
 		swap(current, next);
-		current = next;
-		next = next->next;
-		if (next != NULL && current->type == HEREDOC && next->type == STRING \
+		if (current->type == HEREDOC && next->type == STRING \
 				&& current->group_id == next->group_id)
-		{
-			next->p_index = current->p_index++;
-			swap(current, next);
-		}
+			next->p_index = current->p_index + 1;
 		return (1);
 	}
 	return (0);
@@ -117,7 +113,8 @@ void	sort_pexe(t_msh *msh)
 		while (current != NULL && current->next != NULL)
 		{
 			next = current->next;
-			loop = check_swapping(current, next);
+			if (check_swapping(current, next))
+				loop = 1;
 			current = current->next;
 		}
 	}

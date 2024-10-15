@@ -12,8 +12,6 @@
 
 #include "../minishell.h"
 
-// Checks if program is launched with correct number of parameters and
-// if ENVP variable exists aka. not NULL
 int	input_validate(int ac, char **envp)
 {
 	if (ac > 1)

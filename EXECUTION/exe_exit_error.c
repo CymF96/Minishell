@@ -59,11 +59,12 @@ void	exit_error_addition(t_msh *msh)
 
 	exit_error_num = ft_itoa(msh->exit_error);
 	len = ft_strlen(exit_error_num);
-	code_exit = malloc(ft_strlen(msh->input + 1) + (count(msh)));
+	code_exit = malloc(ft_strlen(msh->input + 1) + (2 * count(msh)));
 	exit_error_message(msh, len, exit_error_num, code_exit);
 	ft_printf("%s: command not found\n", code_exit);
 	free(code_exit);
 	free(exit_error_num);
+	msh->exit_error = 127;
 }
 
 void	check_exit_status_cmd(t_msh *msh, int flag)

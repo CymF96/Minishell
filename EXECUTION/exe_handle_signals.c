@@ -27,8 +27,6 @@ void	sig_do(t_msh *msh, int sig, int i)
 	msh->interrupted = 1;
 	if (sig == SIGINT)
 	{
-		if (msh->parse->here_fd)
-			close(msh->parse->here_fd);
 		if (msh->pexe != NULL || msh->parse != NULL)
 			exit_cleanup(NULL, msh, errno, 0);
 		else
