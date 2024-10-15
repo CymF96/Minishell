@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:12:01 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/11 12:46:01 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:17:57 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,9 @@ int	create_list(t_gnl **list, int fd, t_msh *msh)
 		}
 		char_read = read (fd, buff, BUFFER_SIZE);
 		if (char_read == -1)
-		{
-			free (buff);
-			return (-1);
-		}
+			return (free(buff), -1);
 		if (!char_read)
-		{
-			free (buff);
-			return (0);
-		}
+			return (free(buff), 0);
 		buff[char_read] = '\0';
 		append(list, buff);
 	}
