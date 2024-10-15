@@ -6,35 +6,35 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 22:54:58 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:15:43 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	copy_envp(t_msh *msh, char **envp)
-{
-	int		i;
-	int		envp_len;
-	char	**temp_envp;
+// void	copy_envp(t_msh *msh, char **envp) //THERE IS ANOTHER COPY OF THIS FUNC IN UTILTS_2.c
+// {
+// 	int		i;
+// 	int		envp_len;
+// 	char	**temp_envp;
 
-	msh->envp = NULL;
-	envp_len = 0;
-	while (envp[envp_len] != NULL)
-		envp_len++;
-	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
-	if (temp_envp == NULL)
-		exit_cleanup(NULL, msh, errno, 1);
-	i = 0;
-	while (i < envp_len)
-	{
-		temp_envp[i] = ft_strdup(envp[i]);
-		if (temp_envp[i++] == NULL)
-			exit_cleanup(NULL, msh, errno, 1);
-	}
-	temp_envp[i] = NULL;
-	msh->envp = temp_envp;
-}
+// 	msh->envp = NULL;
+// 	envp_len = 0;
+// 	while (envp[envp_len] != NULL)
+// 		envp_len++;
+// 	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
+// 	if (temp_envp == NULL)
+// 		exit_cleanup(NULL, msh, errno, 1);
+// 	i = 0;
+// 	while (i < envp_len)
+// 	{
+// 		temp_envp[i] = ft_strdup(envp[i]);
+// 		if (temp_envp[i++] == NULL)
+// 			exit_cleanup(NULL, msh, errno, 1);
+// 	}
+// 	temp_envp[i] = NULL;
+// 	msh->envp = temp_envp;
+// }
 
 void	create_path(t_msh *msh, char *exe_cmd)
 {

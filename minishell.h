@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 22:48:07 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 10:12:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	signal_handler_init(t_msh *msh);
 void	chd1_fork(t_msh *msh, int nb_chds);
 void	mdlchd_fork(t_msh *msh, int i, int nb_chds);
 void	last_fork(t_msh *msh, int i, int nb_chds);
-int     kill_children(t_msh *msh, int status, int i);
+int		kill_children(t_msh *msh, int status, int i);
 void	closing(t_msh *msh, int nb_chds);
 void	close_fds(t_msh *msh, int nb_chds, int current);
 int		node_strlen(t_pexe *node);
