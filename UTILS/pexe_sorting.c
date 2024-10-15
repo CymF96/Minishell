@@ -88,7 +88,7 @@ int	check_swapping(t_pexe *current, t_pexe *next)
 {
 	if (current->group_id > next->group_id || \
 			(current->group_id == next->group_id \
-	   		&& current->p_index > next->p_index))
+			&& current->p_index > next->p_index))
 	{
 		swap(current, next);
 		if (current->type == HEREDOC && next->type == STRING \
@@ -98,7 +98,6 @@ int	check_swapping(t_pexe *current, t_pexe *next)
 	}
 	return (0);
 }
-
 
 void	sort_pexe(t_msh *msh)
 {
