@@ -100,12 +100,12 @@ char	*find_executable_path(t_msh *msh)
 	int		i;
 
 	paths = set_paths_envp(msh);
+	if (paths == NULL)
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{
 		cmd_path = ft_strjoin(paths[i], "/");
-		if (cmd_path == NULL)
-			free_mallocs(NULL, (void **)paths);
 		path = ft_strjoin(cmd_path, msh->pexe->cmd);
 		free(cmd_path);
 		if (path == NULL)
