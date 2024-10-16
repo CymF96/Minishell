@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 22:48:16 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:17:21 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ int	input_to_modified(t_msh *msh)
 			&& msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
+		fflush(stdout);
 		if (modified_helper(msh, type, &i, &start) == 1)
 			return (1);
 	}

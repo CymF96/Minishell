@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 21:31:37 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 22:32:34 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 			j++;
 			continue ;
 		}
-		else if (type != REGULAR && type != DOLLAR && \
-				type != S_QT && type != D_QT)
+		else if (type != REGULAR && type != DOLLAR && type != S_QT && \
+			type != D_QT && type != INFILE && type != OUTFILE && \
+			type != HEREDOC && type != APPEND)
 			return (1);
 		else if (type == REGULAR && msh->input[j] != '\0')
 			return (0);
@@ -55,8 +56,13 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	temp = get_next_line(STDIN_FILENO, msh);
 	if (msh->interrupted || temp == NULL)
 	{
-		if (temp != NULL)
+		while (temp != NULL)
+		{
 			free(temp);
+			temp = get_next_line(STDIN_FILENO, msh);
+		}
+		// if (temp != NULL)
+		// 	free(temp);
 		temp = NULL;
 		if (msh->input != NULL)
 			free(msh->input);
@@ -119,7 +125,7 @@ int	analyse_input(t_msh *msh)
 int	parse_main(t_msh *msh)
 {
 	int	flag;
-
+	
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh);
@@ -142,5 +148,21 @@ int	parse_main(t_msh *msh)
 		return (1);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
+
+
+	// t_pexe *current = msh->pexe;
+    
+    // while (current != NULL) {
+    //     printf("Type: %d\n", current->type);
+    //     printf("Cmd: %s\n", current->cmd);
+    //     printf("Group ID: %d\n", current->group_id);
+    //     printf("P Index: %d\n", current->p_index);
+    //     printf("Muk Note: %d\n", current->muk_note);
+    //     printf("Temp: %s\n", current->temp);
+    //     printf("\n");
+
+    //     current = current->next;
+	// }
+
 	return (0);
 }

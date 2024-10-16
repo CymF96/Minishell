@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:12:01 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 10:17:57 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 22:36:50 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,20 @@ char	*get_line(t_gnl *list)
 	return (full_str);
 }
 
-void	append(t_gnl **list, char *buff)
+void	append(t_gnl **list, char *buff, t_msh *msh)
 {
 	t_gnl	*new_node;
 	t_gnl	*last_node;
 
+
+	if (msh->interrupted)
+	{
+		if (*list != NULL)
+			dealloc(list, NULL, NULL, 1);
+		if (buff != NULL)
+			free (buff);
+		return ;
+	}
 	last_node = find_last_node (*list);
 	new_node = malloc (sizeof(t_gnl));
 	if (!new_node)
@@ -93,7 +102,7 @@ int	create_list(t_gnl **list, int fd, t_msh *msh)
 		if (!char_read)
 			return (free(buff), 0);
 		buff[char_read] = '\0';
-		append(list, buff);
+		append(list, buff, msh);
 	}
 	return (0);
 }

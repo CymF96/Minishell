@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:13:04 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 20:41:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 22:36:14 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct s_gnl
 char	*get_next_line(int fd, t_msh *msh);
 int		create_list(t_gnl **list, int fd, t_msh *msh);
 int		found_new_line(t_gnl *list);
-void	append(t_gnl **list, char *buff);
+void	append(t_gnl **list, char *buff, t_msh *msh);
 t_gnl	*find_last_node(t_gnl *list);
 char	*get_line(t_gnl *list);
 int		len_to_new_line(t_gnl *list);

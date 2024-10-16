@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 17:36:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 20:34:01 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:21:51 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	remove_quotes(char *str, int len, char *delim)
 
 static void	heredoc_specials(t_msh *msh, int *i, int *flag)
 {
+	
 	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] \
 		!= '\0' && (check_special(msh->input, i) == REGULAR || \
 		check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) \
