@@ -53,6 +53,7 @@ void	clean_child(t_msh *msh)
 	{
 		free_pipex(msh);
 		msh->chds = NULL;
+		exit_cleanup(NULL, msh, 0, 0);
 	}
 	exit_cleanup(NULL, msh, errno, 0);
 }

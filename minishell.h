@@ -107,7 +107,8 @@ typedef struct s_msh
 	char		**envp;
 	int			fd[2];
 	char		*text;
-	char		*heredoc; //not needed I think
+	char		*heredoc;
+	char		*hd_temp;
 	int			envp_flag;
 	int			pipe_nb;
 	int			flag;
@@ -148,6 +149,7 @@ void	check_double_heredoc(t_msh *msh);
 void	remove_node(t_msh *msh, int heredoc, int g);
 void	swap(t_pexe *node_a, t_pexe *node_b);
 void	create_path(t_msh *msh, char *exe_cmd);
+t_msh	*get_msh_instance(t_msh *new_msh);
 
 /*------- EXECUTION -------*/
 void	check_exit_status_cmd(t_msh *msh, int flag);

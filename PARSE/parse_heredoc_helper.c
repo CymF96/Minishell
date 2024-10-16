@@ -49,10 +49,7 @@ static int	get_doc_helper(t_msh *msh, char *gnl, char *delim, int flag)
 	{
 		write(1, ">", 1);
 		if (msh->interrupted)
-		{
-			close(msh->parse->here_fd);
 			return (1);
-		}
 		gnl = get_next_line(fd_temp, msh);
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
@@ -71,25 +68,24 @@ static int	get_doc_helper(t_msh *msh, char *gnl, char *delim, int flag)
 int	get_here_doc(t_msh *msh, char *delim, int flag)
 {
 	char		*gnl;
-	char		*temp;
 	static int	num = 0;
 
 	gnl = NULL;
-	temp = heredoc_name(msh, &num);
-	msh->parse->here_fd = open(temp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	msh->hd_temp = heredoc_name(msh, &num);
+	msh->parse->here_fd = open(msh->hd_temp, \
+		O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (msh->parse->here_fd == -1)
 		exit_cleanup("Problem Encoured Opening Heredoc", msh, errno, 2);
 	if (get_doc_helper(msh, gnl, delim, flag) != 0 && msh->interrupted == 0)
-	{
-		unlink(temp);
-		free(temp);
 		return (1);
-	}
 	if (gnl != NULL)
 		free(gnl);
 	if (!msh->interrupted)
 		close(msh->parse->here_fd);
-	if (temp != NULL)
-		free(temp);
+	if (msh->hd_temp != NULL)
+	{
+		free(msh->hd_temp);
+		msh->hd_temp = NULL;
+	}
 	return (0);
 }

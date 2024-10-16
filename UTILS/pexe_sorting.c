@@ -26,9 +26,13 @@ void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g)
 			delme = current;
 			current = current->next;
 			current->prev = delme->prev;
-			delme->prev->next = current;
+			if (delme->prev != NULL)
+				delme->prev->next = current;
+			else
+				msh->pexe = current;
 			unlink(delme->cmd);
 			free(delme->cmd);
+			delme->cmd = NULL;
 			free(delme);
 			delme = NULL;
 		}
@@ -59,7 +63,6 @@ void	check_heredoc_infile(t_msh *msh)
 	}
 	msh->pexe = head;
 	check_remove_heredoc(msh, heredoc, infile, g_infile);
-	msh->pexe = head;
 }
 
 void	check_double_heredoc(t_msh *msh)
@@ -81,7 +84,8 @@ void	check_double_heredoc(t_msh *msh)
 	}
 	msh->pexe = head;
 	remove_node(msh, heredoc, g);
-	msh->pexe = head;
+	if (head)
+		msh->pexe = head;
 }
 
 int	check_swapping(t_pexe *current, t_pexe *next)
