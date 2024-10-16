@@ -71,7 +71,6 @@ void	remove_quotes(char *str, int len, char *delim)
 
 static void	heredoc_specials(t_msh *msh, int *i, int *flag)
 {
-	
 	while (msh->input[*i] != ' ' && msh->input[*i] != '\t' && msh->input[*i] \
 		!= '\0' && (check_special(msh->input, i) == REGULAR || \
 		check_special(msh->input, i) == DOLLAR || check_special(msh->input, i) \

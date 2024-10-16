@@ -105,6 +105,11 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 		free(msh->heredoc);
 		msh->heredoc = NULL;
 	}
+	if (msh->hd_temp != NULL)
+	{
+		free(msh->hd_temp);
+		msh->hd_temp = NULL;
+	}
 	if (msh->path != NULL)
 	{
 		free(msh->path);

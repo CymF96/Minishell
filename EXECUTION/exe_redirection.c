@@ -1,5 +1,32 @@
 #include "../minishell.h"
 
+void	close_redirection(t_msh *msh, int save_sdtout)
+{
+	check_type(msh);
+	msh->fd[1] = save_sdtout;
+	dup2(msh->fd[1], STDOUT_FILENO);
+	if (!msh->child)
+	{
+		close(msh->fd[1]);
+		msh->fd[1] = -1;
+	}
+	else
+		exit_cleanup(NULL, msh, 0, 1);
+}
+
+int	open_heredoc(t_msh *msh)
+{
+	if (msh->pexe->type == HEREDOC)
+		msh->heredoc = ft_strdup(msh->pexe->cmd);
+	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
+	if (msh->fd[0] == -1)
+	{
+		exit_cleanup(NULL, msh, errno, 0);
+		return (1);
+	}
+	return (0);
+}
+
 void	double_red_right(t_msh *msh)
 {
 	int		save_sdtout;
@@ -17,29 +44,7 @@ void	double_red_right(t_msh *msh)
 	}
 	close(msh->fd[1]);
 	if (move_node(msh))
-	{
-		check_type(msh);
-		msh->fd[1] = save_sdtout;
-		dup2(msh->fd[1], STDOUT_FILENO);
-		if (!msh->child)
-		{
-			close(msh->fd[1]);
-			msh->fd[1] = -1;
-		}
-	}
-}
-
-int	open_heredoc(t_msh *msh)
-{
-	if (msh->pexe->type == HEREDOC)
-		msh->heredoc = ft_strdup(msh->pexe->cmd);
-	msh->fd[0] = open(msh->pexe->cmd, O_RDONLY, 0664);
-	if (msh->fd[0] == -1)
-	{
-		exit_cleanup(NULL, msh, errno, 0);
-		return (1);
-	}
-	return (0);
+		close_redirection(msh, save_sdtout);
 }
 
 void	red_left(t_msh *msh)
@@ -62,10 +67,12 @@ void	red_left(t_msh *msh)
 		check_type(msh);
 		msh->fd[0] = save_stdin;
 		dup2(msh->fd[0], STDIN_FILENO);
+		if (!msh->chds)
 		{
 			close(msh->fd[0]);
 			msh->fd[0] = -1;
 		}
+		close(msh->fd[0]);
 	}
 }
 
@@ -84,15 +91,7 @@ void	red_right(t_msh *msh)
 		close(msh->fd[1]);
 		exit_cleanup(NULL, msh, errno, 0);
 	}
+	close(msh->fd[1]);
 	if (move_node(msh))
-	{
-		check_type(msh);
-		close(msh->fd[1]);
-		msh->fd[1] = save_sdtout;
-		dup2(msh->fd[1], STDOUT_FILENO);
-		{
-			close(msh->fd[1]);
-			msh->fd[1] = -1;
-		}
-	}
+		close_redirection(msh, save_sdtout);
 }

@@ -88,3 +88,12 @@ void	remove_node(t_msh *msh, int heredoc, int g)
 			current = current->next;
 	}
 }
+
+t_msh	*get_msh_instance(t_msh *new_msh)
+{
+	static t_msh	*msh_instance = NULL;
+
+	if (new_msh != NULL)
+		msh_instance = new_msh;
+	return (msh_instance);
+}

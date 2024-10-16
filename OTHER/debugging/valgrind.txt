@@ -1,34 +1,76 @@
-==1080362== Memcheck, a memory error detector
-==1080362== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==1080362== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
-==1080362== Command: ./minishell
-==1080362== Parent PID: 1077660
-==1080362== 
-==1080362== 
-==1080362== FILE DESCRIPTORS: 7 open (3 std) at exit.
-==1080362== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
-==1080362==    <inherited from parent>
-==1080362== 
-==1080362== Open AF_UNIX socket 43: <unknown>
-==1080362==    <inherited from parent>
-==1080362== 
-==1080362== Open file descriptor 42: /home/coline/.config/Code/logs/20241015T165559/ptyhost.log
-==1080362==    <inherited from parent>
-==1080362== 
-==1080362== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
-==1080362==    <inherited from parent>
-==1080362== 
-==1080362== 
-==1080362== HEAP SUMMARY:
-==1080362==     in use at exit: 232,823 bytes in 234 blocks
-==1080362==   total heap usage: 552 allocs, 318 frees, 258,981 bytes allocated
-==1080362== 
-==1080362== LEAK SUMMARY:
-==1080362==    definitely lost: 0 bytes in 0 blocks
-==1080362==    indirectly lost: 0 bytes in 0 blocks
-==1080362==      possibly lost: 0 bytes in 0 blocks
-==1080362==    still reachable: 0 bytes in 0 blocks
-==1080362==         suppressed: 232,823 bytes in 234 blocks
-==1080362== 
-==1080362== For lists of detected and suppressed errors, rerun with: -s
-==1080362== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==19791== Memcheck, a memory error detector
+==19791== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==19791== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==19791== Command: /usr/bin/cat minishell.h
+==19791== Parent PID: 1962==19792== 
+====19791== 
+==19791== FILE DESCRIPTORS: 11 open (1 std) at exit.
+==19791== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 45: /dev/ptmx
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 44: /dev/ptmx
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open AF_UNIX socket 43: <unknown>
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 42: /home/coline/.config/Code/logs/20241016T112813/ptyhost.log
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 7: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 6:
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 5: /dev/pts/6
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 4: /dev/pts/6
+==19791==    <inherited from parent>
+==19791== 
+==19791== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==19791==    <inherited from parent>
+==19791== 
+==19791== 
+==19791== HEAP SUMMARY:
+==19791==     in use at exit: 0 bytes in 0 blocks
+==19791==   total heap usage: 31 allocs, 31 frees, 135,065 bytes allocated
+==19791== 
+==19791== All h==19626== 
+==19626== FILE DESCRIPTORS: 9 open (3 std) at exit.
+==19626== Open file descriptor 103: /usr/share/code/v8_context_snapshot.bin
+==19626==    <inherited from parent>
+==19626== 
+==19626== Open file descriptor 45: /dev/ptmx
+==19626==    <inherited from parent>
+==19626== 
+==19626== Open file descriptor 44: /dev/ptmx
+==19626==    <inherited from parent>
+==19626== 
+==19626== Open AF_UNIX socket 43: <unknown>
+==19626==    <inherited from parent>
+==19626== 
+==19626== Open file descriptor 42: /home/coline/.config/Code/logs/20241016T112813/ptyhost.log
+==19626==    <inherited from parent>
+==19626== 
+==19626== Open file descriptor 3: /home/coline/42_common_core/minishell/OTHER/debugging/valgrind.txt
+==19626==    <inherited from parent>
+==19626== 
+==19626== 
+==19626== HEAP SUMMARY:
+==19626==     in use at exit: 232,823 bytes in 234 blocks
+==19626==   total heap usage: 851 allocs, 617 frees, 265,716 bytes allocated
+==19626== 
+==19626== LEAK SUMMARY:
+==19626==    definitely lost: 0 bytes in 0 blocks
+==19626==    indirectly lost: 0 bytes in 0 blocks
+==19626==      possibly lost: 0 bytes in 0 blocks
+==19626==    still reachable: 0 bytes in 0 blocks
+==19626==         suppressed: 232,823 bytes in 234 blocks
+==19626== 
+==19626== For lists of detected and suppressed errors, rerun with: -s
+==19626== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

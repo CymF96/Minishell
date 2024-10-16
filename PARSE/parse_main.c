@@ -125,7 +125,7 @@ int	analyse_input(t_msh *msh)
 int	parse_main(t_msh *msh)
 {
 	int	flag;
-	
+
 	if (msh == NULL || msh->input == NULL || msh->input[0] == '\0')
 		return (1);
 	parse_malloc(msh);
@@ -148,21 +148,5 @@ int	parse_main(t_msh *msh)
 		return (1);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);
-
-
-	// t_pexe *current = msh->pexe;
-    
-    // while (current != NULL) {
-    //     printf("Type: %d\n", current->type);
-    //     printf("Cmd: %s\n", current->cmd);
-    //     printf("Group ID: %d\n", current->group_id);
-    //     printf("P Index: %d\n", current->p_index);
-    //     printf("Muk Note: %d\n", current->muk_note);
-    //     printf("Temp: %s\n", current->temp);
-    //     printf("\n");
-
-    //     current = current->next;
-	// }
-
 	return (0);
 }

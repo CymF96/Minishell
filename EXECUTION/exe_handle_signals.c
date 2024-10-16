@@ -1,14 +1,5 @@
 #include "../minishell.h"
 
-t_msh	*get_msh_instance(t_msh *new_msh)
-{
-	static t_msh	*msh_instance = NULL;
-
-	if (new_msh != NULL)
-		msh_instance = new_msh;
-	return (msh_instance);
-}
-
 void	sigeof(t_msh *msh)
 {
 	if (isatty(STDIN_FILENO))
@@ -22,13 +13,32 @@ void	sigeof(t_msh *msh)
 		return ;
 }
 
+void	sigquit(t_msh *msh, int i)
+{
+	if (isatty(STDIN_FILENO))
+		return ;
+	else
+	{
+		while (msh->chds[i])
+			kill(msh->chds[i++]->pid, SIGQUIT);
+		exit_cleanup("Quit", msh, errno, 0);
+	}
+}
+
 void	sig_do(t_msh *msh, int sig, int i)
 {
 	msh->interrupted = 1;
 	if (sig == SIGINT)
 	{
 		if (msh->pexe != NULL || msh->parse != NULL)
+		{
+			if (msh->hd_temp)
+			{
+				close(msh->parse->here_fd);
+				unlink(msh->hd_temp);
+			}
 			exit_cleanup(NULL, msh, errno, 0);
+		}
 		else
 		{
 			rl_replace_line("", 0);
@@ -37,16 +47,7 @@ void	sig_do(t_msh *msh, int sig, int i)
 		}
 	}
 	if (sig == SIGQUIT)
-	{
-		if (isatty(STDIN_FILENO))
-			return ;
-		else
-		{
-			while (msh->chds[i])
-				kill(msh->chds[i++]->pid, SIGQUIT);
-			exit_cleanup("Quit", msh, errno, 0);
-		}
-	}
+		sigquit(msh, i);
 }
 
 void	signals_handler(int sig)
@@ -67,7 +68,6 @@ void	signal_handler_init(t_msh *msh)
 	get_msh_instance(msh);
 	sa.sa_handler = signals_handler;
 	sa.sa_flags = 0;
-	// sa.sa_flags = SA_RESTART; //////////////////////////////UNCOMMENT ME!!!!!!!!
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);
