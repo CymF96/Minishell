@@ -98,10 +98,10 @@ void	cmd_unset(t_msh *msh)
 		if (ft_strchr(msh->pexe->cmd, '=') == NULL)
 		{
 			var_name = set_var_name(msh->pexe->cmd);
-			if (remove_var(msh, var_name) == 1)
+			if (remove_var(msh, var_name) == 1 && !msh->pexe->next)
 			{
 				free(var_name);
-				return ;
+					return ;
 			}
 		}
 		free(var_name);
