@@ -19,7 +19,6 @@ SRC =	minishell.c\
 		PARSE/parse_specials.c \
 		PARSE/parse_tokenize.c \
 		PARSE/parse_utils.c \
-		PARSE/parse_wild_character.c \
 		EXECUTION/exe_builtin_cmd_1.c\
 		EXECUTION/exe_builtin_cmd_2.c\
 		EXECUTION/exe_executable.c\

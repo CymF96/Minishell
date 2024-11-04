@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 16:33:14 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 12:16:49 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	expand_dollars(t_msh *msh, int *i)
 	{
 		if (dollar_error(msh, i) == 1)
 			return (1);
-		(*i)++;
+		// (*i)++;
 	}
 	else
 	{

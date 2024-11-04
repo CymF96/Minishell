@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 11:18:05 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/09 16:34:05 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:34:48 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,6 @@ t_type	check_special(char *str, int *i)
 		return (APPEND);
 	else if (str[*i] == '|' && str[(*i) + 1] != '|')
 		return (PIPE);
-	else if (str[*i] == '|' && str[(*i) + 1] == '|')
-		return (OR);
-	else if (str[*i] == '&' && str[(*i) + 1] == '&')
-		return (AND);
-	else if (str[*i] == '(')
-		return (L_PAR);
-	else if (str[*i] == ')')
-		return (R_PAR);
-	else if (str[*i] == '*')
-		return (WILDCARD);
 	else
 		return (check_if_qt(str, i));
 }

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 10:25:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 21:17:21 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:35:32 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,6 @@ static int	check_character(t_msh *msh, t_parse *pars, int *i, t_type type)
 	}
 	else if (type == PIPE)
 		handle_pipes(msh, pars, type);
-	else if (type == AND || type == OR)
-		handle_logic(msh, pars, i, type);
-	else if (type == L_PAR || type == R_PAR)
-		handle_paran(msh, pars, type);
-	else if (type == WILDCARD)
-	{
-		copy_input_mod(msh, "*", 0, 1);
-		pars->w_count++;
-	}
 	if (type != DOLLAR)
 		(*i)++;
 	return (0);
@@ -103,7 +94,6 @@ int	input_to_modified(t_msh *msh)
 			&& msh->input[i] != '\0')
 	{
 		type = check_special(msh->input, &i);
-		fflush(stdout);
 		if (modified_helper(msh, type, &i, &start) == 1)
 			return (1);
 	}
