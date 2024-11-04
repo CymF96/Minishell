@@ -79,6 +79,8 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	else
 	{
 		waitpid(msh->chds[0]->pid, &status, 0);
+		if (WIFEXITED(status))
+			msh->exit_error = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
 			clean_child(msh);
 	}

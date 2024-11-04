@@ -1,5 +1,5 @@
 NAME = minishell
-CC = gcc #made gcc to make it work in my compiler
+CC = cc #made gcc to make it work in my compiler
 CFLAGS = -Wall -Wextra -Werror -g3 -O3 -O0
 LDFLAGS = -lreadline -lncurses
 
@@ -19,7 +19,6 @@ SRC =	minishell.c\
 		PARSE/parse_specials.c \
 		PARSE/parse_tokenize.c \
 		PARSE/parse_utils.c \
-		PARSE/parse_wild_character.c \
 		EXECUTION/exe_builtin_cmd_1.c\
 		EXECUTION/exe_builtin_cmd_2.c\
 		EXECUTION/exe_executable.c\

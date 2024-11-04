@@ -6,25 +6,22 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 22:32:34 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 12:00:00 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-
-//leak-kinds=all --track-origins=yes --verbose 
-//--log-file=valgrind-out.txt ./minishell
+// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
 
 static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 {
 	int		j;
 	t_type	type;
 
+	(*i)++;
 	if (tye == HEREDOC || tye == APPEND)
-		*i += 2;
-	else
-		(*i)++;
+		*i += 1;
 	j = *i;
 	while (j < (int)ft_strlen(msh->input) && msh->input[j] != '\0')
 	{
@@ -46,9 +43,29 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	return (1);
 }
 
-int	request_more_input(t_msh *msh, t_parse *pars)
+static int	request_more_input_cont(t_msh *msh, char *temp)
 {
 	char	*gnl_temp;
+
+	gnl_temp = ft_strjoin(" ", temp);
+	if (gnl_temp == NULL)
+		return (1);
+	free(temp);
+	msh->text = ft_strjoin(msh->input, gnl_temp);
+	if (msh->text == NULL)
+	{
+		free(gnl_temp);
+		return (2);
+	}
+	free (gnl_temp);
+	free (msh->input);
+	msh->input = msh->text;
+	msh->text = NULL;
+	return (0);
+}
+
+int	request_more_input(t_msh *msh, t_parse *pars)
+{
 	char	*temp;
 
 	clean_init_parse(pars);
@@ -61,21 +78,14 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 			free(temp);
 			temp = get_next_line(STDIN_FILENO, msh);
 		}
-		// if (temp != NULL)
-		// 	free(temp);
 		temp = NULL;
 		if (msh->input != NULL)
 			free(msh->input);
 		msh->input = NULL;
 		return (1);
 	}
-	gnl_temp = ft_strjoin(" ", temp);
-	free(temp);
-	msh->text = ft_strjoin(msh->input, gnl_temp);
-	free (gnl_temp);
-	free (msh->input);
-	msh->input = msh->text;
-	msh->text = NULL;
+	if (request_more_input_cont(msh, temp) != 0)
+		return (1);
 	return (0);
 }
 
@@ -144,7 +154,7 @@ int	parse_main(t_msh *msh)
 	}
 	if (create_modified(msh, msh->parse) == 1)
 		return (1);
-	if (msh->parse->modified[0] == '|' || handle_wilds(msh, msh->parse) == 1)
+	if (msh->parse->modified[0] == '|')
 		return (1);
 	parse_tokenize(msh, msh->parse);
 	make_pexe(msh, msh->parse);

@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 15:52:10 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/07 14:34:38 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 11:34:15 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,34 +68,4 @@ void	handle_pipes(t_msh *msh, t_parse *pars, t_type type)
 		input_to_poi(msh, pars, PIPE);
 	}
 	msh->pipe_nb++;
-}
-
-void	handle_logic(t_msh *msh, t_parse *pars, int *i, t_type type)
-{
-	if (type == OR)
-	{
-		copy_input_mod(msh, "|", 0, 1);
-		input_to_poi(msh, pars, OR);
-		(*i) += 1;
-	}
-	else if (type == AND)
-	{
-		copy_input_mod(msh, "&", 0, 1);
-		input_to_poi(msh, pars, AND);
-		(*i) += 1;
-	}
-}
-
-void	handle_paran(t_msh *msh, t_parse *pars, t_type type)
-{
-	if (type == L_PAR)
-	{
-		copy_input_mod(msh, "(", 0, 1);
-		input_to_poi(msh, pars, L_PAR);
-	}
-	else if (type == R_PAR)
-	{
-		copy_input_mod(msh, ")", 0, 1);
-		input_to_poi(msh, pars, R_PAR);
-	}
 }
