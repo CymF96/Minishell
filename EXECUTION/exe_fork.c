@@ -61,10 +61,11 @@ void	closing(t_msh *msh, int nb_chds)
 	int	status;
 
 	i = 0;
+	status = 0;
 	close_fds(msh, nb_chds, -1);
 	dup2(msh->fd[0], STDIN_FILENO);
 	dup2(msh->fd[1], STDOUT_FILENO);
-	while (msh->chds[i] != NULL)
+	while (msh->chds && msh->chds[i] != NULL)
 	{
 		waitpid(msh->chds[i]->pid, &status, 0);
 		if (kill_children(msh, status, i) == 1)
