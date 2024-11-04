@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 10:12:22 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:43:23 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ void	cmd_unset(t_msh *msh);
 void	pipe_exe(t_msh *msh, t_pexe *head);
 
 /*------- PARSE USER INPUT -------*/
+int		request_more_input_cont(t_msh *msh, char *temp);	
 int		parse_main(t_msh *msh);
 int		handle_wilds(t_msh *msh, t_parse *pars);
 void	wild_malloc(t_msh *msh, t_parse *pars);

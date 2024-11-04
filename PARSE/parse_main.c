@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 12:00:00 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:43:27 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 	return (1);
 }
 
-static int	request_more_input_cont(t_msh *msh, char *temp)
+int	request_more_input_cont(t_msh *msh, char *temp)
 {
 	char	*gnl_temp;
 
@@ -61,31 +61,6 @@ static int	request_more_input_cont(t_msh *msh, char *temp)
 	free (msh->input);
 	msh->input = msh->text;
 	msh->text = NULL;
-	return (0);
-}
-
-int	request_more_input(t_msh *msh, t_parse *pars)
-{
-	char	*temp;
-
-	clean_init_parse(pars);
-	write (1, "> ", 2);
-	temp = get_next_line(STDIN_FILENO, msh);
-	if (msh->interrupted || temp == NULL)
-	{
-		while (temp != NULL)
-		{
-			free(temp);
-			temp = get_next_line(STDIN_FILENO, msh);
-		}
-		temp = NULL;
-		if (msh->input != NULL)
-			free(msh->input);
-		msh->input = NULL;
-		return (1);
-	}
-	if (request_more_input_cont(msh, temp) != 0)
-		return (1);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc_helper.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 21:59:48 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:43:26 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,30 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 		free(msh->hd_temp);
 		msh->hd_temp = NULL;
 	}
+	return (0);
+}
+
+int	request_more_input(t_msh *msh, t_parse *pars)
+{
+	char	*temp;
+
+	clean_init_parse(pars);
+	write (1, "> ", 2);
+	temp = get_next_line(STDIN_FILENO, msh);
+	if (msh->interrupted || temp == NULL)
+	{
+		while (temp != NULL)
+		{
+			free(temp);
+			temp = get_next_line(STDIN_FILENO, msh);
+		}
+		temp = NULL;
+		if (msh->input != NULL)
+			free(msh->input);
+		msh->input = NULL;
+		return (1);
+	}
+	if (request_more_input_cont(msh, temp) != 0)
+		return (1);
 	return (0);
 }
