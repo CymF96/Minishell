@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_executable.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
+/*   Updated: 2024/11/04 13:29:39 by cofische         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	append_args(t_msh *msh, t_pexe *head, int len_group)
@@ -47,7 +59,7 @@ int	check_wc(t_msh *msh, t_pexe *head)
 	return (0);
 }
 
-void	clean_child(t_msh *msh)
+void	clean_child(t_msh *msh, int error_code)
 {
 	if (msh->chds != NULL)
 	{
@@ -55,7 +67,7 @@ void	clean_child(t_msh *msh)
 		msh->chds = NULL;
 		exit_cleanup(NULL, msh, 0, 0);
 	}
-	exit_cleanup(NULL, msh, errno, 0);
+	exit_cleanup(NULL, msh, error_code, 0);
 }
 
 void	pipe_exe(t_msh *msh, t_pexe *head)
@@ -79,13 +91,7 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	else
 	{
 		waitpid(msh->chds[0]->pid, &status, 0);
-		if (WIFEXITED(status))
-		{
-			msh->exit_error = WEXITSTATUS(status);
-			exit_cleanup("CHILD FAILED", msh, WEXITSTATUS(status), 0); //LOOOOOOK AAAT MEEE
-		}
-		if (WIFSIGNALED(status))
-			clean_child(msh);
+		clean_child(msh, WIFEXITED(status));
 	}
 }
 
@@ -114,6 +120,5 @@ void	exe(t_msh *msh)
 		}
 		else
 			pipe_exe(msh, head);
-		clean_child(msh);
 	}
 }

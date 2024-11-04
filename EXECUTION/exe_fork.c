@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exe_fork.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/04 13:00:34 by cofische          #+#    #+#             */
+/*   Updated: 2024/11/04 13:33:11 by cofische         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	chd1_fork(t_msh *msh, int nb_chds)
@@ -77,5 +89,5 @@ void	closing(t_msh *msh, int nb_chds)
 		free_pipex(msh);
 		msh->chds = NULL;
 	}
-	exit_cleanup(NULL, msh, errno, 0);
+	exit_cleanup(NULL, msh, WIFEXITED(status), 0);
 }
