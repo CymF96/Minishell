@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 15:13:03 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:46:40 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,8 @@ char	*find_executable_path(t_msh *msh);
 char	*set_var_name(char *cmd);
 int		input_validate(int ac, char **envp);
 void	copy_envp(t_msh *msh, char **envp);
-void	remove_node(t_msh *msh, int heredoc, int g);t_msh	*get_msh_instance(t_msh *new_msh);
+void	remove_node(t_msh *msh, int heredoc, int g);
+t_msh	*get_msh_instance(t_msh *new_msh);
 int		node_strlen(t_pexe *node);
 int		move_node(t_msh *msh);
 void	move_group(t_msh *msh);

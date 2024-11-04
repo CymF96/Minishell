@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env_variables.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 12:16:49 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:35:52 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	dollar_error(t_msh *msh, int *i)
 {
 	char	*temp;
 
-	if (ft_strrchr(msh->input, '+'))
+	if (!strncmp("echo", msh->input, ft_strlen(msh->input)) \
+		&& strrchr(msh->input, '+'))
 	{
 		exit_error_addition(msh);
 		return (1);
