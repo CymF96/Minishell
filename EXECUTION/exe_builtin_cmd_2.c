@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:19 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:00:20 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:36:40 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	cmd_unset(t_msh *msh)
 			if (remove_var(msh, var_name) == 1 && !msh->pexe->next)
 			{
 				free(var_name);
-					return ;
+				return ;
 			}
 		}
 		free(var_name);

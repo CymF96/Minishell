@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:52 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:00:53 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:40:45 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,8 @@ void	red_left(t_msh *msh)
 		check_type(msh);
 		msh->fd[0] = save_stdin;
 		dup2(msh->fd[0], STDIN_FILENO);
-		if (!msh->chds)
-		{
-			close(msh->fd[0]);
-			msh->fd[0] = -1;
-		}
 		close(msh->fd[0]);
+		msh->fd[0] = -1;
 	}
 }
 
