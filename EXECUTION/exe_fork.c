@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_fork.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:34 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:33:11 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 10:27:31 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	chd1_fork(t_msh *msh, int nb_chds)
 	msh->chds[0]->pid = fork();
 	if (msh->chds[0]->pid == 0)
 	{
+		close(msh->chds[0]->fd[0]);
 		dup2(msh->chds[0]->fd[1], STDOUT_FILENO);
 		close(msh->chds[0]->fd[1]);
 		close_fds(msh, nb_chds, 0);
