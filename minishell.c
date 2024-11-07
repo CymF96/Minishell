@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 11:12:34 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:18:39 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,18 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_msh	*msh;
+	t_msh	msh;
 
 	(void)av;
-	msh = malloc(sizeof(t_msh));
-	if (msh == NULL)
-	{
-		perror("Error");
-		exit(EXIT_FAILURE);
-	}
-	minishell_start(msh, ac, envp);
-	if (msh != NULL)
-		free(msh);
+	ft_memset(&msh, 0, sizeof(msh));
+	// msh = malloc(sizeof(t_msh));
+	//if (msh == NULL)
+	//{
+//		perror("Error");
+//		exit(EXIT_FAILURE);
+//	}
+	minishell_start(&msh, ac, envp);
+	//if (msh != NULL)
+	//	free(msh);
 	return (0);
 }

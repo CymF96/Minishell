@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 13:05:20 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:16:36 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		if (msh != NULL)
 		{
 			free_envp(msh);
-			free(msh);
+			// free(msh);
 		}
 		if (check == 1)
 			exit(EXIT_SUCCESS);
