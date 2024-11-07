@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_builtin_cmd_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:10 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:00:12 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:50:06 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	cmd_echo(t_msh *msh)
 		ft_printf("\n");
 	}
 	if (msh->pexe != NULL \
-			&& ft_strlen(msh->pexe->cmd) == 2 \
-			&& !ft_strncmp("-n", msh->pexe->cmd, 2))
+			&& !ft_strncmp("-n", msh->pexe->cmd, 2) \
+			&& ft_char('n', msh->pexe->cmd + 1))
 		flag = 1;
 	else
 		msh->pexe = head;

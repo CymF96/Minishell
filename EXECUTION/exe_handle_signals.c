@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_handle_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:38 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:00:40 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:28:51 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,9 @@ void	sigeof(t_msh *msh)
 
 void	sigquit(t_msh *msh, int i)
 {
-	if (isatty(STDIN_FILENO))
-		return ;
-	else
-	{
-		while (msh->chds[i])
-			kill(msh->chds[i++]->pid, SIGQUIT);
-		exit_cleanup("Quit", msh, errno, 0);
-	}
+	while (msh->chds[i])
+		kill(msh->chds[i++]->pid, SIGQUIT);
+	exit_cleanup("Quit", msh, errno, 0);
 }
 
 void	sig_do(t_msh *msh, int sig, int i)
@@ -83,10 +78,15 @@ void	signal_handler_init(t_msh *msh)
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		exit_cleanup(NULL, msh, errno, 2);
-	if (isatty(STDIN_FILENO))
+	if (isatty(STDIN_FILENO)) {
 		sa.sa_handler = SIG_IGN;
-	else
+		if (sigaction(SIGQUIT, &sa, NULL) == -1)
+			exit_cleanup(NULL, msh, errno, 2);
+	} else {
 		sa.sa_handler = signals_handler;
-	if (sigaction(SIGQUIT, &sa, NULL) == -1)
-		exit_cleanup(NULL, msh, errno, 2);
+		if (sigaction(SIGQUIT, &sa, NULL) == -1)
+			exit_cleanup(NULL, msh, errno, 2);
+	}
+
+
 }
