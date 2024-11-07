@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 11:59:31 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/07 13:34:27 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ int	check_wc(t_msh *msh, t_pexe *head)
 
 void	clean_child(t_msh *msh)
 {
-	int error_code;
-	int status;
+	int	error_code;
+	int	status;
 
 	status = 0;
 	error_code = 0;
@@ -70,7 +70,7 @@ void	clean_child(t_msh *msh)
 	if (WIFEXITED(status))
 		error_code = WEXITSTATUS(status);
 	if (msh->chds != NULL)
-		{
+	{
 		free_pipex(msh);
 		msh->chds = NULL;
 		exit_cleanup(NULL, msh, 0, 0);
