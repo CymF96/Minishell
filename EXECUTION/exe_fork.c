@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:34 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 10:27:31 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/07 14:41:23 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	last_fork(t_msh *msh, int i, int nb_chds)
 	msh->chds[i]->pid = fork();
 	if (msh->chds[i]->pid == 0)
 	{
+		close(msh->chds[0]->fd[1]);
 		dup2(msh->chds[i - 1]->fd[0], STDIN_FILENO);
 		close(msh->chds[i - 1]->fd[0]);
 		close_fds(msh, nb_chds, i);

@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 10:51:19 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/07 13:33:50 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ void	create_path(t_msh *msh, char *exe_cmd)
 		|| !ft_strncmp("/usr/bin/", msh->pexe->cmd, 9))
 	{
 		msh->path = ft_strdup(exe_cmd);
-		if (access(msh->path, F_OK | X_OK) == 0)
+		if (access(msh->path, F_OK | X_OK) != 0)
+		{
+			free(msh->path);
 			msh->path = NULL;
+		}
 	}
 	else
 		msh->path = find_executable_path(msh);
