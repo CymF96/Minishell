@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pexe_sorting.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:45:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 22:54:46 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/07 12:01:26 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,13 @@ void	check_double_heredoc(t_msh *msh)
 
 int	check_swapping(t_pexe *current, t_pexe *next)
 {
-	if (current->group_id > next->group_id || \
+	if (current->type == EXE && next->type == INFILE)
+	{
+		swap(current, next);
+		current->p_index = next->p_index;
+		next->p_index = current->p_index + 1;
+	}
+	else if (current->group_id > next->group_id || \
 			(current->group_id == next->group_id \
 			&& current->p_index > next->p_index))
 	{

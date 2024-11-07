@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 15:46:40 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 10:38:40 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	adding_var(t_msh *msh, char *new_var);
 int		updating_var(char **env_struct, char *var_name, char *cmd);
 void	exe(t_msh *msh);
 void	pipe_exe(t_msh *msh, t_pexe *head);
-void	clean_child(t_msh *msh, int error_code);
+void	clean_child(t_msh *msh);
 int		check_wc(t_msh *msh, t_pexe *head);
 void	append_args(t_msh *msh, t_pexe *head, int len_group);
 void	check_exit_status_cmd(t_msh *msh, int flag);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_executable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/04 13:29:39 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:59:31 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,18 @@ int	check_wc(t_msh *msh, t_pexe *head)
 	return (0);
 }
 
-void	clean_child(t_msh *msh, int error_code)
+void	clean_child(t_msh *msh)
 {
+	int error_code;
+	int status;
+
+	status = 0;
+	error_code = 0;
+	waitpid(msh->chds[0]->pid, &status, 0);
+	if (WIFEXITED(status))
+		error_code = WEXITSTATUS(status);
 	if (msh->chds != NULL)
-	{
+		{
 		free_pipex(msh);
 		msh->chds = NULL;
 		exit_cleanup(NULL, msh, 0, 0);
@@ -72,8 +80,6 @@ void	clean_child(t_msh *msh, int error_code)
 
 void	pipe_exe(t_msh *msh, t_pexe *head)
 {
-	int	status;
-
 	msh->chds = malloc(sizeof(t_pipex));
 	msh->chds[0] = (t_pipex *)malloc(sizeof(t_pipex));
 	clean_init_chds(msh->chds[0]);
@@ -83,16 +89,10 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	if (msh->chds[0]->pid == 0)
 	{
 		if (execve(msh->path, head->option, msh->envp) == -1)
-		{
-			exit_cleanup("execve failed to execute", msh, errno, 0);
-			return ;
-		}
+			exit(EXIT_FAILURE);
 	}
 	else
-	{
-		waitpid(msh->chds[0]->pid, &status, 0);
-		clean_child(msh, WIFEXITED(status));
-	}
+		clean_child(msh);
 }
 
 void	exe(t_msh *msh)

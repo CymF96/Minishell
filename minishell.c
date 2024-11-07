@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/11 13:37:30 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:12:34 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ int	check_if_exit(t_msh *msh)
 		if (temp == NULL)
 			exit_cleanup("Malloc Failed", msh, errno, 2);
 		remove_quotes(msh->input, ft_strlen(msh->input), temp);
-		if (ft_strlen(temp) == 4 && !ft_strncmp("exit", temp, 4))
+		if (!ft_strncmp("exit", temp, 4))
 		{
+			if (!isdigit(temp[4]))
+				printf("exit: %s: numeric argument required\n", temp + 4);
 			free(temp);
 			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 		}
