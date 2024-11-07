@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:34 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 14:41:23 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:52:48 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	mdlchd_fork(t_msh *msh, int i, int nb_chds)
 	{
 		dup2(msh->chds[i - 1]->fd[0], STDIN_FILENO);
 		close(msh->chds[i - 1]->fd[0]);
+		close(msh->chds[i]->fd[0]);
 		dup2(msh->chds[i]->fd[1], STDOUT_FILENO);
 		close(msh->chds[i]->fd[1]);
 		close_fds(msh, nb_chds, i);
@@ -44,10 +45,9 @@ void	last_fork(t_msh *msh, int i, int nb_chds)
 	msh->chds[i]->pid = fork();
 	if (msh->chds[i]->pid == 0)
 	{
-		close(msh->chds[0]->fd[1]);
 		dup2(msh->chds[i - 1]->fd[0], STDIN_FILENO);
 		close(msh->chds[i - 1]->fd[0]);
-		close_fds(msh, nb_chds, i);
+		close_fds(msh, nb_chds, -1);
 		check_type(msh);
 	}
 }
@@ -78,7 +78,9 @@ void	closing(t_msh *msh, int nb_chds)
 	status = 0;
 	close_fds(msh, nb_chds, -1);
 	dup2(msh->fd[0], STDIN_FILENO);
+	close(msh->fd[0]);
 	dup2(msh->fd[1], STDOUT_FILENO);
+	close(msh->fd[1]);
 	while (msh->chds && msh->chds[i] != NULL)
 	{
 		waitpid(msh->chds[i]->pid, &status, 0);
