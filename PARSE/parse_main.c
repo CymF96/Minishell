@@ -6,13 +6,11 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 13:43:27 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:47:24 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// valgrind --suppressions=./OTHER/debugging/rl.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./minishell
 
 static int	check_something_exists(t_msh *msh, int *i, t_type tye)
 {

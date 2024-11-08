@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 11:22:26 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 15:35:52 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:47:11 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	expand_dollars(t_msh *msh, int *i)
 	{
 		if (dollar_error(msh, i) == 1)
 			return (1);
-		// (*i)++;
 	}
 	else
 	{

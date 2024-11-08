@@ -9,7 +9,10 @@
 		"libft.h": "c",
 		"limits.h": "c",
 		"history.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"stdatomic.h": "c",
+		"wait.h": "c",
+		"sigaction.h": "c"
 	},
 	"makefile.configureOnOpen": true
 }

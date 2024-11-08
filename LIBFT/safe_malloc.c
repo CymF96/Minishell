@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_char.c                                          :+:      :+:    :+:   */
+/*   safe_malloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 12:46:48 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/08 12:46:54 by cofische         ###   ########.fr       */
+/*   Created: 2024/11/08 13:17:12 by cofische          #+#    #+#             */
+/*   Updated: 2024/11/08 13:20:31 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdbool.h>
 
-bool	ft_char(char c, const char *str)
+void	*safe_malloc(size_t size)
 {
-	while (*str)
-	{
-		if (*str++ != c)
-			return (false);
-	}
-	return (true);
+	void	*ptr;
+
+	ptr = malloc(size);
+	if (ptr == NULL)
+		ft_printf("malloc failed");
+	return (ptr);
 }

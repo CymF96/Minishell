@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 13:43:26 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:37:48 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static int	get_doc_helper(t_msh *msh, char *gnl, char *delim, int flag)
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
 		{
+			sigeof(msh, fd_temp);
 			if (gnl != NULL)
 				free(gnl);
 			break ;
@@ -99,6 +100,7 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	temp = get_next_line(STDIN_FILENO, msh);
 	if (msh->interrupted || temp == NULL)
 	{
+		sigeof(msh, -1);
 		while (temp != NULL)
 		{
 			free(temp);
