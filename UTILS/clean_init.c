@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 10:20:46 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/08 15:24:53 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ void	clean_msh_init(t_msh *msh)
 	msh->heredoc = NULL;
 	msh->hd_temp = NULL;
 	msh->chds = NULL;
+	msh->prompt_mode = 1;
 }

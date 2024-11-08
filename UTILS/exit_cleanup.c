@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 13:05:20 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 12:49:14 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 	if (check == 1 || check == 2)
 	{
 		clear_msh(msh, check, msg);
-		if (msh != NULL)
-		{
-			free_envp(msh);
-			free(msh);
-		}
+		free_envp(msh);
 		if (check == 1)
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
