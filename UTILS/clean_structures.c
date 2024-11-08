@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_structures.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:53:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/14 20:44:58 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:29:46 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ void	free_parse(t_msh *msh)
 				free (msh->parse->head);
 				msh->parse->head = temp;
 			}
+		}
+		if (msh->parse->here_fd != -1)
+		{
+			close(msh->parse->here_fd);
+			msh->parse->here_fd = -1;
 		}
 		free(msh->parse);
 		msh->parse = NULL;

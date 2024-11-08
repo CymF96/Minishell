@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 15:43:42 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:31:36 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ void	minishell_running(t_msh *msh)
 	if (!ft_strncmp("$$", msh->input, 2))
 		return ;
 	if (parse_main(msh) == 0)
+	{
+		signal_handlers(msh);
 		execution(msh);
+	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 
@@ -74,7 +77,6 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 				sigeof(msh, -1);
 			msh->prompt_mode = 0;
 		}
-		signal_handlers(msh);
 		minishell_running(msh);
 		clean_msh_init(msh);
 	}

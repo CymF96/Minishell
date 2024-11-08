@@ -6,33 +6,15 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/08 15:44:34 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:30:47 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static volatile sig_atomic_t	g_signal_bit = 0;
-
-void	sigdo(t_msh *msh)
-{
-	if (g_signal_bit & SIGINT_B)
-	{
-		handle_sigint(msh);
-		g_signal_bit &= ~SIGINT_B;
-		return ;
-	}
-	else if (g_signal_bit & SIGQUIT_B)
-	{
-		g_signal_bit &= ~SIGQUIT_B;
-		handle_sigquit(msh);
-		return ;
-	}
-	return ;
-}
-
 void	handle_sigint(t_msh *msh)
 {
+	msh->interrupted = 1;
 	write(STDOUT_FILENO, "\n", 1);
 	if (msh->pexe != NULL || msh->parse != NULL)
 	{
@@ -62,7 +44,7 @@ void	handle_sigquit(t_msh *msh)
 		while (msh->chds[i])
 			kill(msh->chds[i++]->pid, SIGQUIT);
 	}
-	exit_cleanup("Quit - Core Dump", msh, errno, 1);
+	exit_cleanup("Quit - Core Dump", msh, errno, 0);
 }
 
 void	signals_handler(int sig)
@@ -72,17 +54,12 @@ void	signals_handler(int sig)
 	msh = get_msh_instance(NULL);
 	if (sig == SIGINT)
 	{
-		g_signal_bit |= SIGINT_B;
-		sigdo(msh);
+		handle_sigint(msh);
 		return ;
 	}
 	if (sig == SIGQUIT)
 	{
-		g_signal_bit |= SIGQUIT_B;
-		if (msh->prompt_mode)
-			signal(SIGQUIT, SIG_IGN);
-		else
-			sigdo(msh);
+		handle_sigquit(msh);
 		return ;
 	}
 }

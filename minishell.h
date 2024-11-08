@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 15:43:08 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:30:59 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@
 # include <linux/limits.h>
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
-
-# define SIGINT_B 0001
-# define SIGQUIT_B 0010
 
 typedef enum s_type
 {
