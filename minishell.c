@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 17:18:39 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:52:23 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,23 @@
 int	check_if_exit(t_msh *msh)
 {
 	char	*temp;
+	int		i;
 
+	i = 4;
 	if (msh->input != NULL)
 	{
-		temp = malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
-		if (temp == NULL)
-			exit_cleanup("Malloc Failed", msh, errno, 2);
+		temp = safe_malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
 		remove_quotes(msh->input, ft_strlen(msh->input), temp);
 		if (!ft_strncmp("exit", temp, 4))
 		{
-			if (!isdigit(temp[4]))
-				printf("exit: %s: numeric argument required\n", temp + 4);
+			while (temp[i])
+			{
+				if (!isdigit(temp[i++]))
+				{
+					printf("exit: %s: numeric argument required\n", temp + 4);
+					break ;
+				}
+			}
 			free(temp);
 			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 		}
@@ -56,17 +62,19 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 	copy_envp(msh, envp);
 	msh->envp_flag = 0;
 	msh->exit_error = 0;
-	signal_handler_init(msh);
 	if (input_validate(ac, envp) != 0)
 		exit_cleanup("invalid input\n", msh, 0, 1);
 	while (loop)
 	{
+		signal_handlers_prompt(msh);
 		if (!msh->interrupted)
 		{
 			msh->input = readline("Heart of Gold>> ");
 			if (msh->input == NULL)
-				sigeof(msh);
+				sigeof(msh, -1);
+			msh->prompt_mode = 0;
 		}
+		signal_handlers(msh);
 		minishell_running(msh);
 		clean_msh_init(msh);
 	}
@@ -77,15 +85,6 @@ int	main(int ac, char **av, char **envp)
 	t_msh	msh;
 
 	(void)av;
-	ft_memset(&msh, 0, sizeof(msh));
-	// msh = malloc(sizeof(t_msh));
-	//if (msh == NULL)
-	//{
-//		perror("Error");
-//		exit(EXIT_FAILURE);
-//	}
 	minishell_start(&msh, ac, envp);
-	//if (msh != NULL)
-	//	free(msh);
 	return (0);
 }

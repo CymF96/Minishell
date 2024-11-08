@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 14:11:47 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/08 15:43:08 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <bits/sigaction.h>
 # include <sys/wait.h>
 # include <errno.h>
 # include <stddef.h>
@@ -27,6 +28,9 @@
 # include <linux/limits.h>
 # include <stdbool.h>
 # include "./LIBFT/libft.h"
+
+# define SIGINT_B 0001
+# define SIGQUIT_B 0010
 
 typedef enum s_type
 {
@@ -115,6 +119,7 @@ typedef struct s_msh
 	int			exit_error;
 	int			interrupted;
 	int			child;
+	int			prompt_mode;
 	t_parse		*parse;
 	t_pexe		*pexe;
 	t_pipex		**chds;
@@ -184,11 +189,13 @@ int		kill_children(t_msh *msh, int status, int i);
 void	last_fork(t_msh *msh, int i, int nb_chds);
 void	mdlchd_fork(t_msh *msh, int i, int nb_chds);
 void	chd1_fork(t_msh *msh, int nb_chds);
-void	signal_handler_init(t_msh *msh);
+void	sigdo(t_msh *msh);
+void	signal_handlers_prompt(t_msh *msh);
+void	handle_sigint(t_msh *msh);
+void	handle_sigquit(t_msh *msh);
 void	signals_handler(int sig);
-void	sig_do(t_msh *msh, int sig, int i);
-void	sigquit(t_msh *msh, int i);
-void	sigeof(t_msh *msh);
+void	signal_handlers(t_msh *msh);
+void	sigeof(t_msh *msh, int fd);
 void	ft_pipex(t_msh *msh);
 void	create_pipes(t_msh *msh);
 int		create_children(t_msh *msh);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 10:37:29 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/07/15 19:35:40 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:51:23 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static size_t	row_len(const char *str, char c)
 	return (len);
 }
 
-static void	*safe_malloc(size_t size)
+static void	*safe_malloc2(size_t size)
 {
 	char	*ptr;
 
@@ -79,7 +79,7 @@ char	**ft_split(const char *s, char c)
 		while (*s == c && s != NULL)
 			s++;
 		len = row_len(s, c);
-		strings[i] = safe_malloc(len);
+		strings[i] = safe_malloc2(len);
 		ft_strlcpy(strings[i], s, len + 1);
 		s += len;
 		i++;

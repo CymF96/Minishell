@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:45:44 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/10/15 10:16:36 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/08 13:38:31 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,21 @@ void	swap(t_pexe *node_a, t_pexe *node_b)
 	node_b->p_index = temp.p_index;
 	node_b->option = temp.option;
 	node_b->type = temp.type;
+}
+
+void	sigeof(t_msh *msh, int fd)
+{
+	if (isatty(STDIN_FILENO))
+	{
+		if (fd != -1)
+			close(fd);
+		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+	}
+	else if (msh->pexe != NULL)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		exit_cleanup(NULL, msh, errno, 0);
+	}
+	else
+		return ;
 }
