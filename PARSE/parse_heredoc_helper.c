@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 13:37:48 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 16:49:36 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
 	{
 		while (gnl[i] != '\0')
 		{
+			sigeof(msh, fd_temp);
 			if (gnl[i] != '$')
 				ft_putchar_fd(gnl[i], fd_temp);
 			else
@@ -54,7 +55,6 @@ static int	get_doc_helper(t_msh *msh, char *gnl, char *delim, int flag)
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
 		{
-			sigeof(msh, fd_temp);
 			if (gnl != NULL)
 				free(gnl);
 			break ;
@@ -81,7 +81,7 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 		return (1);
 	if (gnl != NULL)
 		free(gnl);
-	if (!msh->interrupted)
+	if (!msh->interrupted && msh->parse->here_fd != -1)
 		close(msh->parse->here_fd);
 	if (msh->hd_temp != NULL)
 	{
@@ -98,9 +98,9 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	clean_init_parse(pars);
 	write (1, "> ", 2);
 	temp = get_next_line(STDIN_FILENO, msh);
+	sigeof(msh, 0);
 	if (msh->interrupted || temp == NULL)
 	{
-		sigeof(msh, -1);
 		while (temp != NULL)
 		{
 			free(temp);
