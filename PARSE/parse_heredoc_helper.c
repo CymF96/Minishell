@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 16:49:36 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:08:22 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	check_for_here_dollar(t_msh *msh, char *gnl, int fd_temp, int flag)
 	{
 		while (gnl[i] != '\0')
 		{
-			sigeof(msh, fd_temp);
 			if (gnl[i] != '$')
 				ft_putchar_fd(gnl[i], fd_temp);
 			else
@@ -98,7 +97,6 @@ int	request_more_input(t_msh *msh, t_parse *pars)
 	clean_init_parse(pars);
 	write (1, "> ", 2);
 	temp = get_next_line(STDIN_FILENO, msh);
-	sigeof(msh, 0);
 	if (msh->interrupted || temp == NULL)
 	{
 		while (temp != NULL)

@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 16:31:36 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:11:17 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ void	minishell_running(t_msh *msh)
 	if (!ft_strncmp("$$", msh->input, 2))
 		return ;
 	if (parse_main(msh) == 0)
-	{
-		signal_handlers(msh);
 		execution(msh);
-	}
 	exit_cleanup(NULL, msh, 0, 0);
 }
 
@@ -70,13 +67,10 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 	while (loop)
 	{
 		signal_handlers_prompt(msh);
-		if (!msh->interrupted)
-		{
-			msh->input = readline("Heart of Gold>> ");
-			if (msh->input == NULL)
-				sigeof(msh, -1);
-			msh->prompt_mode = 0;
-		}
+		msh->input = readline("Heart of Gold>> ");
+		if (msh->input == NULL)
+			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
+		signal_handlers(msh);
 		minishell_running(msh);
 		clean_msh_init(msh);
 	}

@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:45:44 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 16:46:48 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:19:29 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,8 @@ void	swap(t_pexe *node_a, t_pexe *node_b)
 	node_b->type = temp.type;
 }
 
-void	sigeof(t_msh *msh, int fd)
+void	sigeof(t_msh *msh)
 {
 	if (msh->parse == NULL)
 		exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
-	if (fd != -1)
-		close(fd);
-	if (msh->hd_temp)
-		unlink(msh->heredoc);
-	exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 }

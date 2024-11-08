@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 16:30:59 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:14:52 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ void	handle_sigint(t_msh *msh);
 void	handle_sigquit(t_msh *msh);
 void	signals_handler(int sig);
 void	signal_handlers(t_msh *msh);
-void	sigeof(t_msh *msh, int fd);
+void	sigeof(t_msh *msh);
 void	ft_pipex(t_msh *msh);
 void	create_pipes(t_msh *msh);
 int		create_children(t_msh *msh);

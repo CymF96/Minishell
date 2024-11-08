@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/08 16:30:47 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:12:29 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,12 @@ void	handle_sigquit(t_msh *msh)
 	int	i;
 
 	i = 0;
-	write(STDOUT_FILENO, "\n", 1);
 	if (msh->child)
 	{
 		while (msh->chds[i])
 			kill(msh->chds[i++]->pid, SIGQUIT);
 	}
-	exit_cleanup("Quit - Core Dump", msh, errno, 0);
+	exit_cleanup(" Quit - Core Dump", msh, errno, 0);
 }
 
 void	signals_handler(int sig)
