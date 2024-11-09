@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_executable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 15:51:22 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/08 19:06:34 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_wc(t_msh *msh, t_pexe *head)
 	next = head->next;
 	if (next != NULL)
 	{
-		if (next->type == HEREDOC)
+		if (!ft_strncmp("wc", current->cmd, 2) && next->type == HEREDOC)
 			swap(current, next);
 		if (next->next != NULL && next->next->type == HEREDOC)
 		{

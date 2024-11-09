@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 15:52:23 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/09 11:40:10 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,9 @@ void	minishell_start(t_msh *msh, int ac, char **envp)
 	while (loop)
 	{
 		signal_handlers_prompt(msh);
-		if (!msh->interrupted)
-		{
-			msh->input = readline("Heart of Gold>> ");
-			if (msh->input == NULL)
-				sigeof(msh, -1);
-			msh->prompt_mode = 0;
-		}
+		msh->input = readline("Heart of Gold>> ");
+		if (msh->input == NULL)
+			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
 		signal_handlers(msh);
 		minishell_running(msh);
 		clean_msh_init(msh);
