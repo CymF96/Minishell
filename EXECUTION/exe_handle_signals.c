@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_handle_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/08 19:12:29 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/10 12:25:47 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	handle_sigquit(t_msh *msh)
 		while (msh->chds[i])
 			kill(msh->chds[i++]->pid, SIGQUIT);
 	}
-	exit_cleanup(" Quit - Core Dump", msh, errno, 0);
+	exit_cleanup(NULL, msh, errno, 0);
 }
 
 void	signals_handler(int sig)
