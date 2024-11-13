@@ -34,6 +34,7 @@ SRC =	minishell.c\
 		UTILS/exit_cleanup.c\
 		UTILS/utils.c\
 		UTILS/utils_2.c\
+		UTILS/utils_3.c\
 		UTILS/pexe_sorting.c\
 
 SRCS = $(addprefix $(SRC_PATH), $(SRC))

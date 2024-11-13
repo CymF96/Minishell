@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:12:01 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/04 11:36:45 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:40:48 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ char	*get_next_line(int fd, t_msh *msh)
 	char			*next_line;
 	int				i;
 
+	next_line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	i = create_list (&list, fd, msh);
