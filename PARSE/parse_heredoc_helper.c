@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc_helper.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 19:08:22 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/13 09:27:43 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 		free(msh->hd_temp);
 		msh->hd_temp = NULL;
 	}
+	msh->hr_flag = 1;
 	return (0);
 }
 

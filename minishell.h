@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 18:14:52 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:53:53 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_msh
 	char		*text;
 	char		*heredoc;
 	char		*hd_temp;
+	int			hr_flag;
 	int			envp_flag;
 	int			pipe_nb;
 	int			flag;
@@ -143,16 +144,13 @@ char	*find_executable_path(t_msh *msh);
 char	*set_var_name(char *cmd);
 int		input_validate(int ac, char **envp);
 void	copy_envp(t_msh *msh, char **envp);
-void	remove_node(t_msh *msh, int heredoc, int g);
+void	clean_groups(t_msh *msh, int g);
 t_msh	*get_msh_instance(t_msh *new_msh);
 int		node_strlen(t_pexe *node);
 int		move_node(t_msh *msh);
 void	move_group(t_msh *msh);
 int		updating_var(char **env_struct, char *var_name, char *cmd);
 void	swap(t_pexe *node_a, t_pexe *node_b);
-void	check_remove_heredoc(t_msh *msh, int heredoc, int infile, int g);
-void	check_heredoc_infile(t_msh *msh);
-void	check_double_heredoc(t_msh *msh);
 int		check_swapping(t_pexe *current, t_pexe *next);
 void	sort_pexe(t_msh *msh);
 t_pexe	*head(t_pexe *current);
