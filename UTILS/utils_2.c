@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:32:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/13 12:23:16 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/13 14:55:01 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,50 @@ t_pexe	*set_last_nodes(t_pexe *head, int group_id)
 
 void	remove_node(t_pexe *node)
 {
-	if (node->prev)
-		node->prev->next = node->next;
-	if (node->next)
-		node->next->prev = node->prev;
-	if (node->type == HEREDOC)
-		unlink(node->cmd);
-	free(node->cmd);
-	free(node);
+	if (node)
+	{
+		if (node->prev)
+			node->prev->next = node->next;
+		if (node->next)
+			node->next->prev = node->prev;
+		if (node->type == HEREDOC)
+			unlink(node->cmd);
+		if (node->cmd)
+		{
+			free(node->cmd);
+			node->cmd = NULL;
+		}
+		free(node);
+		node = NULL;
+	}
 }
 
-void	clean_group_nodes(t_pexe *current, int g, t_pexe *last_node)
+t_pexe	*clean_group_nodes(t_pexe *current, int g, t_pexe *last_node)
 {
 	t_pexe	*next;
 
 	while (current && current->group_id == g)
 	{
 		next = current->next;
-		if (strncmp(current->cmd, last_node->cmd, ft_strlen(last_node->cmd)))
+		if (last_node != current && (current->type == INFILE \
+			|| current->type == HEREDOC))
 			remove_node(current);
+		if (!next)
+			return (current);
 		current = next;
 	}
+	return (current);
 }
 
 int	pexe_length(t_msh *msh)
 {
 	t_pexe	*current;
-	int g;
-	int nb_g;
+	int		g;
+	int		nb_g;
 
 	current = msh->pexe;
 	g = current->group_id;
+	nb_g = 0;
 	while (current)
 	{
 		while (current && current->group_id == g)
@@ -71,14 +84,12 @@ int	pexe_length(t_msh *msh)
 void	clean_groups(t_msh *msh, int g)
 {
 	t_pexe	*current;
-	t_pexe	*head;
 	t_pexe	*last_node;
 	int		nb_group;
 
-	head = msh->pexe;
 	nb_group = pexe_length(msh);
 	current = msh->pexe;
-	while (nb_group)
+	while (current && nb_group != 0)
 	{
 		g = current->group_id;
 		while (current && (current->type != HEREDOC && current->type != INFILE))
@@ -86,11 +97,13 @@ void	clean_groups(t_msh *msh, int g)
 		if (current)
 		{
 			last_node = set_last_nodes(current, g);
-			clean_group_nodes(current, g, last_node);
+			current = clean_group_nodes(current, g, last_node);
+			msh->pexe = current;
 		}
-		if (current->next)
+		if (current && current->next)
 			current = current->next;
 		nb_group--;
 	}
-	msh->pexe = head;
+	while (msh->pexe->prev != NULL)
+		msh->pexe = msh->pexe->prev;
 }

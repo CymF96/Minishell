@@ -6,7 +6,7 @@
 /*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:45:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/13 11:52:54 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/13 15:07:10 by coline           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,30 @@
 // 	}
 // }
 
-// void	check_heredoc_infile(t_msh *msh)
-// {
-// 	int		heredoc;
-// 	int		infile;
-// 	int		g_infile;
-// 	t_pexe	*head;
+void	check_heredoc_infile(t_msh *msh)
+{
+	int		heredoc;
+	int		infile;
+	int		g;
+	t_pexe	*head;
 
-// 	head = msh->pexe;
-// 	heredoc = 0;
-// 	infile = 0;
-// 	while (msh->pexe != NULL)
-// 	{
-// 		if (msh->pexe->type == HEREDOC)
-// 			heredoc = 1;
-// 		if (msh->pexe->type == INFILE)
-// 		{
-// 			infile = 1;
-// 			g_infile = msh->pexe->group_id;
-// 		}
-// 		msh->pexe = msh->pexe->next;
-// 	}
-// 	msh->pexe = head;
-// 	check_remove_heredoc(msh, heredoc, infile, g_infile);
-// }
+	head = msh->pexe;
+	heredoc = 0;
+	infile = 0;
+	while (msh->pexe != NULL)
+	{
+		if (msh->pexe->type == HEREDOC)
+			heredoc++;
+		if (msh->pexe->type == INFILE)
+			infile++;
+		msh->pexe = msh->pexe->next;
+	}
+	msh->pexe = head;
+	g = head->group_id;
+	if ((heredoc && infile) || (heredoc > 1 && infile == 0) \
+		|| (heredoc == 0 && infile > 1))
+		clean_groups(msh, g);
+}
 
 // void	check_double_heredoc(t_msh *msh)
 // {
@@ -114,8 +114,8 @@ void	sort_pexe(t_msh *msh)
 	t_pexe	*current;
 	t_pexe	*next;
 	int		loop;
-	int		g;
 
+	check_heredoc_infile(msh);
 	loop = 1;
 	while (loop)
 	{
@@ -129,6 +129,4 @@ void	sort_pexe(t_msh *msh)
 			current = current->next;
 		}
 	}
-	g = current->group_id;
-	clean_groups(msh, g);
 }
