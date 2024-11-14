@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_executable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/08 19:06:34 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:37:47 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,17 @@ int	check_wc(t_msh *msh, t_pexe *head)
 
 void	clean_child(t_msh *msh)
 {
-	int	error_code;
 	int	status;
 
 	status = 0;
-	error_code = 0;
 	waitpid(msh->chds[0]->pid, &status, 0);
-	if (WIFEXITED(status))
-		error_code = WEXITSTATUS(status);
 	if (msh->chds != NULL)
 	{
 		free_pipex(msh);
 		msh->chds = NULL;
 		exit_cleanup(NULL, msh, 0, 0);
 	}
-	exit_cleanup(NULL, msh, error_code, 0);
+	exit_cleanup(NULL, msh, msh->exit_error, 0);
 }
 
 void	pipe_exe(t_msh *msh, t_pexe *head)

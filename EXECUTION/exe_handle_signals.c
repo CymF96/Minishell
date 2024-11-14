@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_handle_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/10 12:25:47 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/14 09:09:18 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ void	handle_sigint(t_msh *msh)
 			close(msh->parse->here_fd);
 			unlink(msh->hd_temp);
 		}
-		exit_cleanup(NULL, msh, errno, 0);
+		exit_cleanup(NULL, msh, 130, 0);
 	}
 	else
 	{
+		msh->exit_error = 130;
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -43,7 +44,7 @@ void	handle_sigquit(t_msh *msh)
 		while (msh->chds[i])
 			kill(msh->chds[i++]->pid, SIGQUIT);
 	}
-	exit_cleanup(NULL, msh, errno, 0);
+	exit_cleanup(NULL, msh, 131, 0);
 }
 
 void	signals_handler(int sig)

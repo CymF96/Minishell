@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:32:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/13 14:55:01 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/14 08:28:53 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ t_pexe	*set_last_nodes(t_pexe *head, int group_id)
 	last = head;
 	while (head && head->group_id == group_id)
 	{
-		last = head;
-		head = head->next;
+		if (head->type == INFILE || head->type == HEREDOC)
+			last = head;
+		if ((head->type != INFILE && head->type != HEREDOC) && !head->next)
+			return (last);
+		else
+			head = head->next;
 	}
 	return (last);
 }
