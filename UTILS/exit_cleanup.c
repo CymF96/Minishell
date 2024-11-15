@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 15:52:35 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:32:45 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)
 		clear_msh(msh, check, msg);
 		free_envp(msh);
 		if (check == 1)
-			exit(EXIT_SUCCESS);
-		exit(EXIT_FAILURE);
+			exit(msh->exit_error);
+		exit(msh->exit_error);
 	}
 	clear_msh(msh, check, NULL);
 	if (flag != 0)
