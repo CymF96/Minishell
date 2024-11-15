@@ -49,6 +49,12 @@ void	check_type(t_msh *msh)
 		double_red_right(msh);
 }
 
+void	check_file_exit(t_msh *msh)
+{
+	if (access(msh->pexe->cmd, F_OK | X_OK) != 0)
+		exit_cleanup("No such file or directory", msh, errno, 0);
+}
+
 void	execution(t_msh *msh)
 {
 	if (msh->pexe == NULL || (!ft_strncmp("", msh->pexe->cmd, 2)))
@@ -62,6 +68,12 @@ void	execution(t_msh *msh)
 		exit_cleanup(NULL, msh, 0, 1);
 		return ;
 	}
-	sort_pexe(msh);
+	if (msh->pexe->type != EXE && msh->pexe->next == NULL)
+	{
+		check_file_exit(msh);
+		return ;
+	}
+	if (sort_pexe(msh))
+		return ;
 	check_type(msh);
 }
