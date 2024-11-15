@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/13 11:53:53 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/15 16:52:00 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	move_group(t_msh *msh);
 int		updating_var(char **env_struct, char *var_name, char *cmd);
 void	swap(t_pexe *node_a, t_pexe *node_b);
 int		check_swapping(t_pexe *current, t_pexe *next);
-void	sort_pexe(t_msh *msh);
+int		sort_pexe(t_msh *msh);
 t_pexe	*head(t_pexe *current);
 
 /*------- EXECUTION -------*/

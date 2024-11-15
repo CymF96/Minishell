@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pexe_sorting.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:45:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 14:22:54 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:05:23 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_access(t_msh *msh, t_pexe *pexe, int *heredoc, int *infile)
 {
-	int temp_fd;
+	int	temp_fd;
 
 	if (pexe->type == INFILE || pexe->type == HEREDOC)
 	{
