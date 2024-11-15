@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 19:11:17 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:15:22 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_if_exit(t_msh *msh)
-{
-	char	*temp;
-	int		i;
-
-	i = 4;
-	if (msh->input != NULL)
-	{
-		temp = safe_malloc(sizeof(char) * (ft_strlen(msh->input) + 1));
-		remove_quotes(msh->input, ft_strlen(msh->input), temp);
-		if (!ft_strncmp("exit", temp, 4))
-		{
-			while (temp[i])
-			{
-				if (!isdigit(temp[i++]))
-				{
-					printf("exit: %s: numeric argument required\n", temp + 4);
-					break ;
-				}
-			}
-			free(temp);
-			exit_cleanup("User says 'Be Gone Thot!'", msh, errno, 1);
-		}
-		free(temp);
-		return (0);
-	}
-	return (1);
-}
 
 void	minishell_running(t_msh *msh)
 {

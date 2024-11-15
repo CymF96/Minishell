@@ -36,6 +36,7 @@ SRC =	minishell.c\
 		UTILS/utils_2.c\
 		UTILS/utils_3.c\
 		UTILS/pexe_sorting.c\
+		UTILS/check_exit.c \
 
 SRCS = $(addprefix $(SRC_PATH), $(SRC))
 OBJ = $(SRC:.c=.o)

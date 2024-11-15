@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:52 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/13 14:54:32 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/15 10:53:38 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	close_redirection(t_msh *msh, int save_sdtout)
 	}
 	else
 		exit_cleanup(NULL, msh, 0, 1);
+	dup2(0, STDOUT_FILENO);
 }
 
 int	open_heredoc(t_msh *msh)
