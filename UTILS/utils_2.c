@@ -1,99 +1,113 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_validate.c                                   :+:      :+:    :+:   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 17:32:51 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/09/08 15:50:49 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/14 08:28:53 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	input_validate(int ac, char **envp)
+t_pexe	*set_last_nodes(t_pexe *head, int group_id)
 {
-	if (ac > 1)
+	t_pexe	*last;
+
+	last = head;
+	while (head && head->group_id == group_id)
 	{
-		exit_cleanup("Too many clowns for this party", NULL, errno, 2);
-		return (-1);
+		if (head->type == INFILE || head->type == HEREDOC)
+			last = head;
+		if ((head->type != INFILE && head->type != HEREDOC) && !head->next)
+			return (last);
+		else
+			head = head->next;
 	}
-	else if (ac < 0)
-	{
-		exit_cleanup("How did you even manage neg AC?", NULL, errno, 2);
-		return (-1);
-	}
-	if (envp == NULL || *envp == NULL)
-	{
-		exit_cleanup("Where is my ENVP!", NULL, errno, 2);
-		return (-1);
-	}
-	return (0);
+	return (last);
 }
 
-t_pexe	*head(t_pexe *current)
+void	remove_node(t_pexe *node)
 {
-	while (current->prev != NULL)
-		current = current->prev;
+	if (node)
+	{
+		if (node->prev)
+			node->prev->next = node->next;
+		if (node->next)
+			node->next->prev = node->prev;
+		if (node->type == HEREDOC)
+			unlink(node->cmd);
+		if (node->cmd)
+		{
+			free(node->cmd);
+			node->cmd = NULL;
+		}
+		free(node);
+		node = NULL;
+	}
+}
+
+t_pexe	*clean_group_nodes(t_pexe *current, int g, t_pexe *last_node)
+{
+	t_pexe	*next;
+
+	while (current && current->group_id == g)
+	{
+		next = current->next;
+		if (last_node != current && (current->type == INFILE \
+			|| current->type == HEREDOC))
+			remove_node(current);
+		if (!next)
+			return (current);
+		current = next;
+	}
 	return (current);
 }
 
-void	copy_envp(t_msh *msh, char **envp)
-{
-	int		i;
-	int		envp_len;
-	char	**temp_envp;
-
-	msh->envp = NULL;
-	envp_len = 0;
-	while (envp[envp_len] != NULL)
-		envp_len++;
-	temp_envp = malloc(sizeof(char *) * (envp_len + 1));
-	if (temp_envp == NULL)
-		exit_cleanup(NULL, msh, errno, 1);
-	i = 0;
-	while (i < envp_len)
-	{
-		temp_envp[i] = ft_strdup(envp[i]);
-		if (temp_envp[i++] == NULL)
-			exit_cleanup(NULL, msh, errno, 1);
-	}
-	temp_envp[i] = NULL;
-	msh->envp = temp_envp;
-}
-
-void	remove_node(t_msh *msh, int heredoc, int g)
+int	pexe_length(t_msh *msh)
 {
 	t_pexe	*current;
-	t_pexe	*delme;
+	int		g;
+	int		nb_g;
 
 	current = msh->pexe;
-	while (current != NULL)
+	g = current->group_id;
+	nb_g = 0;
+	while (current)
 	{
-		if (current->type == HEREDOC && heredoc > 1 \
-				&& current->group_id == g)
-		{
-			heredoc--;
-			delme = current;
+		while (current && current->group_id == g)
 			current = current->next;
-			current->prev = delme->prev;
-			delme->prev->next = current;
-			unlink(delme->cmd);
-			free(delme->cmd);
-			free(delme);
-			delme = NULL;
-		}
-		else
-			current = current->next;
+		nb_g++;
+		g++;
 	}
+	return (nb_g);
 }
 
-t_msh	*get_msh_instance(t_msh *new_msh)
+void	clean_groups(t_msh *msh, int g)
 {
-	static t_msh	*msh_instance = NULL;
+	t_pexe	*current;
+	t_pexe	*last_node;
+	int		nb_group;
 
-	if (new_msh != NULL)
-		msh_instance = new_msh;
-	return (msh_instance);
+	nb_group = pexe_length(msh);
+	current = msh->pexe;
+	while (current && nb_group != 0)
+	{
+		g = current->group_id;
+		while (current && (current->type != HEREDOC && current->type != INFILE))
+			current = current->next;
+		if (current)
+		{
+			last_node = set_last_nodes(current, g);
+			current = clean_group_nodes(current, g, last_node);
+			msh->pexe = current;
+		}
+		if (current && current->next)
+			current = current->next;
+		nb_group--;
+	}
+	while (msh->pexe->prev != NULL)
+		msh->pexe = msh->pexe->prev;
 }

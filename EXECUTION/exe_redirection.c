@@ -6,7 +6,7 @@
 /*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:52 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/11 13:30:59 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/15 10:53:38 by mcoskune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 void	close_redirection(t_msh *msh, int save_sdtout)
 {
 	check_type(msh);
-	msh->fd[1] = save_sdtout;
-	dup2(msh->fd[1], STDOUT_FILENO);
-	if (!msh->child)
+	if (msh->hr_flag && !msh->child)
+		dup2(0, STDOUT_FILENO);
+	else if (!msh->child)
 	{
+		msh->fd[1] = save_sdtout;
+		dup2(msh->fd[1], STDOUT_FILENO);
 		close(msh->fd[1]);
 		msh->fd[1] = -1;
 	}
