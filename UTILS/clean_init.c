@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 18:43:14 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/18 10:13:13 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 11:56:02 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	clean_msh_init(t_msh *msh)
 	msh->pipe_nb = 0;
 	msh->flag = -1;
 	msh->interrupted = 0;
+	msh->hd_array = NULL;
 	msh->parse = NULL;
 	msh->pexe = NULL;
 	msh->child = 0;

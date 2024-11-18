@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:00 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/09 11:40:03 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:16:56 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	parse_main(t_msh *msh)
 		return (1);
 	while (1)
 	{
-		if (msh->parse->l_count == msh->parse->r_count && flag == 0)
+		if (flag == 0)
 			break ;
 		if (flag == 1)
 			return (1);
@@ -125,11 +125,11 @@ int	parse_main(t_msh *msh)
 			return (1);
 		flag = analyse_input(msh);
 	}
-	if (create_modified(msh, msh->parse) == 1)
-		return (1);
-	if (msh->parse->modified[0] == '|')
+	if (create_modified(msh, msh->parse) == 1 || msh->parse->modified[0] == '|')
 		return (1);
 	parse_tokenize(msh, msh->parse);
+	if (msh->interrupted == 1 && unlink_hd(msh) == 1)
+		return (1);
 	make_pexe(msh, msh->parse);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/15 19:19:13 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:07:45 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	handle_sigint(t_msh *msh)
 	write(STDOUT_FILENO, "\n", 1);
 	if (msh->pexe != NULL || msh->parse != NULL)
 	{
-		if (msh->hd_temp)
+		if (msh->hd_array)
 		{
 			close(msh->parse->here_fd);
-			unlink(msh->hd_temp);
+			unlink_hd(msh);
 		}
 		exit_cleanup(NULL, msh, 130, 0);
 	}
@@ -40,6 +40,12 @@ void	handle_sigquit(t_msh *msh)
 	int	i;
 
 	i = 0;
+	msh->interrupted = 1;
+	if (msh->hd_array)
+	{
+		close(msh->parse->here_fd);
+		unlink_hd(msh);
+	}
 	if (msh->child)
 	{
 		while (msh->chds[i])

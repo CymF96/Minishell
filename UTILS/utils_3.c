@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:20:09 by coline            #+#    #+#             */
-/*   Updated: 2024/11/13 11:13:59 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/18 13:01:29 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,32 @@ void	copy_envp(t_msh *msh, char **envp)
 	}
 	temp_envp[i] = NULL;
 	msh->envp = temp_envp;
+}
+
+void	heredoc_array(t_msh *msh, char *new_heredoc)
+{
+	int		i;
+	int		hd_len;
+	char	**temp_hd;
+
+	hd_len = 0;
+	while (msh->hd_array != NULL && msh->hd_array[hd_len] != NULL)
+		hd_len++;
+	temp_hd = malloc(sizeof(char *) * (hd_len + 2));
+	if (temp_hd == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	i = 0;
+	while (i < hd_len)
+	{
+		temp_hd[i] = ft_strdup(msh->hd_array[i]);
+		if (temp_hd[i] == NULL)
+			exit_cleanup(NULL, msh, errno, 1);
+		i++;
+	}
+	temp_hd[i] = ft_strdup(new_heredoc);
+	if (temp_hd[i++] == NULL)
+		exit_cleanup(NULL, msh, errno, 1);
+	temp_hd[i] = NULL;
+	free_mallocs(NULL, (void **)msh->hd_array);
+	msh->hd_array = temp_hd;
 }

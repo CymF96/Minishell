@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/18 09:24:25 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:00:12 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_msh
 	char		*text;
 	char		*heredoc;
 	char		*hd_temp;
+	char		**hd_array;
 	int			hr_flag;
 	int			envp_flag;
 	int			pipe_nb;
@@ -155,6 +156,8 @@ void	swap(t_pexe *node_a, t_pexe *node_b);
 int		check_swapping(t_pexe *current, t_pexe *next);
 int		sort_pexe(t_msh *msh);
 t_pexe	*head(t_pexe *current);
+void	heredoc_array(t_msh *msh, char *new_heredoc);
+int		unlink_hd(t_msh *msh);
 
 /*------- EXECUTION -------*/
 void	execution(t_msh *msh);

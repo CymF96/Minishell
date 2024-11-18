@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/18 10:09:58 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:43:09 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,25 @@ void	handle_message(int check, char *msg)
 				printf("Reason - %s\n", msg);
 		}
 	}
+}
+
+int	unlink_hd(t_msh *msh)
+{
+	int	i;
+
+	i = 0;
+	if (msh->hd_array != NULL)
+	{
+		while (msh->hd_array[i] != NULL)
+		{
+			unlink(msh->hd_array[i]);
+			free(msh->hd_array[i]);
+			i++;
+		}
+		free(msh->hd_array);
+		msh->hd_array = NULL;
+	}
+	return (1);
 }
 
 void	exit_cleanup(char *msg, t_msh *msh, int flag, int check)

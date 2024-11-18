@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc_helper.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 20:23:40 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/13 09:27:43 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/18 13:00:26 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,15 @@ static int	get_doc_helper(t_msh *msh, char *gnl, char *delim, int flag)
 		if (msh->interrupted)
 			return (1);
 		gnl = get_next_line(fd_temp, msh);
+		if (gnl == NULL && msh->interrupted != 1)
+		{
+			printf("warning: heredoc at line 1 delimited by EOF (%s)\n", delim);
+			break ;
+		}
 		if (gnl == NULL || (!ft_strncmp(gnl, delim, ft_strlen(delim)) && \
 					ft_strlen(delim) == ft_strlen(gnl)))
 		{
-			if (gnl != NULL)
-				free(gnl);
+			free_mallocs(gnl, NULL);
 			break ;
 		}
 		else
@@ -72,6 +76,7 @@ int	get_here_doc(t_msh *msh, char *delim, int flag)
 
 	gnl = NULL;
 	msh->hd_temp = heredoc_name(msh, &num);
+	heredoc_array(msh, msh->hd_temp);
 	msh->parse->here_fd = open(msh->hd_temp, \
 		O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (msh->parse->here_fd == -1)

@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:53:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/08 16:29:46 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:15:20 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void	clear_msh2(t_msh *msh)
 		free(msh->input);
 		msh->input = NULL;
 	}
+	if (msh->heredoc != NULL)
+		free(msh->heredoc);
 	if (msh->child)
 	{
 		if (msh->fd[0] != -1)
@@ -104,11 +106,10 @@ void	clear_msh(t_msh *msh, int check, char *msg)
 {
 	if (msh == NULL)
 		return ;
-	if (msh->heredoc != NULL)
+	if (msh->hd_array != NULL)
 	{
-		unlink(msh->heredoc);
-		free(msh->heredoc);
-		msh->heredoc = NULL;
+		unlink_hd(msh);
+		msh->hd_array = NULL;
 	}
 	if (msh->hd_temp != NULL)
 	{

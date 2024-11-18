@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_pipe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:46 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 15:47:23 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/18 13:34:36 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@ void	close_fds(t_msh *msh, int nb_chds, int current)
 			close(msh->chds[i]->fd[1]);
 		}
 		i++;
+	}
+	if (msh->fd[0] != -1)
+	{
+		close(msh->fd[0]);
+		msh->fd[0] = -1;
+	}
+	if (msh->fd[1] != -1)
+	{
+		close(msh->fd[1]);
+		msh->fd[1] = -1;
 	}
 }
 
