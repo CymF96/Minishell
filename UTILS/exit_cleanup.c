@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 19:00:13 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 14:32:45 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:38:01 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	handle_message(int check, char *msg)
 		rl_clear_history();
 		if (msg != NULL && check == 1)
 			printf("Exit Success\n");
-		else if (check == 2)
+		if (check == 2)
 		{
 			perror("Error - ");
 			if (msg != NULL)

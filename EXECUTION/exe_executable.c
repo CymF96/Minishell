@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_executable.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/14 09:37:47 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:57:02 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
