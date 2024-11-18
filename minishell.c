@@ -6,11 +6,22 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:40:56 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 19:16:31 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:23:55 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	check_if_exit(t_msh *msh)
+{
+	char	*temp;
+	int		i;
+
+	temp = NULL;
+	i = 0;
+	i = check_if_exit_cont(msh, temp);
+	return (i);
+}
 
 void	minishell_running(t_msh *msh)
 {

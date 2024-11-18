@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 18:39:17 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 16:52:00 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:24:25 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ void	clean_init_pexe_node(t_pexe *pexe);
 void	clean_msh_init(t_msh *msh);
 
 /*------- UTILS -------*/
+int		check_if_exit_cont(t_msh *msh, char *temp);
 int		input_validate(int ac, char **envp);
 void	create_path(t_msh *msh, char *exe_cmd);
 char	*get_path(char **envp);
