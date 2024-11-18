@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:54:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 19:11:41 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 09:24:40 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,44 +70,35 @@ static int	check_exit_number(t_msh *msh, char *temp)
 	return (0);
 }
 
-static int	check_exit_alone_cont(char *temp, int *i)
-{
-	int	j;
-
-	j = 0;
-	if (!ft_strncmp("exit", &temp[*i], 4) && \
-			(temp[*i + 4] == ' ' || temp[*i + 4] == '\0'))
-		return (0);
-	if (temp[*i] == '\'' || temp[*i] == '\"')
-	{
-		j = check_quote_ending(temp, *i);
-		(*i)++;
-		if (!ft_strncmp("exit", &temp[*i], 4) && (*i) + 4 == j && (temp[*i + 5] == ' ' || temp[*i + 5] == '\0'))
-			return (0);
-		else
-			return (1);
-	}
-	return (-1);
-}
-
 static int	check_exit_alone(char *temp)
 {
 	int	i;
-	int	k;
+	int	j;
 
 	i = -1;
 	while (temp[++i] != '\0')
 	{
-		k = check_exit_alone_cont(temp, &i);
-		if (k != -1)
-			return (k);
+		j = 0;
+		if (!ft_strncmp("exit", temp + i, 4) && \
+			(temp[i + 4] == ' ' || temp[i + 4] == '\0'))
+			return (0);
+		if (temp[i] == '\'' || temp[i] == '\"')
+		{
+			j = check_quote_ending(temp, i);
+			i++;
+			if (!ft_strncmp("exit", temp + i, 4) && i + 4 == j \
+				&& (temp[i + 5] == ' ' || temp[i + 5] == '\0'))
+				return (0);
+			else
+				return (1);
+		}
 	}
 	return (1);
 }
 
-static int	check_if_exit_cont(t_msh *msh, char *temp)
+int	check_if_exit_cont(t_msh *msh, char *temp)
 {
-	int j;
+	int	j;
 
 	if (msh->input != NULL)
 	{
@@ -129,15 +120,4 @@ static int	check_if_exit_cont(t_msh *msh, char *temp)
 		return (0);
 	}
 	return (1);
-}
-
-int	check_if_exit(t_msh *msh)
-{
-	char	*temp;
-	int		i;
-
-	temp = NULL;
-	i = 0;
-	i = check_if_exit_cont(msh, temp);
-	return (i);
 }
