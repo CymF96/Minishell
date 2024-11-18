@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_handle_signals.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cofische <cofische@student.42london.com    +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 09:22:32 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/14 09:09:18 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:19:13 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_sigint(t_msh *msh)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		msh->interrupted = 0;
 	}
 }
 

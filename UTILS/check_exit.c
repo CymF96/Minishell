@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcoskune <mcoskune@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 14:54:54 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/15 18:34:20 by mcoskune         ###   ########.fr       */
+/*   Updated: 2024/11/15 19:11:41 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static int	check_exit_number_cont(t_msh *msh, char *temp, int *i)
 {
-	while (temp[*i] != '\0')
+	while ((*i) < (int)ft_strlen(temp) && temp[*i] != '\0')
 	{
 		if (!ft_strncmp("exit", &temp[*i], 4))
-			i += 4;
-		if (!isdigit(temp[*i]) && \
+			*i += 4;
+		if (temp[*i] != '\0' && !isdigit(temp[*i]) && \
 				!(temp[*i] == '\'' || temp[*i] == '\"' || temp[*i] == ' '))
 		{
 			msh->exit_error = 2;
@@ -38,7 +38,6 @@ static void	find_exit_error(t_msh *msh, char **str)
 		return ;
 	while (str[i] != NULL)
 	{
-		// printf("str at point %d is %s\n", i, str[i]);
 		remove_quotes(str[i], ft_strlen(str[i]), str[i]);
 		if (ft_isdigit(str[i][0]))
 		{
@@ -55,21 +54,17 @@ static int	check_exit_number(t_msh *msh, char *temp)
 	char	**str;
 
 	i = 0;
-	printf("HEREEEEEEEEEEEEEEE");
 	str = ft_split(temp, ' ');
 	while (str[i] != NULL)
-	{
-		printf("str at point %d is %s\n", i, str[i]);
 		i++;
-	}
 	if (i > 2)
 	{
-		msh->exit_error = 127;
+		msh->exit_error = 1;
 		return (free_mallocs(NULL, (void **) str), 1);
 	}
 	find_exit_error(msh, str);
 	free_mallocs(NULL, (void **) str);
-	i = 4;
+	i = 0;
 	if (check_exit_number_cont(msh, temp, &i) == 2)
 		return (2);
 	return (0);
@@ -87,16 +82,10 @@ static int	check_exit_alone_cont(char *temp, int *i)
 	{
 		j = check_quote_ending(temp, *i);
 		(*i)++;
-		if (!ft_strncmp("exit", &temp[*i], 4) && (*i) + 4 == j && ((*i) + 5 == ' ' || (*i) + 5 == '\0'))
-		{
-			printf("WE RETURN 0\n");
+		if (!ft_strncmp("exit", &temp[*i], 4) && (*i) + 4 == j && (temp[*i + 5] == ' ' || temp[*i + 5] == '\0'))
 			return (0);
-		}
 		else
-		{
-			printf("WE RETURN 0\n");
 			return (1);
-		}
 	}
 	return (-1);
 }
@@ -116,8 +105,10 @@ static int	check_exit_alone(char *temp)
 	return (1);
 }
 
-static int	check_if_exit_cont(t_msh *msh, char *temp, int *i)
+static int	check_if_exit_cont(t_msh *msh, char *temp)
 {
+	int j;
+
 	if (msh->input != NULL)
 	{
 		temp = ft_strdup(msh->input);
@@ -128,11 +119,11 @@ static int	check_if_exit_cont(t_msh *msh, char *temp, int *i)
 		temp = ft_strdup(msh->input);
 		if (check_exit_alone(temp) != 0)
 			return (free(temp), 0);
-		*i = check_exit_number(msh, temp);
-		if (*i == 1)
+		j = check_exit_number(msh, temp);
+		if (j == 1)
 			return (printf("Exit: Too many arguments\n"), free(temp), 1);
-		else if (*i == 2)
-			printf("Exit\nExit: %s: Numeric argument required\n", &temp[4]);
+		else if (j == 2)
+			printf("%s: Numeric argument required\n", temp);
 		free(temp);
 		exit_cleanup("User says 'Be Gone Thot!'", msh, msh->exit_error, 1);
 		return (0);
@@ -147,6 +138,6 @@ int	check_if_exit(t_msh *msh)
 
 	temp = NULL;
 	i = 0;
-	i = check_if_exit_cont(msh, temp, &i);
+	i = check_if_exit_cont(msh, temp);
 	return (i);
 }
