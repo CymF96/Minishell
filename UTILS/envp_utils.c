@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:37:28 by mcoskune          #+#    #+#             */
-/*   Updated: 2024/11/07 13:33:50 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/18 10:31:11 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ void	create_path(t_msh *msh, char *exe_cmd)
 	else
 		msh->path = find_executable_path(msh);
 	if (!msh->path)
-	{
-		ft_printf("%s: ", exe_cmd);
 		return ;
-	}
 	if (move_node(msh) && !ft_strncmp("cat", exe_cmd, 3))
 	{
 		if (access(msh->pexe->cmd, F_OK) != 0)

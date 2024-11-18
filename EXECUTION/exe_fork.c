@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_fork.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: coline <coline@student.42.fr>              +#+  +:+       +#+        */
+/*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:34 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/07 15:52:48 by coline           ###   ########.fr       */
+/*   Updated: 2024/11/18 11:03:32 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	closing(t_msh *msh, int nb_chds)
 	while (msh->chds && msh->chds[i] != NULL)
 	{
 		waitpid(msh->chds[i]->pid, &status, 0);
+		if (WIFEXITED(status))
+			msh->exit_error = WEXITSTATUS(status);
 		if (kill_children(msh, status, i) == 1)
 			break ;
 		i++;
@@ -93,5 +95,5 @@ void	closing(t_msh *msh, int nb_chds)
 		free_pipex(msh);
 		msh->chds = NULL;
 	}
-	exit_cleanup(NULL, msh, WIFEXITED(status), 0);
+	exit_cleanup(NULL, msh, msh->exit_error, 0);
 }

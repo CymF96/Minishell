@@ -6,7 +6,7 @@
 /*   By: cofische <cofische@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:00:00 by cofische          #+#    #+#             */
-/*   Updated: 2024/11/15 19:57:02 by cofische         ###   ########.fr       */
+/*   Updated: 2024/11/18 10:32:06 by cofische         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	clean_child(t_msh *msh)
 
 	status = 0;
 	waitpid(msh->chds[0]->pid, &status, 0);
+	if (WIFEXITED(status))
+		msh->exit_error = WEXITSTATUS(status);
 	if (msh->chds != NULL)
 	{
 		free_pipex(msh);
@@ -85,7 +87,7 @@ void	pipe_exe(t_msh *msh, t_pexe *head)
 	if (msh->chds[0]->pid == 0)
 	{
 		if (execve(msh->path, head->option, msh->envp) == -1)
-			exit(EXIT_FAILURE);
+			exit(errno);
 	}
 	else
 		clean_child(msh);
@@ -103,7 +105,8 @@ void	exe(t_msh *msh)
 	create_path(msh, head->cmd);
 	if (msh->path == NULL)
 	{
-		exit_cleanup("Command not found", msh, 127, 0);
+		ft_printf("%s: Command not found\n", head->cmd);
+		exit_cleanup(NULL, msh, 127, 0);
 		return ;
 	}
 	if (msh->path != NULL)
